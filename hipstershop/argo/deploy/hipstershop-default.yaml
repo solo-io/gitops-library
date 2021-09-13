@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: hipstershop/overlay/default/
+    path: hipstershop/overlay/deploy/default/
   destination:
     server: https://kubernetes.default.svc
     namespace: default
