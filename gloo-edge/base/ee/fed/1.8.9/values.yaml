@@ -1,0 +1,11 @@
+# disable fed and require user to create a secret named "license" with base64 encoded gloo ee license key in the gloo-system namespace
+gloo-fed:
+  enabled: true
+  create_license_secret: false
+
+gloo-ee:
+  create_license_secret: false
+  license_secret_name: "license"
+  gloo-fed:
+    enabled: true
+    create_license_secret: false
