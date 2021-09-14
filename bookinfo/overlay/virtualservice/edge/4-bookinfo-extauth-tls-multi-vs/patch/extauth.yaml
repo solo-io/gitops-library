@@ -5,6 +5,7 @@ metadata:
   namespace: gloo-system
 spec:
 # ------------------- extauth -------------------
+  virtualHost:
     options:
       extauth:
         configRef:
