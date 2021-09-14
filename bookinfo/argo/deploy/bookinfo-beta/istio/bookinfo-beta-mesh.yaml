@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-v1-mesh
+  name: bookinfo-beta-mesh
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/bookinfo-v1/istio/
+    path: bookinfo/overlay/bookinfo-beta/istio/
   destination:
     server: https://kubernetes.default.svc
     namespace: bookinfo-v1

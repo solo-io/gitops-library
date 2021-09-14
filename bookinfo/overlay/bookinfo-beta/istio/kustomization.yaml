@@ -5,5 +5,5 @@ bases:
 - ../default/
 
 resources:
-- bookinfo-v1-ns.yaml
+- bookinfo-beta-ns.yaml
 - bookinfo-gateway.yaml
