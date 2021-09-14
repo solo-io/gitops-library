@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: global-config
+  name: global-ratelimit
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: gloo-edge/overlay/global-config/
+    path: gloo-edge/overlay/global-ratelimit/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

@@ -4,6 +4,3 @@ kind: Kustomization
 
 bases:
 - ../../base/ee/features/ratelimit/global-ratelimit/
-
-resources:
-- upstream-tls.yaml
