@@ -1,0 +1,15 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+# ---------------- waf ------------------   
+      waf:
+        customInterventionMessage: 'Username should only contain letters'
+        ruleSets:
+        - ruleStr: |
+            # Turn rule engine on
+            SecRuleEngine On
+            SecRule ARGS:/username/ "[^a-zA-Z]" "t:none,phase:2,deny,id:6,log,msg:'allow only letters in username'"
+#------------------------------------------------------

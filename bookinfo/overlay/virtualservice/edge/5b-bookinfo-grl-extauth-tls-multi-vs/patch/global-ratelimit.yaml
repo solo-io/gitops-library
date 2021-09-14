@@ -1,0 +1,12 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+# ---------------- global rate limit config ------------------
+      rateLimitConfigs:
+        refs:
+        - name: global-limit
+          namespace: gloo-system
+#------------------------------------------------------

@@ -1,0 +1,13 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+# ------------------- extauth -------------------
+    options:
+      extauth:
+        configRef:
+          name: keycloak-oauth
+          namespace: gloo-system
+#---------------------------------------------     
