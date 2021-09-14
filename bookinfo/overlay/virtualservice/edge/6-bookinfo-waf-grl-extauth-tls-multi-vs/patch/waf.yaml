@@ -4,7 +4,9 @@ metadata:
   name: bookinfo-vs
   namespace: gloo-system
 spec:
-# ---------------- waf ------------------   
+# ---------------- waf ------------------  
+  virtualHost:
+    options: 
       waf:
         customInterventionMessage: 'Username should only contain letters'
         ruleSets:
@@ -13,3 +15,4 @@ spec:
             SecRuleEngine On
             SecRule ARGS:/username/ "[^a-zA-Z]" "t:none,phase:2,deny,id:6,log,msg:'allow only letters in username'"
 #------------------------------------------------------
+    
