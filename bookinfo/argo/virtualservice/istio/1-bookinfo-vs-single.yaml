@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/virtualservice/istio/bookinfo-vs/
+    path: bookinfo/overlay/virtualservice/istio/1-bookinfo-vs-single/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

@@ -1,20 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-vs
+  name: bookinfo-v1-app
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/solo-io/gitops-library
+    repoURL: https://github.com/ably77/solo-testbed-apps
     targetRevision: HEAD
-    path: bookinfo/overlay/virtualservice/istio/bookinfo-vs/
+    path: kustomize/instances/overlays/frontend/bookinfo-v1/istio/
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
+    namespace: bookinfo-v1
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../../base/deploy/
+
+resources:
+- bookinfo-v1-ns.yaml
+- bookinfo-gateway.yaml
+- bookinfo-vs.yaml
