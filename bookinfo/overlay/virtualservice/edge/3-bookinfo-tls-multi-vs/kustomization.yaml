@@ -4,5 +4,8 @@ kind: Kustomization
 bases:
 - ../2-bookinfo-multi-vs/
 
+resources:
+- upstream-tls.yaml
+
 patchesStrategicMerge:
 - patch/tls.yaml
