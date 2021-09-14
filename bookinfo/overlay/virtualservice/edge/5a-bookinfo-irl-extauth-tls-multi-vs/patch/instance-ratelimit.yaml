@@ -5,6 +5,8 @@ metadata:
   namespace: gloo-system
 spec:
 # -------- Instance Rate limit config by authenticated and anonymous -------
+  virtualHost:
+    options:
       ratelimitBasic:
         anonymousLimits:
           requestsPerUnit: 5
