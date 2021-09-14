@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: hipstershop/overlay/virtualservice/edge/1-hipstershop-vs-single/
+    path: hipstershop/overlay/virtualservice/istio/1-hipstershop-vs-frontend/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
