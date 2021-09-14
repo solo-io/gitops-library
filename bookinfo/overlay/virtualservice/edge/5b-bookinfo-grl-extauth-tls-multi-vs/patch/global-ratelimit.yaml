@@ -5,6 +5,8 @@ metadata:
   namespace: gloo-system
 spec:
 # ---------------- global rate limit config ------------------
+  virtualHost:
+    options:
       rateLimitConfigs:
         refs:
         - name: global-limit

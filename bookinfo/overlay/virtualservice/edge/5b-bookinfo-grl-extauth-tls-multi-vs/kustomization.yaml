@@ -4,5 +4,8 @@ kind: Kustomization
 bases:
 - ../4-bookinfo-extauth-tls-multi-vs/
 
+resources:
+- global-ratelimitconfig.yaml
+
 patchesStrategicMerge:
 - patch/global-ratelimit.yaml
