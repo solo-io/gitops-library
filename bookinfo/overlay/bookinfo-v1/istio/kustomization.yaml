@@ -7,4 +7,4 @@ bases:
 resources:
 - bookinfo-v1-ns.yaml
 - bookinfo-gateway.yaml
-- bookinfo-vs.yaml
+#- bookinfo-vs.yaml
