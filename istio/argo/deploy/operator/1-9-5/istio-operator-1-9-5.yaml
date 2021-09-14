@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-operator-helm
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-operator
+  project: default
+  source:
+    repoURL: https://github.com/istio/istio.git
+    path: manifests/charts/istio-operator
+    targetRevision: 1.9.5
+    helm:
+      parameters:
+        - name: "hub"
+          value: "docker.io/istio"
+        - name: "tag"
+          value: "1.9.5"
+        - name: "operatorNamespace"
+          value: "istio-operator"
+        - name: "istioNamespace"
+          value: "istio-system"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /metadata/labels
+        - /spec/names/shortNames

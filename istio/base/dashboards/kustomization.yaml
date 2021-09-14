@@ -1,0 +1,18 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+configMapGenerator:
+- name: istio-dashboards
+  files:
+  - istio-extension-dashboard.json
+  - istio-mesh-dashboard.json
+  - istio-performance-dashboard.json
+  - istio-service-dashboard.json
+  - istio-workload-dashboard.json
+  - pilot-dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+    
