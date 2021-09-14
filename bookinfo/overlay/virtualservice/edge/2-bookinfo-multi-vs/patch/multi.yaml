@@ -4,6 +4,13 @@ metadata:
   name: bookinfo-vs
   namespace: gloo-system
 spec:
+  virtualHost:
+    domains:
+      - '*'
+    routes:
+      - matchers:
+          - prefix: /
+        routeAction:
 # ------------------- traffic splitting -------------------
             multi:
                 destinations:
