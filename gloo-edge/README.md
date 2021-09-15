@@ -27,6 +27,17 @@ data:
   license-key: <INSERT_BASE_64_ENCODED_LICENSE_HERE>
 ```
 
+### deploy secret
+First create the `gloo-system` namespace
+```
+kubectl create ns gloo-system
+```
+
+Then deploy the secret
+```
+kubectl apply -f gloo-edge-ee-license.yaml
+```
+
 ## deploy gloo edge
 Once the Enterprise license key has been created, navigate to the version of Gloo Edge that you want and deploy the associated argo application.
 
@@ -43,7 +54,8 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 
 Output should look similar to below:
 ```
-$ ../../wait-for-rollout.sh deployment gateway gloo-system 10
+$ ../tools/wait-for-rollout.sh deployment gateway gloo-system 10
+No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment gateway to come up.
 Error from server (NotFound): deployments.apps "gateway" not found
 Waiting 20 seconds for deployment gateway to come up.
@@ -56,12 +68,13 @@ deployment "gateway" successfully rolled out
 ## configuring gloo-fed
 gloo-fed is deployed by default as a sub-chart of the `gloo-edge` helm installation. By default, the gloo-edge install configures gloo-fed as part of the installation. Use this command below to check the status of `gloo-fed` in your cluster
 ```
-../../wait-for-rollout.sh deployment gloo-fed gloo-system 10
+../tools/wait-for-rollout.sh deployment gloo-fed gloo-system 10
 ```
 
 Output should look similar to below
 ```
-$ ../../wait-for-rollout.sh deployment gloo-fed gloo-system 10
+$ ../tools/wait-for-rollout.sh deployment gloo-fed gloo-system 10
+No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment gloo-fed to come up.
 Waiting 20 seconds for deployment gloo-fed to come up.
 Waiting 30 seconds for deployment gloo-fed to come up.
@@ -100,5 +113,5 @@ kubectl port-forward svc/gloo-fed-console -n gloo-system 8090:8090
 
 ## Next Steps - deploy keycloak
 If you plan to follow along with the guides, it is recommended to install the keycloak argo application as well as we will be using this later.
-[Follow this Tutorial Here](https://github.com/ably77/solo-poc-base-gitops/tree/main/apps/hipstershop/edge)
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak)
 
