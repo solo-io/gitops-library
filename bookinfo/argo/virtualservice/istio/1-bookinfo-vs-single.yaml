@@ -13,7 +13,7 @@ spec:
     path: bookinfo/overlay/virtualservice/istio/1-bookinfo-vs-single/
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
+    namespace: bookinfo-v1
   syncPolicy:
     automated:
       prune: true
