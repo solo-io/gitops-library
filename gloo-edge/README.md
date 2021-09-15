@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Kubernetes clusters up and authenticated to kubectl
-- argocd
+- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
 
 ## kubectl contexts
 Since we will potentially be using multiple clusters/contexts, it is useful to rename your contexts for a better experience

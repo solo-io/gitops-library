@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Kubernetes clusters up and authenticated to kubectl
-- argocd
+- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
 
 ## installing keycloak
 Navigate to the `keycloak` directory

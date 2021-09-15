@@ -1,5 +1,10 @@
 # hipstershop gloo-edge demo
 
+## Prerequisites
+- Kubernetes clusters up and authenticated to kubectl
+- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
+- Gloo Edge Enterprise - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-edge)
+
 ## deploy hipstershop application
 Navigate to the hipstershop directory
 ```
