@@ -6,4 +6,4 @@ metadata:
 spec:
   openApi:
     content:
-      fetchUrl: https://raw.githubusercontent.com/ably77/solo-testbed/main/gloo-portal/openapi-specs/petstore-openapi-v1-pets.json
+      fetchUrl: https://raw.githubusercontent.com/solo-io/gitops-library/main/petstore/base/openapi-specs/petstore-openapi-v1-pets.json
