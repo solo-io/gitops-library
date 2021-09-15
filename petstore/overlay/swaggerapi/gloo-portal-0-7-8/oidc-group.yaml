@@ -1,0 +1,19 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Group
+metadata:
+  name: oidc-group
+  namespace: default
+spec:
+  displayName: my-oidc-users-group
+  accessLevel:
+    apiProducts:
+    - name: petstore
+      namespace: default
+      environments:
+      - name: dev
+        namespace: default
+    portals:
+    - name: petstore-portal
+      namespace: default
+  oidcGroup:
+    groupName: users

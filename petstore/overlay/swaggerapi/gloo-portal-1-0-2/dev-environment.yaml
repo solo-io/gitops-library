@@ -1,0 +1,27 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  domains:
+    - api.mycompany.corp # the domain name where the API will be exposed
+  displayInfo:
+    description: This environment is meant for developers to deploy and test their APIs.
+    displayName: Development
+  basePath: /ecommerce # a global basepath for our APIs
+  apiProducts: # we will select our APIProduct using a selector and the 2 version of it
+    - namespaces:
+      - "*" 
+      labels:
+      - key: app
+        operator: In
+        values:
+        - petstore
+      versions:
+        names:
+        - v1
+        - v2
+      basePath: "{%version%}" # this will dynamically prefix the API with the version names
+  gatewayConfig:
+    disableRoutes: false # we actually want to expose the APIs on a Gateway (optional)
