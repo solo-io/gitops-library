@@ -13,7 +13,7 @@ spec:
     path: hipstershop/overlay/virtualservice/istio/1-hipstershop-vs-frontend/
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
+    namespace: hipstershop
   syncPolicy:
     automated:
       prune: true
