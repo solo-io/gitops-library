@@ -27,3 +27,6 @@ using port forward:
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
+
+## Back to Table of Contents
+[Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)
