@@ -5,6 +5,11 @@
 - argocd
 
 ## installing keycloak
+Navigate to the `keycloak` directory
+```
+cd keycloak
+```
+
 To install keycloak on your cluster, deploy the argo app associated with the keycloak version that you want. 
 
 For example to deploy keycloak v12.0.4 in the default namespace:
@@ -22,3 +27,6 @@ Run the script below to set up keycloak with two users `user1/password` and `use
 ```
 ./scripts/keycloak-setup.sh
 ```
+
+## Next Steps - Deploy hipstershop application and expose through gloo-edge
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/hipstershop)
