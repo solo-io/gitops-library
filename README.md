@@ -19,6 +19,26 @@ Overlays do exactly as the name, and layer over base manifests and can additiona
 ### base
 base manifests are organized here. All overlay layers should inherit their configuration from the base manifests. Leave out instance-specific or environment-specific config out of the base manifests such as namespaces as these will be added/patched using overlays.
 
+### Using Kustomize
+You can manually deploy any kustomize directory by just using `kubectl apply -k </path/to/dir>`
+
+An example for deploying the `bookinfo-v1` overlay
+```
+kubectl apply -k bookinfo/overlay/bookinfo-v1/default/
+```
+
+To view the full configuration of an overlay you can run the command `kubectl kustomize </path/to/dir>`
+
+An example using the same `bookinfo-v1` overlay as above
+```
+kubectl kustomize bookinfo/overlay/bookinfo-v1/default/
+```
+
+## ArgoCD
+In addition to the library of applications organized using kustomize, this repo aims to provide a corresponding argocd `Application` CRD for each kustomize overlay. Combining the two tools allows us to continue on our GitOps journey by introducing the concept of keeping our deployments in sync with Git through a control loop mechanism.
+
+The labs below provide steps to deploying examples found in our workshops while using this gitops-library as our source of truth for configuration.
+
 ## Table of Contents - Labs
 - [installing argocd](https://github.com/solo-io/gitops-library/tree/main/argocd)
 - [installing gloo-edge](https://github.com/solo-io/gitops-library/tree/main/gloo-edge)
