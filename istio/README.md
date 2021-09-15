@@ -24,7 +24,7 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 
 Output should look similar to below:
 ```
-$ ../../wait-for-rollout.sh deployment istio-operator istio-operator 10
+$ ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10
 No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment istio-operator to come up.
 Error from server (NotFound): namespaces "istio-operator" not found
