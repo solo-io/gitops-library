@@ -9,6 +9,18 @@ namespace=$3
 period=$4
 context=$5
 
+### If the context is not specified, simply use the default context.
+if [[ ${context} == "" ]]
+then
+  context=`kubectl config current-context`
+  if [[ ${context} == "" ]]
+  then
+    echo "You do not have a curent kubernetes cluster.  Please create one."
+    exit 1
+  fi
+  echo "No context specified. Using current context of ${context}"
+fi
+
 while [ "$OUTPUT" -ne 1 ]; do
   OUTPUT=`kubectl get ${rollout_type}/${rollout_name} -n ${namespace} --context ${context} 2>/dev/null | grep -c ${rollout_name}`;
   seconds=$((seconds+${period}))
