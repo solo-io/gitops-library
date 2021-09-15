@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/virtualservice/edge/bookinfo-multi-vs/
+    path: bookinfo/overlay/virtualservice/edge/2-bookinfo-multi-vs/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
