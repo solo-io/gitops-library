@@ -100,7 +100,7 @@ kubectl delete -f argo/deploy/hipstershop-default.yaml
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo)
 
 
-# hipstershop gloo-mesh demo
+# hipstershop istio demo
 
 ## Prerequisites
 - Kubernetes clusters up and authenticated to kubectl
