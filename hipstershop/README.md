@@ -90,3 +90,6 @@ to remove hipstershop application
 kubectl delete -f argo/virtualservice/edge/1-hipstershop-vs-single.yaml
 kubectl delete -f argo/deploy/hipstershop-default.yaml
 ```
+
+## Next Steps - Deploy bookinfo application and expose through gloo-edge
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo)
