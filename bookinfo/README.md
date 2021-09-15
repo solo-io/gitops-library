@@ -1,5 +1,11 @@
 # bookinfo gloo-edge demo
 
+## Prerequisites
+- Kubernetes clusters up and authenticated to kubectl
+- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
+- Gloo Edge Enterprise - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-edge)
+- Keycloak - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak)
+
 ## bookinfo app architecture
 ![bookinfo image](https://istio.io/latest/docs/examples/bookinfo/noistio.svg)
 
@@ -265,5 +271,13 @@ transformations:
 ### testing transformations
 Navigate to your bookinfo application and refresh until you hit the global ratelimit. This time the `HTTP ERROR 429` page that we were hitting before should now be translated into a more user-friendly view
 
-## Conclusion
+## conclusion
 At this point you have successfully navigated through exploring many features where Gloo Edge can bring value! There is a lot to digest so feel free to go back and re-test configurations to better familiarize yourself.
+
+## cleanup
+to remove hipstershop application
+```
+kubectl delete -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs.yaml
+kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
+kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-beta-default.yaml
+```
