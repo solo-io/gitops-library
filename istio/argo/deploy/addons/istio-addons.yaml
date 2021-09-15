@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: istio/overlays/addons/
+    path: istio/overlay/addons/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
