@@ -37,7 +37,7 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 
 Output should look similar to below:
 ```
-$ ../../wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10
+$ ../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10
 No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment enterprise-networking to come up.
 deployment "enterprise-networking" successfully rolled out
