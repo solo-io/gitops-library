@@ -333,6 +333,7 @@ details-v1-558b8b4b76-wmnq7       2/2     Running   0          119s
 productpage-v1-6987489c74-w6wt5   2/2     Running   0          119s
 ratings-v1-7dc98c7588-nk7kh       2/2     Running   0          119s
 reviews-v2-7d79d5bd5d-9h7j8       2/2     Running   0          119s
+```
 
 run a describe on any pod to get more detail
 ```
@@ -418,4 +419,4 @@ to remove bookinfo-v1 application
 ```
 kubectl delete -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml
 kubectl delete -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml
-```
+``` 
