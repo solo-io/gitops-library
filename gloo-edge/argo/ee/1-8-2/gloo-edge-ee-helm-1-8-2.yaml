@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: gloo-edge/base/ee/fed/1.8.2/
+    path: gloo-edge/base/ee/fed/1-8-2/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
