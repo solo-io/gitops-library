@@ -13,7 +13,7 @@ spec:
   source:
     chart: enterprise-agent
     helm:
-    parameters:
+      parameters:
       - name: ext-auth-service.enabled
         value: 'true'
       - name: rate-limiter.enabled
