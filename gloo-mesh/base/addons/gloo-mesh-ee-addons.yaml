@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gloo-mesh-ee-addons
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-mesh-addons
+  project: default
+  source:
+    chart: enterprise-agent
+    helm:
+    parameters:
+      - name: ext-auth-service.enabled
+        value: 'true'
+      - name: rate-limiter.enabled
+        value: 'true'
+      - name: enterpriseAgent.enabled
+        value: 'false'
+    repoURL: https://storage.googleapis.com/gloo-mesh-enterprise/enterprise-agent
+    targetRevision: ${TARGET_REVISION}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
