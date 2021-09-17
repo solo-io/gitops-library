@@ -26,5 +26,5 @@ while [ "$OUTPUT" -ne 1 ]; do
   seconds=$((seconds+${period}))
   printf "Waiting %s seconds for ${rollout_type} ${rollout_name} to come up.\n" "${seconds}"
   sleep ${period}
-  kubectl rollout status ${rollout_type}/${rollout_name} -n ${namespace}
+  kubectl rollout status ${rollout_type}/${rollout_name} -n ${namespace} --context ${context}
 done
