@@ -1,0 +1,22 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: AccessPolicy
+metadata:
+  namespace: gloo-mesh
+  name: accesspolicy
+spec:
+  sourceSelector:
+  - kubeServiceAccountRefs:
+      serviceAccounts:
+        - name: istio-ingressgateway-service-account
+          namespace: istio-system
+          clusterName: ${CLUSTER1}
+        - name: istio-ingressgateway-service-account
+          namespace: istio-system
+          clusterName: ${CLUSTER2}
+  - kubeIdentityMatcher:
+      namespaces:
+      - ${IDENTITY_MATCHER_NAMESPACE}
+  destinationSelector:
+  - kubeServiceMatcher:
+      namespaces:
+      - ${SERVICE_MATCHER_NAMESPACE}
