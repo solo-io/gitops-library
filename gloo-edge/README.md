@@ -111,6 +111,16 @@ glooctl cluster register --cluster-name ${REMOTE_CONTEXT} --remote-context ${REM
 kubectl port-forward svc/gloo-fed-console -n gloo-system 8090:8090
 ```
 
+## Deploy gloo-edge with gloo-fed disabled
+gloo-fed is a feature `gloo-edge` that is enabled default, the gloo-edge helm chart configures gloo-fed as part of the installation. Disabling gloo-fed is as simple as setting `gloo-fed.enabled=false` in the Gloo Edge Enterprise Helm chart. 
+
+Since we are using gitops, we have already created an argo application [here](https://github.com/solo-io/gitops-library/blob/main/gloo-edge/argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml) that disables gloo-fed so we can just deploy it.
+```
+kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml
+```
+
+**NOTE:** Prior to Gloo Edge Enterprise v1.8.9, the Enterprise UI was only available if Gloo Federation was enabled. Starting in v1.8.9, the UI is included by default for all Gloo Edge Enterprise users as well. Note that if you have Gloo Federation enabled, the UI does not show any data until you register one or more clusters. If Gloo Federation is disabled, the UI shows the installed Gloo Edge instance automatically without cluster registration. See [this upgrade notice](https://docs.solo.io/gloo-edge/master/operations/upgrading/1.8.0/#enterprise-ui) for more details
+
 ## Next Steps - deploy keycloak
 If you plan to follow along with the guides, it is recommended to install the keycloak argo application as well as we will be using this later.
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak)
