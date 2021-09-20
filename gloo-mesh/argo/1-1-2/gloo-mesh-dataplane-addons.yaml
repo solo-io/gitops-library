@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-mesh-dataplane-addons
+  name: gloo-mesh-dataplane-addons-meta
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
