@@ -75,7 +75,31 @@ istio-ingressgateway-6486dd4ffc-2fjzg   1/1     Running   0          19s
 istiod-7f5668c8f7-dm9j6                 1/1     Running   0          30s
 ```
 
-### install istio-addons
+### (optional) set to STRICT mtls
+By default, Istio deploys with mtls set to `PERMISSIVE` if not explicitly stated. If your desire is to enforce `STRICT` mtls across the entire mesh, you can set the `spec.mtls.mode: STRICT` in the `PeerAuthentication` custom resource. You can run the command below to view an example
+```
+kubectl kustomize overlay/mtls/strict
+```
+
+Output should look similar to below. Deploying this config will set the mtls mode to `STRICT` across the entire cluster. Note that it is possible to set mtls `STRICT` on a per namespace basis as well.
+```
+% kubectl kustomize overlay/mtls/strict
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: istio-system
+spec:
+  mtls:
+    mode: STRICT
+```
+
+Deploy the argo application that contains the config for strict mtls on the desired clusters. In our case we would replace the context with `cluster1` and `cluster2`
+```
+kubectl create -f argo/deploy/mtls/strict-mtls.yaml --context ${CONTEXT}
+```
+
+### (optional) install istio-addons
 istio-addons provides observability tools (prometheus, grafana, jaeger, kiali) to use for test/dev in non-production environments
 
 Deploy the istio-addons app
