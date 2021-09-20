@@ -22,9 +22,9 @@ spec:
       meshID: mesh1
       multiCluster:
         clusterName: cluster2
-      network: network2
+      network: network1
       meshNetworks:
-        network2:
+        network1:
           endpoints:
           - fromRegistry: cluster2
           gateways:
@@ -35,7 +35,7 @@ spec:
     ingressGateways:
     - name: istio-ingressgateway
       label:
-        topology.istio.io/network: network2
+        topology.istio.io/network: network1
       enabled: true
       k8s:
         env:
@@ -44,7 +44,7 @@ spec:
             value: "sni-dnat"
           # traffic through this gateway should be routed inside the network
           - name: ISTIO_META_REQUESTED_NETWORK_VIEW
-            value: network2
+            value: network1
         service:
           ports:
             - name: http2
