@@ -4,5 +4,5 @@ kind: Kustomization
 
 # list of Resource Config to be Applied
 resources:
-- gloo-mesh-ee-addons.yaml
+- gloo-mesh-dataplane-addons.yaml
 
