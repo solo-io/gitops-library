@@ -112,3 +112,6 @@ to remove petstore gloo-portal demo application
 ```
 kubectl delete -f argo/petstore-apiproduct-1-0-2.yaml
 ```
+
+## Back to Table of Contents
+[Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)

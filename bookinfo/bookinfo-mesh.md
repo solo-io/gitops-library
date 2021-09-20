@@ -134,3 +134,6 @@ to remove bookinfo-v1 application
 kubectl delete -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml
 kubectl delete -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml
 ``` 
+
+## Back to Table of Contents
+[Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)

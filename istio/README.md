@@ -122,4 +122,4 @@ kubectl port-forward svc/prometheus -n istio-system 9090:9090
 ```
 
 ## Next Steps - Deploy hipstershop application and expose through istio
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/hipstershop#hipstershop-istio-demo)
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/hipstershop/hipstershop-mesh.md)

@@ -281,3 +281,6 @@ kubectl delete -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-
 kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
 kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-beta-default.yaml
 ```
+
+## Back to Table of Contents
+[Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)
