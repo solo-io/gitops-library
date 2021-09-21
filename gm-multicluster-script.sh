@@ -59,4 +59,4 @@ kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context cluster2
 kubectl apply -f argo/gloo-mesh-controlplane-addons.yaml --context mgmt
 
 # create virtualmesh
-kubectl apply -f argo/gloo-mesh-virtualmesh.yaml --context mgmt
+kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context mgmt

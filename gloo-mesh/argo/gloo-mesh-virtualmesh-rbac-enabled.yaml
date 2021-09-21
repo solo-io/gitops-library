@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: gloo-mesh/overlay/virtualmesh/
+    path: gloo-mesh/overlay/virtualmesh/rbac-enabled/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-mesh
