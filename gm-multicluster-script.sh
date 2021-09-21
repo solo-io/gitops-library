@@ -43,6 +43,10 @@ kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-cluster2
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster1
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster2
 
+# set strict mtls
+kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context cluster1
+kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context cluster2
+
 # deploy gloo-mesh dataplane addons
 cd ../gloo-mesh/
 kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context cluster1
