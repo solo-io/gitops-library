@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# provide license key
+echo "Please provide your Gloo Mesh Enterprise License Key:"
+read LICENSE_KEY
+sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${LICENSE_KEY}/g" gloo-mesh/argo/1-1-2/gloo-mesh-ee-helm.yaml
+
 # install argocd on mgmt, cluster1, and cluster2
 cd argocd
 ./install-argocd.sh mgmt
@@ -7,7 +12,6 @@ cd argocd
 ./install-argocd.sh cluster2
 
 # install gloo-mesh on mgmt
-# figure out SED license stuff
 cd ../gloo-mesh/
 kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml --context mgmt
 
