@@ -1,8 +1,16 @@
 #!/bin/bash
 
-# provide license key
-echo "Please provide your Gloo Mesh Enterprise License Key:"
-read LICENSE_KEY
+LICENSE_KEY=$1
+
+# check to see if license key variable was passed through, if not prompt for key
+if [[ ${LICENSE_KEY} == "" ]]
+  then
+    # provide license key
+    echo "Please provide your Gloo Mesh Enterprise License Key:"
+    read LICENSE_KEY
+fi
+
+# sed command to replace license key  
 sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${LICENSE_KEY}/g" gloo-mesh/argo/1-1-2/gloo-mesh-ee-helm.yaml
 
 # install argocd on mgmt, cluster1, and cluster2
