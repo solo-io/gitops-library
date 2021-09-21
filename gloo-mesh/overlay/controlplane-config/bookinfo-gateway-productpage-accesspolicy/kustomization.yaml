@@ -1,0 +1,11 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../../base/accesspolicy/
+
+patchesStrategicMerge:
+- patch/bookinfo-gateway-productpage-accesspolicy.yaml
+
+namePrefix: bookinfo-gateway-productpage-

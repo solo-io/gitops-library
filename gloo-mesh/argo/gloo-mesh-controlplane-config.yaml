@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-mesh-controlplane-addons
+  name: gloo-mesh-controlplane-config
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: gloo-mesh/overlay/controlplane-addons/
+    path: gloo-mesh/overlay/controlplane-config/
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-mesh-addons
+    namespace: gloo-mesh
   syncPolicy:
     automated:
       prune: false # Specifies if resources should be pruned during auto-syncing ( false by default ).
