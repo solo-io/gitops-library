@@ -10,6 +10,11 @@ spec:
         - name: bookinfo-productpage
           namespace: default
           clusterName: cluster1
+  - kubeServiceAccountRefs:
+      serviceAccounts:
+        - name: bookinfo-productpage
+          namespace: default
+          clusterName: cluster2
   destinationSelector:
   - kubeServiceMatcher:
       namespaces:
