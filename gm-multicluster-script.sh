@@ -60,3 +60,19 @@ kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context mgmt
 
 # create virtualmesh
 kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context mgmt
+
+# deploy bookinfo app into cluster1 and cluster2
+cd ../bookinfo/
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
+
+../tools/wait-for-rollout.sh deployment productpage-v1 default 10 cluster1
+../tools/wait-for-rollout.sh deployment productpage-v1 default 10 cluster2
+
+# echo port-forward commands
+echo
+echo "access gloo mesh dashboard:"
+echo "kubectl port-forward -n gloo-mesh svc/dashboard 8090 --context mgmt"
+echo 
+echo "access argocd dashboard:"
+echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 --context <desired_context>"
