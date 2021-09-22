@@ -7,3 +7,4 @@ bases:
 resources:
 - bookinfo-default-ns.yaml
 - bookinfo-gateway.yaml
+- bookinfo-vs.yaml
