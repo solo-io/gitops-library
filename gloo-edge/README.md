@@ -18,24 +18,34 @@ Navigate to the `gloo-edge` directory
 cd gloo-edge
 ```
 
-## create license secret (enterprise edition)
+### create license secret (enterprise edition)
 If using Gloo Edge Enterprise, we will need to deploy a secret into the `gloo-system` namespace that contains the Enterprise license key
 
-Using your favorite text editor, replace the helm value `license-key: <INSERT_BASE_64_ENCODED_LICENSE_HERE>` in the `gloo-edge-ee-license.yaml` manifest
+### set $LICENSE_KEY variable
 ```
-data:
-  license-key: <INSERT_BASE_64_ENCODED_LICENSE_HERE>
+export LICENSE_KEY=
 ```
 
-### deploy secret
-First create the `gloo-system` namespace
+### create gloo-system namespace
 ```
 kubectl create ns gloo-system
 ```
 
-Then deploy the secret
+### deploy secret
 ```
-kubectl apply -f gloo-edge-ee-license.yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+data:
+  license-key: $(echo -n ${LICENSE_KEY} | base64)
+kind: Secret
+metadata:
+  labels:
+    app: gloo
+    gloo: license
+  name: license
+  namespace: gloo-system
+type: Opaque
+EOF
 ```
 
 ## deploy gloo edge
