@@ -90,11 +90,19 @@ kubectl port-forward -n gloo-portal svc/gloo-portal-admin-server 8000:8080
 
 You should see that one Portal has been created. Feel free to click around on the Gloo Portal UI
 
-### poor mans DNS: update /etc/hosts file to be able to access our Portal
+### poor mans DNS: update /etc/hosts file to be able to access our Portal (Edge)
 ```
 cat <<EOF | sudo tee -a /etc/hosts
 $(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') portal.mycompany.corp
 $(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') api.mycompany.corp
+EOF
+```
+
+### poor mans DNS: update /etc/hosts file to be able to access our Portal (Istio)
+```
+cat <<EOF | sudo tee -a /etc/hosts
+$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}') api.example.com
+$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}') petstore.example.com
 EOF
 ```
 
