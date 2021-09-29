@@ -26,3 +26,14 @@ spec:
     versions:
       tags:
       - stable
+    usagePlans:
+      - basic
+  parameters:
+    usagePlans:
+      basic:
+        displayName: Basic plan with API key auth
+        authPolicy:
+          apiKey: { }
+        rateLimit:
+          requestsPerUnit: 3
+          unit: MINUTE

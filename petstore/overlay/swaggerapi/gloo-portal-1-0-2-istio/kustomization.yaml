@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
 - apidoc.yaml
 - apiproduct.yaml
-- environment.yaml
+- environment-wplan.yaml
 - petstore.yaml
 - portal.yaml
+- developer-group-wplan.yaml
+- developer1-password.yaml
+- developer1-user.yaml
