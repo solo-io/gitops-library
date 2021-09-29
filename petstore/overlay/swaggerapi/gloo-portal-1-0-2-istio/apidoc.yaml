@@ -1,0 +1,15 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: petstore-schema
+  namespace: default
+spec:
+  ## specify the type of schema provided in this APIDoc.
+  ## openApi is only option at this time.
+  openApi:
+    content:
+      # we use a fetchUrl here to tell the Gloo Portal
+      # to fetch the schema contents directly from the petstore service.
+      # 
+      # configmaps and inline strings are also supported.
+      fetchUrl: http://petstore.default:8080/swagger.json

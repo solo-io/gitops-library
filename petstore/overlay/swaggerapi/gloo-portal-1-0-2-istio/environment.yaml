@@ -1,0 +1,28 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  domains:
+  # If you are using Gloo Edge and the Gateway is listening on a port other than 80, 
+  # you need to include a domain in this format: <DOMAIN>:<PORT>.
+  - api.example.com
+  displayInfo:
+    description: This environment is meant for developers to deploy and test their APIs.
+    displayName: Development
+  # This field will determine which APIProduct versions are published in this Environment.
+  # Each entry represents a selector which contains criteria to match the desired API product versions.
+  # Here we use a single selector that will match all APIProducts with the 'app: petstore' label in all namespaces;
+  # Additionally, we want to select only version of these APIProducts that contain the 'stable' tag.
+  apiProducts:
+  - namespaces:
+    - "*" 
+    labels:
+    - key: app
+      operator: Equals
+      values:
+      - petstore
+    versions:
+      tags:
+      - stable
