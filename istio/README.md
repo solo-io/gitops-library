@@ -1,10 +1,12 @@
 # Istio
+This guide will walk a user through deploying Solo.io fully supported (N-4) builds of upstream Istio, however the process is still completely applicable to deploying using the community based Istio images as well.
+
+## Note for Multicluster Labs
+In order to continue forward with the Multicluster labs, you will need to run through these lab instructions for both `cluster1` and for `cluster2`. It is useful to add `--context <cluster>` to specify which cluster to deploy to
 
 ## Prerequisites
 - Kubernetes clusters up and authenticated to kubectl
 - argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
-
-This guide will walk a user through deploying Solo.io fully supported (N-4) builds of upstream Istio, however the process is still completely applicable to deploying using the community based Istio images as well.
 
 ## installing gloo mesh istio
 Navigate to the `istio` directory
