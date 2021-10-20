@@ -64,5 +64,5 @@ In the Gloo Mesh Dashboard, you should see that our two service meshes have now 
 
 (Insert picture here)
 
-## Next Steps - Deploy bookinfo app
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh.md)
+## Next Steps - Deploy istio
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
