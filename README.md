@@ -48,6 +48,8 @@ The labs below provide steps to deploying examples found in our workshops while 
   - [walkthrough bookinfo gloo-edge features demo](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-edge.md)
 - [installing gloo-mesh](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh)
   - [register cluster to gloo-mesh using meshctl](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh#register-cluster-using-meshctl)
+  - [deploying gloo-mesh addons](https://github.com/solo-io/gitops-library/blob/main/gloo-mesh/gloo-mesh-addons.md)
+  - [creating a virtual mesh](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/virtualmesh.md)
 - [installing istio](https://github.com/solo-io/gitops-library/tree/main/istio)
   - [installing istio-addons](https://github.com/solo-io/gitops-library/tree/main/istio#install-istio-addons)
   - [deploy hipstershop istio demo app](https://github.com/solo-io/gitops-library/tree/main/hipstershop/hipstershop-mesh.md)

@@ -50,5 +50,5 @@ NAMESPACE   NAME                               AGE
 gloo-mesh   controlplane-addons-accesspolicy   43s
 ```
 
-## Next Steps - Deploy bookinfo app
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh.md)
+## Next Steps - Create a VirtualMesh
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/virtualmesh.md)
