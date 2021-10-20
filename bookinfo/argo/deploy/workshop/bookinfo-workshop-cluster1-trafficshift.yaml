@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews/
+    path: bookinfo/overlay/gloo-mesh-workshop/bookinfo-cluster1-trafficshift/
   destination:
     server: https://kubernetes.default.svc
     namespace: default

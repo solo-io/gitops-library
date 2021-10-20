@@ -1,0 +1,31 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: TrafficPolicy
+metadata:
+  name: reviews-shift-failover
+  namespace: gloo-mesh
+spec:
+  sourceSelector:
+  - kubeWorkloadMatcher:
+      namespaces:
+      - default
+  destinationSelector:
+  - kubeServiceRefs:
+      services:
+        - clusterName: cluster1
+          name: reviews
+          namespace: default
+  policy:
+    trafficShift:
+      destinations:
+        - virtualDestination:
+            name: reviews-global
+            namespace: gloo-mesh
+            subset:
+              version: v1
+          weight: 50
+        - virtualDestination:
+            name: reviews-global
+            namespace: gloo-mesh
+            subset:
+              version: v2
+          weight: 50
