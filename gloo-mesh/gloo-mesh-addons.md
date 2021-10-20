@@ -50,5 +50,8 @@ NAMESPACE   NAME                               AGE
 gloo-mesh   controlplane-addons-accesspolicy   43s
 ```
 
-## Next Steps - Create a VirtualMesh
+## Next Steps for Single Cluster Labs - Deploy Istio
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
+
+## Next Steps for Multi Cluster Labs - Create a VirtualMesh
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/virtualmesh.md)

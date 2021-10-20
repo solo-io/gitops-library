@@ -1,10 +1,9 @@
-# bookinfo istio demo
+# bookinfo istio demo (single cluster)
 
 ## Prerequisites
 - Kubernetes clusters up and authenticated to kubectl
 - argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
 - Istio - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
-
 
 ## deploy bookinfo application
 Navigate to the `bookinfo` directory
