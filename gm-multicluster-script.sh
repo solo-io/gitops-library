@@ -63,11 +63,14 @@ kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context mgmt
 
 # deploy bookinfo app into cluster1 and cluster2
 cd ../bookinfo/
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
 kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
 
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 cluster1
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 cluster2
+
+# deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
+kubectl apply -f argo/deploy/workshop/bookinfo-cluster1-cluster2-trafficshift.yaml --context mgmt
 
 # echo port-forward commands
 echo
