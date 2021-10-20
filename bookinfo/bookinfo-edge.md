@@ -275,7 +275,7 @@ Navigate to your bookinfo application and refresh until you hit the global ratel
 At this point you have successfully navigated through exploring many features where Gloo Edge can bring value! There is a lot to digest so feel free to go back and re-test configurations to better familiarize yourself.
 
 ## cleanup
-to remove hipstershop application
+to remove bookinfo application
 ```
 kubectl delete -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs.yaml
 kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
