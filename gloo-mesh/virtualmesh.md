@@ -1,11 +1,14 @@
 # Gloo Mesh VirtualMesh Lab
 It is a common deployment practice to deploy your workloads across multiple clusters. However, when you are running multiple independent meshes, it becomes more challenging for services to talk to one another. While each mesh can act as it's own CA and sign it's own workloads, to achieve cluster-to-cluster communication the meshes need to be grouped together and the trust must be shared between them. In gloo-mesh, the `VirtualMesh` Custom Resource is used to simplify the grouping and deployment of a federated service mesh
 
+**Quick note on Prerequisites:** Please ensure that the prerequisites below are met before moving forward in order to ensure a smooth flow. If you have been following the single cluster labs, at this point you may need to stand up a few more clusters and run through the necessary installations for those clusters before proceeding. You should have three cluster contexts named: `mgmt`, `cluster1`, and `cluster2`
+
 ## Prerequisites
-- Kubernetes clusters up and authenticated to kubectl
-- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd)
-- gloo-mesh - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh)
-- istio - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
+- Kubernetes clusters `mgmt`, `cluster1`, and `cluster2` up and authenticated to kubectl
+- argocd - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/argocd) deployed on all three clusters
+- gloo-mesh - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh) deployed on the `mgmt` cluster
+- `cluster1` and `cluster2` registered to the gloo-mesh control plane - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh#register-cluster-using-meshctl)
+- istio - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio) deployed on `cluster1` and `cluster2`
 
 ## Deploying a VirtualMesh
 Now that we have deployed and configured our `mgmt`, `cluster1`, and `cluster2` clusters with Gloo Mesh + Istio, the next step is to unify these separate service meshes into a single unified `VirtualMesh`. [more on VirtualMesh here](https://docs.solo.io/gloo-mesh-enterprise/latest/concepts/concepts/#virtual-meshes)
@@ -64,5 +67,5 @@ In the Gloo Mesh Dashboard, you should see that our two service meshes have now 
 
 (Insert picture here)
 
-## Next Steps - Deploy istio
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
+## Next Steps - Deploy bookinfo application and run through workshop labs (multi cluster)
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
