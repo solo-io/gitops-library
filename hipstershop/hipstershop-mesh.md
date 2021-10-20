@@ -143,4 +143,4 @@ kubectl delete -f argo/deploy/hipstershop-istio.yaml
 ```
 
 ## Next Steps - Deploy bookinfo application on istio and run through gloo-mesh labs
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh.md)
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-singlecluster.md)
