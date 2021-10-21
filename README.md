@@ -58,3 +58,24 @@ The labs below provide steps to deploying examples found in our workshops while 
 - [installing gloo-portal](https://github.com/solo-io/gitops-library/tree/main/gloo-portal)
   - [deploying gloo-portal petstore demo](https://github.com/solo-io/gitops-library/tree/main/petstore)
 - [Installing argo workflows](./argo-workflows/README.md)
+
+## e2e gloo-mesh multicluster demo
+If you would like to run through the Gloo Mesh multicluster demo end-to-end, you can do so by running the script
+```
+./gm-multicluster-script.sh $LICENSE_KEY
+```
+
+Note:
+- If a license key is not provided, the script will prompt for a valid Gloo Mesh license key
+- By default, the script expects to deploy into three clusters named `mgmt`, `cluster1`, and `cluster2`. This is configurable by changing the variables in the `gm-multicluster-script.sh`. A check is done to ensure that the defined contexts exist before proceeding with the installation.
+
+## e2e gloo-edge single cluster demo
+If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
+```
+./gloo-edge-demo.sh $LICENSE_KEY
+```
+
+Note:
+- If a license key is not provided, the script will prompt for a valid Gloo Edge license key
+- The script assumes the current context as the one to be used for deploy. Use `kubectl config use-context <context>` to switch to the proper cluster that you desire
+- If there is no current-context defined, the script will exit.
