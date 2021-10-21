@@ -108,14 +108,20 @@ kubectl get svc -n istio-system --context cluster1
 output should look similar to below:
 ```
 % kubectl get svc -n istio-system --context cluster1
-NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                      AGE
-istiod                 ClusterIP      10.43.156.254   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP                                                        151m
-istio-ingressgateway   LoadBalancer   10.43.47.167    172.24.0.5    80:32184/TCP,443:31392/TCP,15021:30020/TCP,15443:31321/TCP,15012:32466/TCP,15017:31432/TCP   151m
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
+istiod                 ClusterIP      10.43.77.155    <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        9m17s
+istio-ingressgateway   LoadBalancer   10.43.230.201   172.20.0.5    15021:32197/TCP,80:30411/TCP,443:31521/TCP   9m10s
+kiali                  ClusterIP      10.43.96.183    <none>        20001/TCP,9090/TCP                           8m18s
+zipkin                 ClusterIP      10.43.200.101   <none>        9411/TCP                                     8m18s
+jaeger-collector       ClusterIP      10.43.115.228   <none>        14268/TCP,14250/TCP,9411/TCP                 8m18s
+prometheus             ClusterIP      10.43.0.137     <none>        9090/TCP                                     8m18s
+grafana                ClusterIP      10.43.140.40    <none>        3000/TCP                                     8m18s
+tracing                ClusterIP      10.43.52.37     <none>        80/TCP,16685/TCP                             8m18s
 ```
 
 Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
-open http://172.24.0.5/productpage
+open http://172.20.0.5/productpage
 ```
 You should see that on `cluster1` that there are no reviews available 
 
@@ -128,14 +134,20 @@ kubectl get svc -n istio-system --context cluster2
 output should look similar to below:
 ```
 % kubectl get svc -n istio-system --context cluster2
-NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                                      AGE
-istiod                 ClusterIP      10.43.133.69   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP                                                        150m
-istio-ingressgateway   LoadBalancer   10.43.53.9     172.24.0.8    80:30796/TCP,443:30931/TCP,15021:32062/TCP,15443:30942/TCP,15012:30646/TCP,15017:30936/TCP   150m
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
+istiod                 ClusterIP      10.43.134.163   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        6m46s
+istio-ingressgateway   LoadBalancer   10.43.119.45    172.20.0.8    15021:30593/TCP,80:31415/TCP,443:31281/TCP   6m36s
+jaeger-collector       ClusterIP      10.43.128.65    <none>        14268/TCP,14250/TCP,9411/TCP                 6m19s
+kiali                  ClusterIP      10.43.199.154   <none>        20001/TCP,9090/TCP                           6m19s
+tracing                ClusterIP      10.43.182.6     <none>        80/TCP,16685/TCP                             6m19s
+grafana                ClusterIP      10.43.136.83    <none>        3000/TCP                                     6m19s
+zipkin                 ClusterIP      10.43.194.143   <none>        9411/TCP                                     6m19s
+prometheus             ClusterIP      10.43.246.71    <none>        9090/TCP  
 ```
 
 Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
-open http://172.24.0.8/productpage
+open http://172.20.0.8/productpage
 ```
 You should see that on `cluster2` that all the reviews are available 
 

@@ -12,6 +12,12 @@ It is a common deployment practice to deploy your workloads across multiple clus
 - istio - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio) deployed on `cluster1` and `cluster2`
 
 ## Deploying a VirtualMesh
+Navigate back to the `gloo-mesh` directory
+```
+cd gloo-mesh
+```
+
+## Deploying a VirtualMesh
 Now that we have deployed and configured our `mgmt`, `cluster1`, and `cluster2` clusters with Gloo Mesh + Istio, the next step is to unify these separate service meshes into a single unified `VirtualMesh`. [more on VirtualMesh here](https://docs.solo.io/gloo-mesh-enterprise/latest/concepts/concepts/#virtual-meshes)
 
 ### view virtualmesh
@@ -55,12 +61,12 @@ Deploying the `VirtualMesh` above will unify the root identity between multiple 
 
 Take a look at the VirtualMesh that was created in order to see more detail
 ```
-kubectl get virtualmesh -n gloo-mesh virtual-mesh -o yaml
+kubectl get virtualmesh -n gloo-mesh virtual-mesh -o yaml --context mgmt
 ```
 
 You can also describe it:
 ```
-kubectl describe virtualmesh -n gloo-mesh virtual-mesh
+kubectl describe virtualmesh -n gloo-mesh virtual-mesh --context mgmt
 ```
 
 ## Gloo Mesh Dashboard

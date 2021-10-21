@@ -16,12 +16,12 @@ cd istio
 
 Deploy the istio-operator app with the specified version
 ```
-kubectl apply -f argo/deploy/1-10-4/operator/istio-operator-1-10-4.yaml
+kubectl apply -f argo/deploy/1-10-4/operator/istio-operator-1-10-4.yaml --context <cluster>
 ```
 
-You can run the `wait-for-rollout.sh` script to watch deployment progress
+You can run the `wait-for-rollout.sh` script to watch deployment progress. Be sure to replace the `<context>` with the right cluster, if not provided it will assume the `current-context`
 ```
-../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10
+../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 <cluster>
 ```
 
 Output should look similar to below:
@@ -45,12 +45,12 @@ For our tutorial we will be using commercially supported Solo.io builds of Istio
 
 Now deploy istio
 ```
-kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-default-1-10-4.yaml
+kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-cluster1-1-10-4.yaml --context <context>
 ```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress of istiod
 ```
-../tools/wait-for-rollout.sh deployment istiod istio-system 10
+../tools/wait-for-rollout.sh deployment istiod istio-system 10 <cluster>
 ```
 
 Output should look similar to below
@@ -66,12 +66,12 @@ deployment "istiod" successfully rolled out
 
 check to see if istio-ingressgateway also was deployed
 ```
-kubectl get pods -n istio-system
+kubectl get pods -n istio-system --context <cluster>
 ```
 
 Output should look similar to below
 ```
-$ kubectl get pods -n istio-system
+$ kubectl get pods -n istio-system --context cluster1
 NAME                                    READY   STATUS    RESTARTS   AGE
 istio-ingressgateway-6486dd4ffc-2fjzg   1/1     Running   0          19s
 istiod-7f5668c8f7-dm9j6                 1/1     Running   0          30s
@@ -98,7 +98,7 @@ spec:
 
 Deploy the argo application that contains the config for strict mtls on the desired clusters. In our case we would replace the context with `cluster1` and `cluster2`
 ```
-kubectl create -f argo/deploy/mtls/strict-mtls.yaml --context ${CONTEXT}
+kubectl create -f argo/deploy/mtls/strict-mtls.yaml --context <cluster>
 ```
 
 ### (optional) install istio-addons
@@ -106,17 +106,17 @@ istio-addons provides observability tools (prometheus, grafana, jaeger, kiali) t
 
 Deploy the istio-addons app
 ```
-kubectl apply -f argo/deploy/addons/istio-addons.yaml
+kubectl apply -f argo/deploy/addons/istio-addons.yaml --context <cluster>
 ```
 
 check to see if istio-addons are deployed
 ```
-kubectl get pods -n istio-system
-```
+kubectl get pods -n istio-system --context <cluster>
+``` 
 
 Output should look similar to below
 ```
-$ kubectl get pods -n istio-system
+$ kubectl get pods -n istio-system --context cluster1
 NAME                                    READY   STATUS    RESTARTS   AGE
 grafana-789c84856f-wdjfw                1/1     Running   0          38m
 istio-ingressgateway-6486dd4ffc-h2nxv   1/1     Running   0          46m
@@ -129,22 +129,22 @@ prometheus-84446c5697-5h2w2             2/2     Running   0          38m
 ## port-forward commands
 access grafana dashboard at `http://localhost:3000`
 ```
-kubectl port-forward svc/grafana -n istio-system 3000:3000
+kubectl port-forward svc/grafana -n istio-system 3000:3000 --context <cluster>
 ```
 
 access kiali dashboard at `http://localhost:20001`
 ```
-kubectl port-forward deployment/kiali -n istio-system 20001:20001
+kubectl port-forward deployment/kiali -n istio-system 20001:20001 --context <cluster>
 ```
 
 access jaeger dashboard at `http://localhost:16686`
 ```
-kubectl port-forward svc/tracing -n istio-system 16686:80
+kubectl port-forward svc/tracing -n istio-system 16686:80 --context <cluster>
 ```
 
 access prometheus dashboard at `http://localhost:9090`
 ```
-kubectl port-forward svc/prometheus -n istio-system 9090:9090
+kubectl port-forward svc/prometheus -n istio-system 9090:9090 --context <cluster>
 ```
 
 ## Next Steps (single cluster) - Deploy hipstershop application and expose through istio

@@ -6,11 +6,16 @@
 - gloo-mesh - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh)
 - istio - [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
 
+## installing gloo mesh addons
+Navigate back to the `gloo-mesh` directory
+```
+cd gloo-mesh
+```
 
 ## gloo-mesh dataplane addons
 To use the Gloo Mesh Gateway advanced features, you need to install the Gloo Mesh addons on the clusters where Istio is installed. Gloo Mesh Gateway advanced features are deployed to the `gloo-mesh-addons` namespace with `istio-injection=enabled`
 ```
-kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context ${CONTEXT}
+kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context <context>
 ```
 
 In our case we will be using our workshop contexts `cluster1` and `cluster2`. Output should look similar to below
@@ -40,16 +45,18 @@ We need to create an `AccessPolicy` so that the Istio Ingress Gateways can commu
 
 To deploy the controlplane addons run the command below
 ```
-% kubectl apply -f argo/gloo-mesh-controlplane-addons.yaml --context mgmt
+kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context mgmt
 ```
 
 To validate your accesspolicy you can run `kubectl get accesspolicy -n gloo-mesh --context mgmt`
 ```
-% kubectl get accesspolicy -A --context mgmt
-NAMESPACE   NAME                               AGE
-gloo-mesh   controlplane-addons-accesspolicy   43s
+% kubectl get accesspolicy -n gloo-mesh --context mgmt
+NAME                                                AGE
+bookinfo-reviews-ratings-accesspolicy               5s
+controlplane-addons-accesspolicy                    5s
+bookinfo-gateway-productpage-accesspolicy           5s
+bookinfo-productpage-details-reviews-accesspolicy   5s
 ```
 
-## Next Steps - Deploy bookinfo application and run through workshop labs (multi cluster)
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
-
+## Next Steps - Create a VirtualMesh to unify our seperate meshes
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/virtualmesh.md)
