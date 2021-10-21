@@ -147,11 +147,11 @@ access prometheus dashboard at `http://localhost:9090`
 kubectl port-forward svc/prometheus -n istio-system 9090:9090
 ```
 
-## Next Steps - Deploy hipstershop application and expose through istio (single cluster)
+## Next Steps (single cluster) - Deploy hipstershop application and expose through istio
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/hipstershop/hipstershop-mesh.md)
 
-## Next Steps - Deploy bookinfo application and expose through istio (single cluster)
+## Next Steps (single cluster) - Deploy bookinfo application and expose through istio 
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-singlecluster.md)
 
-## Next Steps - Deploy bookinfo application and run through workshop labs (multi cluster)
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
+## Next Steps (multi cluster) - Deploy gloo mesh addons
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/gloo-mesh-addons.md)

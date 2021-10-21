@@ -12,6 +12,9 @@ kubectl config rename-contexts <current_name> <new_name>
 export CONTEXT=<new_name>
 ```
 
+## Note on Single vs. Multicluster labs
+The following instructions add a flag `--context <context>` to the kubectl commands in order to direct the deploy to a specific cluster. For Single cluster demonstrations, the Gloo Mesh control plane and data plane can live on a single cluster (i.e. `cluster1`) whereas in a Production multi cluster setup we would recommend that the Gloo Mesh control plane live in a seperate `mgmt` cluster while the dataplane(s) reside in their own individual clusters (i.e. `cluster1` and `cluster2`)
+
 ## installing gloo mesh
 Navigate to the `gloo-mesh` directory
 ```
@@ -27,12 +30,16 @@ helm:
 
 Deploy the `gloo-mesh-ee-helm.yaml` app
 ```
-kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml
+kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml --context ${CLUSTER}
 ```
 
-You can run the `wait-for-rollout.sh` script to watch deployment progress
+**NOTE:** 
+- Single Cluster Demo - `--context cluster1`
+- Multi Cluster Demo - `--context mgmt`
+
+You can run the `wait-for-rollout.sh` script to watch deployment progress. Be sure to replace the `<context>` with the right cluster, if not provided it will assume the `current-context`
 ```
-../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10
+../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10 <context>
 ```
 
 Output should look similar to below:
@@ -68,5 +75,5 @@ access gloo mesh dashboard at `http://localhost:8090`:
 kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ```
 
-## Next Steps - Deploy gloo mesh addons
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/gloo-mesh-addons.md)
+## Next Steps for Single and Multi Cluster Labs - Deploy Istio
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)

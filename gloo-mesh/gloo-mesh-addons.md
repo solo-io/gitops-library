@@ -50,6 +50,6 @@ NAMESPACE   NAME                               AGE
 gloo-mesh   controlplane-addons-accesspolicy   43s
 ```
 
-## Next Steps for Single and Multi Cluster Labs - Deploy Istio
-[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)
+## Next Steps - Deploy bookinfo application and run through workshop labs (multi cluster)
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
 
