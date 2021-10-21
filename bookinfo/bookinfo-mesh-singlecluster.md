@@ -13,7 +13,7 @@ cd bookinfo
 
 Deploy the bookinfo-v1-istio app
 ```
-kubectl apply -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml
+kubectl apply -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml --context <context>
 ```
 
 ### view kustomize configuration
@@ -34,7 +34,7 @@ metadata:
 
 watch status of bookinfo-v1 deployment
 ```
-kubectl get pods -n bookinfo-v1 -w
+kubectl get pods -n bookinfo-v1 --context <context> -w
 ```
 
 ## validate istio is configured
@@ -83,13 +83,13 @@ Events:
 ## Exposing the bookinfo-v1 application using Istio
 Deploy bookinfo-v1 virtualservice and validate
 ```
-kubectl apply -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml
+kubectl apply -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml --context <context>
 ```
 
 ## navigate to bookinfo-v1 application
 get the istio-ingressgateway URL
 ```
-kubectl get svc -n istio-system
+kubectl get svc -n istio-system --context <context>
 ```
 
 output should look similar to below:
@@ -108,7 +108,7 @@ zipkin                 ClusterIP      10.3.188.222   <none>        9411/TCP     
 
 Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
-open http://172.18.3.3
+open http://172.18.3.3/productpage
 ```
 
 ## visualize with kiali
@@ -116,7 +116,7 @@ Navigate to the kiali dashboard to see the hipstershop app in detail
 
 access kiali dashboard at `http://localhost:20001`
 ```
-kubectl port-forward deployment/kiali -n istio-system 20001:20001
+kubectl port-forward deployment/kiali -n istio-system 20001:20001 --context <context>
 ```
 
 ## visualize with grafana
@@ -124,14 +124,14 @@ Navigate to the grafana dashboard to see istio metrics
 
 access grafana dashboard at `http://localhost:3000`
 ```
-kubectl port-forward svc/grafana -n istio-system 3000:3000
+kubectl port-forward svc/grafana -n istio-system 3000:3000 --context <context>
 ```
 
 ## cleanup
 to remove bookinfo-v1 application
 ```
-kubectl delete -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml
-kubectl delete -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml
+kubectl delete -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml --context <context>
+kubectl delete -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml --context <context>
 ``` 
 
 ## Back to Table of Contents
