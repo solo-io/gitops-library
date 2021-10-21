@@ -5,25 +5,11 @@ cluster1_context="cluster1"
 cluster2_context="cluster2"
 mgmt_context="mgmt"
 
-# check to see if mgmt_context exists
-if [[ $(kubectl config get-contexts | grep ${mgmt_context}) = "" ]]
-  then
-    echo "You do not have a kubernetes cluster named ${mgmt_context}.  Please create one."
-    exit 1
-fi
-
-# check to see if cluster1_context exists
-if [[ $(kubectl config get-contexts | grep ${cluster1_context}) = "" ]]
-  then
-    echo "You do not have a kubernetes cluster named ${cluster1_context}.  Please create one."
-    exit 1
-fi
-
-# check to see if cluster2_context exists
-if [[ $(kubectl config get-contexts | grep ${cluster2_context}) = "" ]]
-  then
-    echo "You do not have a kubernetes cluster named ${cluster2_context}.  Please create one."
-    exit 1
+# check to see if defined contexts exist
+if [[ $(kubectl config get-contexts | grep ${mgmt_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster1_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster2_context}) == "" ]]; then
+  echo "Check Failed: Either mgmt, cluster1, and cluster2 contexts do not exist. Please check to see if you have three clusters available"
+  echo "Run 'kubectl config get-contexts' to see currently available contexts. If the clusters are available, please make sure that they are named correctly. Default is mgmt, cluster1, and cluster2"
+  exit 1;
 fi
 
 # check to see if license key variable was passed through, if not prompt for key
