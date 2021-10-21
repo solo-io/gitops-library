@@ -82,7 +82,7 @@ kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context 
 ```
 
 ### view kustomize configuration
-If you are curious to review the entire hipstershop-istio configuration in more detail, run the kustomize command below
+If you are curious to review the entire bookinfo configuration in more detail, run the kustomize command below
 ```
 kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster2
 ```
@@ -98,6 +98,8 @@ productpage-v1-65576bb7bf-5h27h   2/2     Running   0          142m
 reviews-v2-6c5bf657cf-cf9hj       2/2     Running   0          142m
 details-v1-79c697d759-bvdtw       2/2     Running   0          142m
 ```
+
+You can also see that the `reviews-v1`, `reviews-v2`, and `reviews-v3` deployments exist on `cluster2` but not on `cluster1`
 
 ## navigate to bookinfo application on cluster1
 get the istio-ingressgateway URL

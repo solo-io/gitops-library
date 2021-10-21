@@ -27,7 +27,6 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress. Be su
 Output should look similar to below:
 ```
 $ ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10
-No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment istio-operator to come up.
 Error from server (NotFound): namespaces "istio-operator" not found
 Waiting 20 seconds for deployment istio-operator to come up.
@@ -41,22 +40,105 @@ deployment "istio-operator" successfully rolled out
 ### Deploy your desired profile of Istio
 If you navigate to the `argo/deploy/<version>/` directory you will see many options and profiles of Istio that you can deploy. For example, this guide uses the `gm-istio-profiles` which will use Solo.io built and supported (N-4) Istio images, whereas the `oss-profiles` will use the default community images. Nested in each option are overlays that configure differing [Istio Configuration Profiles](https://istio.io/latest/docs/setup/additional-setup/config-profiles/) 
 
-For our tutorial we will be using commercially supported Solo.io builds of Istio and the `default` Istio profile
+For our tutorial we will be using commercially supported Solo.io builds of Istio and the with the Istio profile that we use in our Gloo Mesh workshop at [workshops.solo.io](workshops.solo.io)
 
-Now deploy istio
+### view kustomize configuration
+If you are curious to review the entire istio configuration in more detail, run the kustomize command below
 ```
-kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-cluster1-1-10-4.yaml --context <context>
+kubectl kustomize overlay/1-10-4/gm-istio-profiles/workshop/cluster1/
+kubectl kustomize overlay/1-10-4/gm-istio-profiles/workshop/cluster2/
+```
+
+Output should look similar to below. Note that there are seperate overlays for `cluster1` and `cluster2` that you can view
+```
+% kubectl kustomize overlay/1-10-4/gm-istio-profiles/workshop/cluster1/
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: istio-default-profile
+  namespace: istio-system
+spec:
+  components:
+    ingressGateways:
+    - enabled: true
+      k8s:
+        env:
+        - name: ISTIO_META_ROUTER_MODE
+          value: sni-dnat
+        - name: ISTIO_META_REQUESTED_NETWORK_VIEW
+          value: network1
+        service:
+          ports:
+          - name: http2
+            port: 80
+            targetPort: 8080
+          - name: https
+            port: 443
+            targetPort: 8443
+          - name: tcp-status-port
+            port: 15021
+            targetPort: 15021
+          - name: tls
+            port: 15443
+            targetPort: 15443
+          - name: tcp-istiod
+            port: 15012
+            targetPort: 15012
+          - name: tcp-webhook
+            port: 15017
+            targetPort: 15017
+      label:
+        topology.istio.io/network: network1
+      name: istio-ingressgateway
+    pilot:
+      k8s:
+        env:
+        - name: PILOT_SKIP_VALIDATE_TRUST_DOMAIN
+          value: "true"
+  hub: gcr.io/istio-enterprise
+  meshConfig:
+    accessLogFile: /dev/stdout
+    defaultConfig:
+      envoyAccessLogService:
+        address: enterprise-agent.gloo-mesh:9977
+      envoyMetricsService:
+        address: enterprise-agent.gloo-mesh:9977
+      proxyMetadata:
+        GLOO_MESH_CLUSTER_NAME: cluster1
+        ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+        ISTIO_META_DNS_CAPTURE: "true"
+    enableAutoMtls: true
+    trustDomain: cluster1
+  profile: default
+  tag: 1.10.4
+  values:
+    global:
+      meshID: mesh1
+      meshNetworks:
+        network1:
+          endpoints:
+          - fromRegistry: cluster1
+          gateways:
+          - port: 443
+            registryServiceName: istio-ingressgateway.istio-system.svc.cluster.local
+      multiCluster:
+        clusterName: cluster1
+      network: network1
+  ```
+
+### Deploy istio on cluster1
+```
+kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-cluster1-1-10-4.yaml --context cluster1
 ```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress of istiod
 ```
-../tools/wait-for-rollout.sh deployment istiod istio-system 10 <cluster>
+../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster1
 ```
 
 Output should look similar to below
 ```
-$ ../tools/wait-for-rollout.sh deployment istiod istio-system 10
-No context specified. Using default context of cluster1
+$ ../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster1
 Waiting 10 seconds for deployment istiod to come up.
 Waiting for deployment "istiod" rollout to finish: 0 of 1 updated replicas are available...
 deployment "istiod" successfully rolled out
@@ -66,7 +148,40 @@ deployment "istiod" successfully rolled out
 
 check to see if istio-ingressgateway also was deployed
 ```
-kubectl get pods -n istio-system --context <cluster>
+kubectl get pods -n istio-system --context cluster1
+```
+
+Output should look similar to below
+```
+$ kubectl get pods -n istio-system --context cluster1
+NAME                                    READY   STATUS    RESTARTS   AGE
+istio-ingressgateway-6486dd4ffc-2fjzg   1/1     Running   0          19s
+istiod-7f5668c8f7-dm9j6                 1/1     Running   0          30s
+```
+
+### Deploy istio on cluster2
+```
+kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-cluster2-1-10-4.yaml --context cluster2
+```
+
+You can run the `wait-for-rollout.sh` script to watch deployment progress of istiod
+```
+../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster2
+```
+
+Output should look similar to below
+```
+$ ../tools/wait-for-rollout.sh deployment istiod istio-system 10 cluster2
+Waiting 10 seconds for deployment istiod to come up.
+Waiting for deployment "istiod" rollout to finish: 0 of 1 updated replicas are available...
+deployment "istiod" successfully rolled out
+Waiting 20 seconds for deployment istiod to come up.
+deployment "istiod" successfully rolled out
+```
+
+check to see if istio-ingressgateway also was deployed
+```
+kubectl get pods -n istio-system --context cluster2
 ```
 
 Output should look similar to below

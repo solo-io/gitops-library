@@ -28,24 +28,23 @@ helm:
         license_key: <INSERT_LICENSE_KEY_HERE>
 ```
 
-Deploy the `gloo-mesh-ee-helm.yaml` app
-```
-kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml --context ${CLUSTER}
-```
+### Deploy the `gloo-mesh-ee-helm.yaml` app
 
 **NOTE:** 
 - Single Cluster Demo - `--context cluster1`
 - Multi Cluster Demo - `--context mgmt`
+```
+kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml --context <cluster>
+```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress. Be sure to replace the `<context>` with the right cluster, if not provided it will assume the `current-context`
 ```
-../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10 <context>
+../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10 mgmt
 ```
 
 Output should look similar to below:
 ```
 $ ../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10
-No context specified. Using default context of cluster1
 Waiting 10 seconds for deployment enterprise-networking to come up.
 deployment "enterprise-networking" successfully rolled out
 Waiting 20 seconds for deployment enterprise-networking to come up.
