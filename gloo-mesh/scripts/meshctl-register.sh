@@ -3,7 +3,7 @@
 # set management and remote contexts from script inputs
 MGMT_CONTEXT=$1
 REMOTE_CONTEXT=$2
-GLOO_MESH_VERSION=$3
+export GLOO_MESH_VERSION=$3
 
 ### check to make sure that arguments were set before taking off
 if [[ ${MGMT_CONTEXT} == "" ]] || [[ ${REMOTE_CONTEXT} == "" ]]
