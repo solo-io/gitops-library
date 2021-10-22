@@ -223,11 +223,30 @@ kubectl apply -f argo/deploy/workshop/bookinfo-cluster1-cluster2-trafficshift.ya
 ```
 
 ## navigate to bookinfo application on cluster1
-If you navigate back to the bookinfo application on `cluster1` you should see that `reviews-v1` (no stars) and `reviews-v2` (black stars) should now be visible while there's no reviews service deployed on the first cluster. Take note of the IP address `35.245.29.226` for the ingress gateway for `cluster1` in the screenshots below
+If you navigate back to the bookinfo application on `cluster1` reviews should now be visible while there's no reviews service deployed on the first cluster. Take note of the IP address `35.245.29.226` for the ingress gateway for `cluster1` in the screenshots below
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/bi3.png)
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/bi4.png)
+
+Take note that we can control the weighting as well as version subsets that we want to shift traffic to. As defined from the config you should see `reviews-v1` (no stars) and `reviews-v2` (black stars) at a 50/50 weight.
+```
+policy:
+    trafficShift:
+      destinations:
+      - virtualDestination:
+          name: reviews-global
+          namespace: gloo-mesh
+          subset:
+            version: v1
+        weight: 50
+      - virtualDestination:
+          name: reviews-global
+          namespace: gloo-mesh
+          subset:
+            version: v2
+        weight: 50
+```
 
 ## validate
 You can use the following command to validate that the requests are handled by the second cluster
