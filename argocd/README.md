@@ -22,11 +22,28 @@ If you have done the above, just simply run the script to install argocd and opt
 ./install-argocd.sh ${CONTEXT}
 ```
 
+Run this script to watch argocd install progress
+```
+./tools/wait-for-rollout.sh deployment argocd-server argocd 10
+```
+
+Output should look similar to below:
+```
+% ./tools/wait-for-rollout.sh deployment argocd-server argocd 10
+No context specified. Using current context of mgmt
+Waiting 10 seconds for deployment argocd-server to come up.
+Waiting for deployment "argocd-server" rollout to finish: 0 of 1 updated replicas are available...
+deployment "argocd-server" successfully rolled out
+```
+
 ### access argoCD UI
 using port forward:
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
+
+Username: admin
+Password: solo.io
 
 ## Back to Table of Contents
 [Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)
