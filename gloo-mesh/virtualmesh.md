@@ -77,6 +77,7 @@ To navigate to the Gloo Mesh dashboard you can run the port-forward command and 
 kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ```
 
+**NOTE:** The images below are not accurate depictions of what we should observe at this point if you are following through the labs since we have not deployed the bookinfo application on `cluster1` or `cluster2` yet. Continuing with the next lab below will achieve the screenshots below:
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gm1.png)
 
