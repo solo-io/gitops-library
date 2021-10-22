@@ -29,15 +29,16 @@ cd argocd
 ./install-argocd.sh ${cluster1_context}
 ./install-argocd.sh ${cluster2_context}
 
+# wait for argo cluster rollout
+../tools/wait-for-rollout.sh deployment argocd-server argocd 10 ${mgmt_context}
+../tools/wait-for-rollout.sh deployment argocd-server argocd 10 ${cluster1_context}
+../tools/wait-for-rollout.sh deployment argocd-server argocd 10 ${cluster2_context}
+
 # install gloo-mesh on mgmt
 cd ../gloo-mesh/
 kubectl apply -f argo/1-1-2/gloo-mesh-ee-helm.yaml --context ${mgmt_context}
 
 ../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10 ${mgmt_context}
-
-# register clusters
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context}
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context}
 
 # install istio on ${cluster1_context} and ${cluster2_context}
 cd ../istio
@@ -57,8 +58,12 @@ kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-${cluste
 kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context ${cluster1_context}
 kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context ${cluster2_context}
 
-# deploy gloo-mesh dataplane addons
+# register clusters to gloo mesh
 cd ../gloo-mesh/
+./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context}
+./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context}
+
+# deploy gloo-mesh dataplane addons
 kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context ${cluster1_context}
 kubectl apply -f argo/1-1-2/gloo-mesh-dataplane-addons.yaml --context ${cluster2_context}
 

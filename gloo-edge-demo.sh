@@ -51,6 +51,9 @@ EOF
 cd argocd
 ./install-argocd.sh
 
+# wait for argo cluster rollout
+../tools/wait-for-rollout.sh deployment argocd-server argocd 10
+
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
 kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-1-8-9.yaml

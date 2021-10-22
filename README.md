@@ -1,6 +1,8 @@
 # gitops-library
  
-Disclaimer: This is a work in progress. Blog to likely follow, so stay tuned :)
+Disclaimer: This is a work in progress, which means things may change as improvements and additions are made. Feel free to try the labs, ideally first locally using `KinD` or `k3d` for example, before testing on a cloud deployment like `GKE` or `EKS`.
+
+Blog to likely follow, so stay tuned :)
 
 Not officially supported by Solo.io. 
 
