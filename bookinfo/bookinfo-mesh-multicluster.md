@@ -259,6 +259,20 @@ You should see a line like below each time you refresh the web page
 [2020-10-12T14:19:35.996Z] "GET /reviews/0 HTTP/1.1" 200 - "-" "-" 0 295 6 6 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" "d18da89b-8682-4e8d-9284-b3d5ff78f2f7" "reviews:9080" "127.0.0.1:9080" inbound|9080|http|reviews.default.svc.cluster.local 127.0.0.1:41542 192.168.163.201:9080 192.168.163.221:42110 outbound_.9080_.version-v1_.reviews.default.svc.cluster.local default
 ```
 
+## Gloo Mesh Dashboard
+If you navigate back to the UI and feel free to click around to explore the details and configurations of your virtual mesh, bookinfo app, as well as individual mesh policies, gateways, explore the graph, and more!
+
+To navigate to the Gloo Mesh dashboard you can run the port-forward command and access at http://localhost:8090
+```
+kubectl port-forward -n gloo-mesh svc/dashboard 8090
+```
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm1.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm2.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm3.png)
+
 ## cleanup
 To delete bookinfo application from `cluster1` and `cluster2` along with our traffic shift policies
 ```
