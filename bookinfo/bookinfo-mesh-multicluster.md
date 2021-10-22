@@ -125,7 +125,9 @@ Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
 open http://172.20.0.5/productpage
 ```
-You should see that on `cluster1` that there are no reviews available 
+You should see that on `cluster1` that there are no product reviews available. Take note of the IP address for the ingress gateway for `cluster1` as we move along the lab
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi1.png)
 
 ## navigate to bookinfo application on cluster2
 get the istio-ingressgateway URL
@@ -152,6 +154,12 @@ Navigate to the `istio-ingressgateway` EXTERNAL-IP
 open http://172.20.0.8/productpage
 ```
 You should see that on `cluster2` that all the reviews are available 
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi2.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi3.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi4.png)
 
 ## Demonstrate Traffic Shift and Failover
 In order to demonstrate traffic shift and failover capabilities, we will leverage the `VirtualDestination` CR and the `TrafficPolicy` CR in Gloo Mesh.

@@ -74,5 +74,7 @@ access gloo mesh dashboard at `http://localhost:8090`:
 kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ```
 
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm1.png)
+
 ## Next Steps for Single and Multi Cluster Labs - Deploy Istio
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/istio)

@@ -70,9 +70,19 @@ kubectl describe virtualmesh -n gloo-mesh virtual-mesh --context mgmt
 ```
 
 ## Gloo Mesh Dashboard
-In the Gloo Mesh Dashboard, you should see that our two service meshes have now been unified into a single VirtualMesh named `virtual-mesh`
+If you navigate to the UI, you should see that our two service meshes have now been unified into a single VirtualMesh named `virtual-mesh`. Feel free to click around to explore the details and configurations of your virtual mesh as well as individual mesh policies, gateways, explore the graph, and more!
 
-(Insert picture here)
+To navigate to the Gloo Mesh dashboard you can run the port-forward command and access at http://localhost:8090
+```
+kubectl port-forward -n gloo-mesh svc/dashboard 8090
+```
+
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm1.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm2.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gm3.png)
 
 ## Next Steps - Deploy bookinfo application and run through workshop labs (multi cluster)
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
