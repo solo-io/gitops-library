@@ -110,22 +110,16 @@ kubectl get svc -n istio-system --context cluster1
 output should look similar to below:
 ```
 % kubectl get svc -n istio-system --context cluster1
-NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
-istiod                 ClusterIP      10.43.77.155    <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        9m17s
-istio-ingressgateway   LoadBalancer   10.43.230.201   172.20.0.5    15021:32197/TCP,80:30411/TCP,443:31521/TCP   9m10s
-kiali                  ClusterIP      10.43.96.183    <none>        20001/TCP,9090/TCP                           8m18s
-zipkin                 ClusterIP      10.43.200.101   <none>        9411/TCP                                     8m18s
-jaeger-collector       ClusterIP      10.43.115.228   <none>        14268/TCP,14250/TCP,9411/TCP                 8m18s
-prometheus             ClusterIP      10.43.0.137     <none>        9090/TCP                                     8m18s
-grafana                ClusterIP      10.43.140.40    <none>        3000/TCP                                     8m18s
-tracing                ClusterIP      10.43.52.37     <none>        80/TCP,16685/TCP                             8m18s
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                                                                                      AGE
+istio-ingressgateway   LoadBalancer   10.99.240.177   35.245.29.226   80:30929/TCP,443:31674/TCP,15021:32291/TCP,15443:31746/TCP,15012:32582/TCP,15017:30303/TCP   50m
+istiod                 ClusterIP      10.99.240.186   <none>          15010/TCP,15012/TCP,443/TCP,15014/TCP                                                        50m
 ```
 
 Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
-open http://172.20.0.5/productpage
+open http://35.245.29.226/productpage
 ```
-You should see that on `cluster1` that there are no product reviews available. Take note of the IP address for the ingress gateway for `cluster1` as we move along the lab
+You should see that on `cluster1` that there are no product reviews available. Take note of the IP address `35.245.29.226` for the ingress gateway for `cluster1` as we move along the lab
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/bi1.png)
 
@@ -138,28 +132,19 @@ kubectl get svc -n istio-system --context cluster2
 output should look similar to below:
 ```
 % kubectl get svc -n istio-system --context cluster2
-NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
-istiod                 ClusterIP      10.43.134.163   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        6m46s
-istio-ingressgateway   LoadBalancer   10.43.119.45    172.20.0.8    15021:30593/TCP,80:31415/TCP,443:31281/TCP   6m36s
-jaeger-collector       ClusterIP      10.43.128.65    <none>        14268/TCP,14250/TCP,9411/TCP                 6m19s
-kiali                  ClusterIP      10.43.199.154   <none>        20001/TCP,9090/TCP                           6m19s
-tracing                ClusterIP      10.43.182.6     <none>        80/TCP,16685/TCP                             6m19s
-grafana                ClusterIP      10.43.136.83    <none>        3000/TCP                                     6m19s
-zipkin                 ClusterIP      10.43.194.143   <none>        9411/TCP                                     6m19s
-prometheus             ClusterIP      10.43.246.71    <none>        9090/TCP  
+NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                                                                      AGE
+istio-ingressgateway   LoadBalancer   10.135.253.118   34.150.155.157   80:31845/TCP,443:32474/TCP,15021:32678/TCP,15443:30089/TCP,15012:31593/TCP,15017:30324/TCP   52m
+istiod                 ClusterIP      10.135.254.109   <none>           15010/TCP,15012/TCP,443/TCP,15014/TCP                                                        52m
 ```
 
 Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
-open http://172.20.0.8/productpage
+open http://34.150.155.157/productpage
 ```
-You should see that on `cluster2` that all the reviews are available 
+You should see that on `cluster2` that all the reviews are available (black stars, red stars, and no stars) if you refresh a few times.
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/bi2.png)
 
-![](https://github.com/solo-io/gitops-library/blob/main/images/bi3.png)
-
-![](https://github.com/solo-io/gitops-library/blob/main/images/bi4.png)
 
 ## Demonstrate Traffic Shift and Failover
 In order to demonstrate traffic shift and failover capabilities, we will leverage the `VirtualDestination` CR and the `TrafficPolicy` CR in Gloo Mesh.
@@ -238,7 +223,11 @@ kubectl apply -f argo/deploy/workshop/bookinfo-cluster1-cluster2-trafficshift.ya
 ```
 
 ## navigate to bookinfo application on cluster1
-If you navigate back to the bookinfo application on `cluster1` you should see that `reviews-v1` (no stars) and `reviews-v2` (black stars) should now be visible while there's no reviews service deployed on the first cluster.
+If you navigate back to the bookinfo application on `cluster1` you should see that `reviews-v1` (no stars) and `reviews-v2` (black stars) should now be visible while there's no reviews service deployed on the first cluster. Take note of the IP address `35.245.29.226` for the ingress gateway for `cluster1` in the screenshots below
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi3.png)
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/bi4.png)
 
 ## validate
 You can use the following command to validate that the requests are handled by the second cluster
