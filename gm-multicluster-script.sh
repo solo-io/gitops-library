@@ -4,7 +4,8 @@ license_key=$1
 cluster1_context="cluster1"
 cluster2_context="cluster2"
 mgmt_context="mgmt"
-gloo_mesh_version="1-2-0-rc2"
+gloo_mesh_overlay="1-2-0-rc2"
+meshctl_version="1.2.0-rc2"
 
 # check to see if defined contexts exist
 if [[ $(kubectl config get-contexts | grep ${mgmt_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster1_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster2_context}) == "" ]]; then
@@ -22,7 +23,7 @@ if [[ ${license_key} == "" ]]
 fi
 
 # sed command to replace license key  
-sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${license_key}/g" gloo-mesh/argo/${gloo_mesh_version}/gloo-mesh-ee-helm.yaml
+sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${license_key}/g" gloo-mesh/argo/${gloo_mesh_overlay}/gloo-mesh-ee-helm.yaml
 
 # install argocd on mgmt, ${cluster1_context}, and ${cluster2_context}
 cd argocd
@@ -37,7 +38,7 @@ cd argocd
 
 # install gloo-mesh on mgmt
 cd ../gloo-mesh/
-kubectl apply -f argo/${gloo_mesh_version}/gloo-mesh-ee-helm.yaml --context ${mgmt_context}
+kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-ee-helm.yaml --context ${mgmt_context}
 
 ../tools/wait-for-rollout.sh deployment enterprise-networking gloo-mesh 10 ${mgmt_context}
 
@@ -61,12 +62,12 @@ kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context ${cluster2_context}
 
 # register clusters to gloo mesh
 cd ../gloo-mesh/
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context} ${gloo_mesh_version}
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context} ${gloo_mesh_version}
+./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context} ${meshctl_version}
+./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context} ${meshctl_version}
 
 # deploy gloo-mesh dataplane addons
-kubectl apply -f argo/${gloo_mesh_version}/gloo-mesh-dataplane-addons.yaml --context ${cluster1_context}
-kubectl apply -f argo/${gloo_mesh_version}/gloo-mesh-dataplane-addons.yaml --context ${cluster2_context}
+kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-dataplane-addons.yaml --context ${cluster1_context}
+kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-dataplane-addons.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment ext-auth-service gloo-mesh-addons 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment ext-auth-service gloo-mesh-addons 10 ${cluster2_context}
