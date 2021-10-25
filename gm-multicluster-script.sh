@@ -89,11 +89,11 @@ kubectl apply -f argo/deploy/workshop/bookinfo-workshop-${cluster2_context}.yaml
 # -------------------- demo default istio ingressgateway + traffic shift --------------------------------------------------
 
 # deploy default istio-ingressgateway and virtualservice for cluster1 and cluster2
-#kubectl apply -f argo/deploy/workshop/istio-ig/cluster1/ --context ${cluster1_context}
-#kubectl apply -f argo/deploy/workshop/istio-ig/cluster2/ --context ${cluster2_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context ${cluster2_context}
 
 # deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
-#kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context ${mgmt_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context ${mgmt_context}
 
 # -------------------- demo gloo mesh gateway --------------------------------------------------
 
@@ -105,8 +105,8 @@ kubectl apply -f argo/deploy/workshop/bookinfo-workshop-${cluster2_context}.yaml
 
 # -------------------- demo multi destination --------------------------------------------------
 
-# run 
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context ${mgmt_context}
+# run 'kubectl kustomize overlay/gloo-mesh-workshop/gmg/2-multi' to view weighted destination config
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context ${mgmt_context}
 
 # ----------------------------------------------------------------------
 
