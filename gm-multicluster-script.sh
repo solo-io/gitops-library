@@ -95,9 +95,17 @@ kubectl apply -f argo/deploy/workshop/bookinfo-workshop-${cluster2_context}.yaml
 # deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
 #kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context ${mgmt_context}
 
-# -------------------- demo default gloo mesh gateway + traffic shift --------------------------------------------------
+# -------------------- demo gloo mesh gateway --------------------------------------------------
 
-# deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster only
+# deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster only (no reviews should be available)
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1a.yaml --context ${mgmt_context}
+
+# configure routetable to point at cluster2 services instead (all reviews should be showing)
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1b.yaml --context ${mgmt_context}
+
+# -------------------- demo multi destination --------------------------------------------------
+
+# run 
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context ${mgmt_context}
 
 # ----------------------------------------------------------------------
