@@ -7,5 +7,5 @@ bases:
 resources:
 - reviews-v1.yaml
 - bookinfo-default-ns.yaml
-- bookinfo-gateway.yaml
-- bookinfo-vs.yaml
+#- bookinfo-gateway.yaml
+#- bookinfo-vs.yaml
