@@ -32,37 +32,37 @@ spec:
               version: v1
           weight: 0
         - kubeService:
+            clusterName: cluster1
+            name: reviews
+            namespace: default
+            subset:
+              version: v2
+          weight: 0
+        - kubeService:
+            clusterName: cluster1
+            name: reviews
+            namespace: default
+            subset:
+              version: v3
+          weight: 0
+        - kubeService:
             clusterName: cluster2
             name: reviews
             namespace: default
             subset:
               version: v1
-          weight: 0
-        - kubeService:
-            clusterName: cluster1
-            name: reviews
-            namespace: default
-            subset:
-              version: v2
-          weight: 0
+          weight: 40
         - kubeService:
             clusterName: cluster2
             name: reviews
             namespace: default
             subset:
               version: v2
-          weight: 100
-        - kubeService:
-            clusterName: cluster1
-            name: reviews
-            namespace: default
-            subset:
-              version: v3
-          weight: 0
+          weight: 30
         - kubeService:
             clusterName: cluster2
             name: reviews
             namespace: default
             subset:
               version: v3
-          weight: 0
+          weight: 30
