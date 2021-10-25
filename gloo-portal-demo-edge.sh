@@ -1,8 +1,9 @@
 #!/bin/bash
 
-LICENSE_KEY=$1
-INGRESS_TYPE="edge"
-PORTAL_VERSION="1-0-2"
+license_key=$1
+ingress_type="edge"
+portal_version="1-1-1"
+edge_version="1-9-1"
 
 # check if cluster exists, uses current context if it does
 CONTEXT=`kubectl config current-context`
@@ -13,20 +14,20 @@ if [[ ${CONTEXT} == "" ]]
   fi
 
 # check to see if license key variable was passed through, if not prompt for key
-if [[ ${LICENSE_KEY} == "" ]]
+if [[ ${license_key} == "" ]]
   then
     # provide license key
     echo "Please provide your Gloo Edge Enterprise License Key:"
-    read LICENSE_KEY
+    read license_key
 fi
 
 # check OS type
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         # Linux
-        BASE64_LICENSE_KEY=$(echo -n "${LICENSE_KEY}" | base64 -w 0)
+        BASE64_LICENSE_KEY=$(echo -n "${license_key}" | base64 -w 0)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         # Mac OSX
-        BASE64_LICENSE_KEY=$(echo -n "${LICENSE_KEY}" | base64)
+        BASE64_LICENSE_KEY=$(echo -n "${license_key}" | base64)
 else
         echo unknown OS type
         exit 1
@@ -58,7 +59,10 @@ cd argocd
 
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
-kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml
+kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-nofed-${edge_version}.yaml
+
+# wait for gloo-edge rollout
+../tools/wait-for-rollout.sh deployment gateway gloo-system 10
 
 # install keycloak
 #cd ../keycloak
@@ -69,10 +73,10 @@ kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml
 # install gloo-portal
 cd ../gloo-portal/
 # sed command to replace license key  
-sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${LICENSE_KEY}/g" argo/${INGRESS_TYPE}/gloo-portal-helm-${PORTAL_VERSION}.yaml
-kubectl apply -f argo/${INGRESS_TYPE}/gloo-portal-helm-${PORTAL_VERSION}.yaml
+sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${license_key}/g" argo/${ingress_type}/gloo-portal-helm-${portal_version}.yaml
+kubectl apply -f argo/${ingress_type}/gloo-portal-helm-${portal_version}.yaml
 ../tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-portal 10
 
 # install petstore api product
 cd ../petstore/
-kubectl apply -f argo/petstore-apiproduct-1-0-2-${INGRESS_TYPE}.yaml
+kubectl apply -f argo/petstore-apiproduct-1-0-2-${ingress_type}.yaml
