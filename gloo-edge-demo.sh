@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LICENSE_KEY=$1
+edge_version="1-9-1"
 
 # check if cluster exists, uses current context if it does
 CONTEXT=`kubectl config current-context`
@@ -56,7 +57,7 @@ cd argocd
 
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
-kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-1-8-9.yaml
+kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
 
 # install keycloak
 cd ../keycloak
