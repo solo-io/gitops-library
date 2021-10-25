@@ -5,5 +5,5 @@ bases:
 - ../1-simple/
 
 resources:
-- simple-trafficpolicy.yaml
+- simple-multi-trafficpolicy.yaml
 - accesspolicy.yaml

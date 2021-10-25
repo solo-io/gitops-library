@@ -25,23 +25,44 @@ spec:
     trafficShift:
       destinations:
         - kubeService:
-            clusterName: cluster2
-            name: reviews
-            namespace: default
-            subset:
-              version: v3
-          weight: 75
-        - kubeService:
             clusterName: cluster1
             name: reviews
             namespace: default
             subset:
               version: v1
-          weight: 15
+          weight: 0
+        - kubeService:
+            clusterName: cluster2
+            name: reviews
+            namespace: default
+            subset:
+              version: v1
+          weight: 0
         - kubeService:
             clusterName: cluster1
             name: reviews
             namespace: default
             subset:
               version: v2
-          weight: 10
+          weight: 0
+        - kubeService:
+            clusterName: cluster2
+            name: reviews
+            namespace: default
+            subset:
+              version: v2
+          weight: 100
+        - kubeService:
+            clusterName: cluster1
+            name: reviews
+            namespace: default
+            subset:
+              version: v3
+          weight: 0
+        - kubeService:
+            clusterName: cluster2
+            name: reviews
+            namespace: default
+            subset:
+              version: v3
+          weight: 0
