@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gloo-edge-ee-helm-nofed-1-9-1
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/solo-io/gitops-library
+    targetRevision: HEAD
+    path: gloo-edge/base/ee/nofed/1-9-1/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
