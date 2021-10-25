@@ -57,6 +57,7 @@ The labs below provide steps to deploying examples found in our workshops while 
   - [deploy single cluster hipstershop istio demo app](https://github.com/solo-io/gitops-library/tree/main/hipstershop/hipstershop-mesh.md)
   - [deploy single cluster bookinfo istio demo app](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-singlecluster.md)
   - [deploy multi cluster bookinfo istio demo app](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-mesh-multicluster.md)
+  - [bookinfo multi cluster gloo-mesh-gateway lab](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-multicluster-gmg.md)
 - [installing gloo-portal](https://github.com/solo-io/gitops-library/tree/main/gloo-portal)
   - [deploying gloo-portal petstore demo](https://github.com/solo-io/gitops-library/tree/main/petstore)
 - [Installing argo workflows](./argo-workflows/README.md)

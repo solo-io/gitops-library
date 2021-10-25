@@ -101,6 +101,20 @@ details-v1-79c697d759-bvdtw       2/2     Running   0          142m
 
 You can also see that the `reviews-v1`, `reviews-v2`, and `reviews-v3` deployments exist on `cluster2` but not on `cluster1`
 
+## deploy ingress gateways and virtualservices for cluster1 and cluster2
+Expose our bookinfo service on `cluster1` and `cluster2` by deploying an istio ingressgateway and virtualservice on each cluster
+```
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context ${cluster2_context}
+```
+
+### view kustomize configuration
+If you are curious to review the ingressgateway and virtualservice configuration in more detail, run the kustomize command below
+```
+kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/cluster1/
+kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/cluster2/
+```
+
 ## navigate to bookinfo application on cluster1
 get the istio-ingressgateway URL
 ```
@@ -274,12 +288,12 @@ kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gm3.png)
 
 ## cleanup
-To delete bookinfo application from `cluster1` and `cluster2` along with our traffic shift policies
+To remove the ingress gateway and policies from `cluster1` and `cluster2`
 ```
 kubectl delete -f argo/deploy/workshop/bookinfo-cluster1-cluster2-trafficshift.yaml --context mgmt
-kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context cluster1
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context cluster2
 ``` 
 
 ## Back to Table of Contents
-[Back to Table of Contents](https://github.com/solo-io/gitops-library#table-of-contents---labs)
+[bookinfo gloo mesh gateway lab](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-multicluster-gmg.md)
