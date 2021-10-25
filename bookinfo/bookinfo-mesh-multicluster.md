@@ -295,5 +295,5 @@ kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml 
 kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context cluster2
 ``` 
 
-## Back to Table of Contents
-[bookinfo gloo mesh gateway lab](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-multicluster-gmg.md)
+## Next Steps - Replace Istio ingressgateway with Gloo Mesh Gateway
+[Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/bookinfo/bookinfo-multicluster-gmg.md)
