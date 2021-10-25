@@ -12,8 +12,6 @@
 - virtualmesh deployed - [Follow this Tutorial Here]([Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/gloo-mesh/virtualmesh.md) on `mgmt` cluster
 
 ## Demo Architecture
-![](https://docs.solo.io/gloo-mesh-enterprise/latest/img/gateway/gateway-multi-cluster-multi-gateway.png)
-
 For this lab we will be demonstrating Gloo Mesh Gateway (GMG) as a replacement for the default Istio Ingress Gateway. Gloo Mesh Gateway is an abstraction built on top of Istio's ingress gateway model. Leveraging GMG, a user can go beyond the standard features in upstream and provide capabilities such as `extauth`, `ratelimiting` which exist today in the Gloo Edge Enterprise product. GMG also aims to simplify the configuration of ingress traffic rules, especially when it comes to multi-cluster and multi-mesh scenarios.
 
 For the lab below we will be configuring a [multi-cluster, multi gateway](https://docs.solo.io/gloo-mesh-enterprise/latest/img/gateway/gateway-multi-cluster-multi-gateway.png) setup using the bookinfo application.
