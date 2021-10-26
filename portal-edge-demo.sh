@@ -80,3 +80,15 @@ kubectl apply -f argo/${ingress_type}/gloo-portal-helm-${portal_version}.yaml
 # install petstore api product
 cd ../petstore/
 kubectl apply -f argo/petstore-apiproduct-1-0-2-${ingress_type}.yaml
+
+# echo port-forward commands
+echo
+echo "access gloo portal dashboard at http://localhost:8000"
+echo "kubectl port-forward -n gloo-portal svc/gloo-portal-admin-server 8000:8080"
+echo 
+echo "access argocd dashboard:"
+echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 --context <desired_context>"
+echo
+echo "Continue on with petstore portal lab in gitops-library git repo:"
+echo "https://github.com/solo-io/gitops-library/tree/main/petstore"
+echo 
