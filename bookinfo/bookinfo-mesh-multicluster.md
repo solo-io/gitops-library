@@ -22,57 +22,26 @@ Navigate to the `bookinfo` directory
 cd bookinfo
 ```
 
-Deploy the bookinfo w/ no reviews app on `cluster1`
+Deploy the bookinfo (with reviews) app on `cluster1`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
 ```
 
 ### view kustomize configuration
-If you are curious to review the entire hipstershop-istio configuration in more detail, run the kustomize command below
+If you are curious to review the entire `bookinfo-cluster1` configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews
-```
-
-A key difference between the `bookinfo-v1-default` overlay and the `bookinfo-v1-istio` overlay is the use of the label `istio-injection=enabled` on the bookinfo-v1 namespace. Other than that, this example shows a very good use-case for Kustomize as we use bases/overlays to minimize duplication of configuration between the default and istio overlays.
-```
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: enabled
-  name: bookinfo-v1
+kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1/
 ```
 
-You can also see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
+What we should expect in this overlay implementation is that `reviews-v1` (no reviews) and `reviews-v2` (black stars) should be present, but `reviews-v3` (red stars) are not available because there is no `reviews-v3` pod. You can check this by running the command `kubectl get pods -n default --context cluster1`
 ```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: reviews
-    version: v1
-  name: reviews-v1
-spec:
-  replicas: 0
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: reviews
-    version: v2
-  name: reviews-v2
-spec:
-  replicas: 0
-```
-
-watch status of bookinfo deployment for `cluster1` using `kubectl get pods --context cluster1`:
-```
-% kubectl get pods --context cluster1
+% kubectl get pods -n default --context cluster1
 NAME                              READY   STATUS    RESTARTS   AGE
-details-v1-79c697d759-pcbxt       2/2     Running   0          142m
-productpage-v1-65576bb7bf-bkg4x   2/2     Running   0          142m
-ratings-v1-7d99676f7f-2glpf       2/2     Running   0          142m
+details-v1-79c697d759-zmx7j       2/2     Running   0          11m
+ratings-v1-7d99676f7f-7stl7       2/2     Running   0          11m
+productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          11m
+reviews-v2-6c5bf657cf-jqgpb       2/2     Running   0          11m
+reviews-v1-987d495c-kj6x8         2/2     Running   0          11m
 ```
 
 ## deploy bookinfo application on cluster2
@@ -87,19 +56,17 @@ If you are curious to review the entire bookinfo configuration in more detail, r
 kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster2
 ```
 
-watch status of bookinfo deployment for `cluster2` using `kubectl get pods --context cluster2`:
+What we should expect in this overlay implementation is that `reviews-v1` (no stars), `reviews-v2` (black stars), and `reviews-v3` (red stars) should all be present. You can check this by running the command `kubectl get pods -n default --context cluster2`
 ```
-% kubectl get pods --context cluster2
+% kubectl get pods -n default --context cluster2
 NAME                              READY   STATUS    RESTARTS   AGE
-reviews-v1-987d495c-kvd5h         2/2     Running   0          142m
-reviews-v3-5f7b9f4f77-kb5sj       2/2     Running   0          142m
-ratings-v1-7d99676f7f-ltlpx       2/2     Running   0          142m
-productpage-v1-65576bb7bf-5h27h   2/2     Running   0          142m
-reviews-v2-6c5bf657cf-cf9hj       2/2     Running   0          142m
-details-v1-79c697d759-bvdtw       2/2     Running   0          142m
+details-v1-79c697d759-vc4pm       2/2     Running   0          155m
+ratings-v1-7d99676f7f-9rsw4       2/2     Running   0          155m
+reviews-v2-6c5bf657cf-s54dh       2/2     Running   0          155m
+reviews-v3-5f7b9f4f77-fphzc       2/2     Running   0          155m
+reviews-v1-987d495c-99rbk         2/2     Running   0          155m
+productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 ```
-
-You can also see that the `reviews-v1`, `reviews-v2`, and `reviews-v3` deployments exist on `cluster2` but not on `cluster1`
 
 ## deploy ingress gateways and virtualservices for cluster1 and cluster2
 Expose our bookinfo service on `cluster1` and `cluster2` by deploying an istio ingressgateway and virtualservice on each cluster
@@ -133,7 +100,7 @@ Navigate to the `istio-ingressgateway` EXTERNAL-IP
 ```
 open http://35.245.29.226/productpage
 ```
-You should see that on `cluster1` that there are no product reviews available. Take note of the IP address `35.245.29.226` for the ingress gateway for `cluster1` as we move along the lab
+You should see that as we configured, `cluster1` should have `reviews-v1` (no stars) and `reviews-v2` (black stars) available.
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/bi1.png)
 
@@ -165,7 +132,7 @@ In order to demonstrate traffic shift and failover capabilities, we will leverag
 
 Use the kustomize command below to view the `VirtualDestination` and `TrafficShift` configs:
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/trafficshift/
+kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/trafficshift-mgmt/
 ```
 
 Output should look similar to below:
@@ -229,11 +196,55 @@ spec:
 
 Here we have created a `VirtualDestination` to define a new hostname (`reviews.global`) that will be backed by the reviews microservice runnings on both clusters.
 
-We can then define another `TrafficPolicy` to make sure all the requests for the reviews microservice on the local cluster will be handled by the VirtualDestination we've just created.
+We have also defined a `TrafficPolicy` to make sure all the requests for the reviews microservice on the local cluster will be handled by the VirtualDestination we've just created.
 
 ### deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
 ```
 kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
+```
+
+### simulate failure
+Let's simulate a failure in `cluster1` by setting `replicas=0` to both deployments of `reviews-v1` and `reviews-v2`
+```
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
+```
+
+### view kustomize configuration
+If you are curious to review the overlay configuration in more detail, run the kustomize command below
+```
+kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews/
+```
+
+You can see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+    version: v1
+  name: reviews-v1
+spec:
+  replicas: 0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+    version: v2
+  name: reviews-v2
+spec:
+  replicas: 0
+```
+
+Check to see that `reviews-v1` and `reviews-v2` have been scaled down by running `kubectl get pods --context cluster1`
+```
+% k get pods --context cluster1
+NAME                              READY   STATUS    RESTARTS   AGE
+details-v1-79c697d759-zmx7j       2/2     Running   0          26m
+ratings-v1-7d99676f7f-7stl7       2/2     Running   0          26m
+productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          26m
 ```
 
 ## navigate to bookinfo application on cluster1

@@ -24,37 +24,31 @@ cd bookinfo
 ```
 
 ```
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context mgmt
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context cluster2
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
 ```
 
 **NOTE:** You can also skip the section below if you already have bookinfo deployed on `cluster1` and `cluster2` from the previous lab.
 
 ## deploy bookinfo application on cluster1
+Navigate to the `bookinfo` directory
+```
+cd bookinfo
+```
 
-Deploy the bookinfo w/ no reviews app on `cluster1`
+Deploy the bookinfo (no reviews) app on `cluster1`
 ```
 kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
 ```
 
 ### view kustomize configuration
-If you are curious to review the entire hipstershop-istio configuration in more detail, run the kustomize command below
+If you are curious to review the overlay configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews
-```
-
-A key difference between the `bookinfo-v1-default` overlay and the `bookinfo-v1-istio` overlay is the use of the label `istio-injection=enabled` on the bookinfo-v1 namespace. Other than that, this example shows a very good use-case for Kustomize as we use bases/overlays to minimize duplication of configuration between the default and istio overlays.
-```
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: enabled
-  name: bookinfo-v1
+kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews/
 ```
 
-You can also see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
+You can see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -77,13 +71,13 @@ spec:
   replicas: 0
 ```
 
-watch status of bookinfo deployment for `cluster1` using `kubectl get pods --context cluster1`:
+Check to see that `reviews-v1` and `reviews-v2` have been scaled down by running `kubectl get pods --context cluster1`
 ```
-% kubectl get pods --context cluster1
+% k get pods --context cluster1
 NAME                              READY   STATUS    RESTARTS   AGE
-details-v1-79c697d759-pcbxt       2/2     Running   0          142m
-productpage-v1-65576bb7bf-bkg4x   2/2     Running   0          142m
-ratings-v1-7d99676f7f-2glpf       2/2     Running   0          142m
+details-v1-79c697d759-zmx7j       2/2     Running   0          26m
+ratings-v1-7d99676f7f-7stl7       2/2     Running   0          26m
+productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          26m
 ```
 
 ## deploy bookinfo application on cluster2
@@ -98,19 +92,17 @@ If you are curious to review the entire bookinfo configuration in more detail, r
 kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster2
 ```
 
-watch status of bookinfo deployment for `cluster2` using `kubectl get pods --context cluster2`:
+What we should expect in this overlay implementation is that `reviews-v1` (no stars), `reviews-v2` (black stars), and `reviews-v3` (red stars) should all be present. You can check this by running the command `kubectl get pods -n default --context cluster2`
 ```
-% kubectl get pods --context cluster2
+% kubectl get pods -n default --context cluster2
 NAME                              READY   STATUS    RESTARTS   AGE
-reviews-v1-987d495c-kvd5h         2/2     Running   0          142m
-reviews-v3-5f7b9f4f77-kb5sj       2/2     Running   0          142m
-ratings-v1-7d99676f7f-ltlpx       2/2     Running   0          142m
-productpage-v1-65576bb7bf-5h27h   2/2     Running   0          142m
-reviews-v2-6c5bf657cf-cf9hj       2/2     Running   0          142m
-details-v1-79c697d759-bvdtw       2/2     Running   0          142m
+details-v1-79c697d759-vc4pm       2/2     Running   0          155m
+ratings-v1-7d99676f7f-9rsw4       2/2     Running   0          155m
+reviews-v2-6c5bf657cf-s54dh       2/2     Running   0          155m
+reviews-v3-5f7b9f4f77-fphzc       2/2     Running   0          155m
+reviews-v1-987d495c-99rbk         2/2     Running   0          155m
+productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 ```
-
-You can also see that the `reviews-v1`, `reviews-v2`, and `reviews-v3` deployments exist on `cluster2` but not on `cluster1`
 
 # Lab
 
@@ -135,7 +127,6 @@ routeAction:
           name: productpage
           namespace: default
 ```
-
 
 ### 1b - point ingress traffic for both clusters to reviews on cluster2
 ```
