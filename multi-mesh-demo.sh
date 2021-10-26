@@ -129,3 +129,6 @@ echo "You can use the following command to validate which cluster handles the re
 echo "kubectl --context ${cluster1_context} logs -l app=reviews -c istio-proxy -f"
 echo "kubectl --context ${cluster2_context} logs -l app=reviews -c istio-proxy -f"
 echo
+echo "Continue on with bookinfo gloo-mesh-gateway lab in gitops-library git repo:"
+echo "https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-multicluster-gmg.md"
+echo 
