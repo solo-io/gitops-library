@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bombardier
+spec:
+  template:
+    spec:
+      containers:
+      - name: bombardier
+        command: ["/bin/sh"]
+        args: ["-c", "for run in $(seq 1 10); do bombardier -c 5 -d 60s -r 10 -p i,p,r http://istio-ingressgateway.istio-system/productpage; done"]
