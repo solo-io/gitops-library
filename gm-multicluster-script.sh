@@ -6,6 +6,7 @@ cluster2_context="cluster2"
 mgmt_context="mgmt"
 gloo_mesh_overlay="1-2-0-rc2"
 meshctl_version="v1.2.0-rc2"
+istio_overlay="1-11-1"
 
 # check to see if defined contexts exist
 if [[ $(kubectl config get-contexts | grep ${mgmt_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster1_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster2_context}) == "" ]]; then
@@ -44,14 +45,14 @@ kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-ee-helm.yaml --context ${mg
 
 # install istio on ${cluster1_context} and ${cluster2_context}
 cd ../istio
-kubectl apply -f argo/deploy/1-10-4/operator/istio-operator-1-10-4.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/1-10-4/operator/istio-operator-1-10-4.yaml --context ${cluster2_context}
+kubectl apply -f argo/deploy/${istio_overlay}/operator/istio-operator-${istio_overlay}.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/${istio_overlay}/operator/istio-operator-${istio_overlay}.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster2_context}
 
-kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-${cluster1_context}-1-10-4.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/1-10-4/gm-istio-profiles/gm-istio-workshop-${cluster2_context}-1-10-4.yaml --context ${cluster2_context}
+kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-${cluster1_context}-${istio_overlay}.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-${cluster2_context}-${istio_overlay}.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 ${cluster2_context}
