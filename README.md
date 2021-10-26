@@ -65,7 +65,7 @@ The labs below provide steps to deploying examples found in our workshops while 
 ## e2e gloo-mesh multicluster demo
 If you would like to run through the Gloo Mesh multicluster demo end-to-end, you can do so by running the script
 ```
-./gm-multicluster-script.sh $LICENSE_KEY
+./multi-mesh-demo.sh $LICENSE_KEY
 ```
 
 Note:
@@ -75,7 +75,18 @@ Note:
 ## e2e gloo-edge single cluster demo
 If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
 ```
-./gloo-edge-demo.sh $LICENSE_KEY
+./edge-demo.sh $LICENSE_KEY
+```
+
+Note:
+- If a license key is not provided, the script will prompt for a valid Gloo Edge license key
+- The script assumes the current context as the one to be used for deploy. Use `kubectl config use-context <context>` to switch to the proper cluster that you desire
+- If there is no current-context defined, the script will exit.
+
+## e2e gloo-portal + gloo-edge single cluster demo
+If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
+```
+./portal-edge-demo.sh $LICENSE_KEY
 ```
 
 Note:
