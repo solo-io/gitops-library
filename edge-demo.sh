@@ -75,3 +75,6 @@ kubectl apply -f argo/virtualservice/edge/1-bookinfo-vs-single.yaml
 
 # echo proxy url
 echo "access the bookinfo application at: $(glooctl proxy url)/productpage"
+echo 
+echo "additional gloo edge feature demos can be found here: https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-edge.md#deploy-bookinfo-virtualservices-and-validate"
+echo "Note: don't forget to cd into the bookinfo directory"
