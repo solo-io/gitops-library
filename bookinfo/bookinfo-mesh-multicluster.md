@@ -104,8 +104,8 @@ You can also see that the `reviews-v1`, `reviews-v2`, and `reviews-v3` deploymen
 ## deploy ingress gateways and virtualservices for cluster1 and cluster2
 Expose our bookinfo service on `cluster1` and `cluster2` by deploying an istio ingressgateway and virtualservice on each cluster
 ```
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context ${cluster2_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context ${cluster2_context}
 ```
 
 ### view kustomize configuration
@@ -233,7 +233,7 @@ We can then define another `TrafficPolicy` to make sure all the requests for the
 
 ### deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
 ```
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
 ```
 
 ## navigate to bookinfo application on cluster1
@@ -290,9 +290,9 @@ kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ## cleanup
 To remove the ingress gateway and policies from `cluster1` and `cluster2`
 ```
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-cluster2-trafficshift.yaml --context mgmt
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig.yaml --context cluster2
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
+kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
 ``` 
 
 ## Next Steps - Replace Istio ingressgateway with Gloo Mesh Gateway

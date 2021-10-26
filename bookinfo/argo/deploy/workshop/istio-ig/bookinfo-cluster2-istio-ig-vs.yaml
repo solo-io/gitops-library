@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-cluster1-istio-ig
+  name: bookinfo-cluster2-istio-ig-vs
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/gloo-mesh-workshop/istio-ig/cluster1/
+    path: bookinfo/overlay/gloo-mesh-workshop/istio-ig/cluster2/
   destination:
     server: https://kubernetes.default.svc
     namespace: default
