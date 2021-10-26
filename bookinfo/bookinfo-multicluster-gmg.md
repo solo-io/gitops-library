@@ -151,13 +151,13 @@ routeAction:
 
 ### 2 - Multi Weighted Destination
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2a-multi.yaml --context mgmt
 ```
 
 ### view kustomize configuration
-If you are curious to review the `2-multi` GMG configuration in more detail, run the kustomize command below
+If you are curious to review the `2a-multi` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/2-multi
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/2a-multi
 ```
 
 You can see the weights of the `trafficShift` policies below, since there are no reviews services available on `cluster1` we have decided to direct traffic to `cluster2` resources with `reviews-v1` (40%), `reviews-v2` (30%), and `reviews-v3` (30%).
@@ -220,10 +220,94 @@ You should see a line like below each time you refresh the web page
 [2020-10-12T14:19:35.996Z] "GET /reviews/0 HTTP/1.1" 200 - "-" "-" 0 295 6 6 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" "d18da89b-8682-4e8d-9284-b3d5ff78f2f7" "reviews:9080" "127.0.0.1:9080" inbound|9080|http|reviews.default.svc.cluster.local 127.0.0.1:41542 192.168.163.201:9080 192.168.163.221:42110 outbound_.9080_.version-v1_.reviews.default.svc.cluster.local default
 ```
 
+# Recover cluster1 services and slowly shift traffic back
+Let's bring back our `reviews-v1` and `reviews-v2` services on `cluster1`
+```
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
+```
+
+We should see our reviews services available now if we run `kubectl get pods --context cluster1`
+```
+% kubectl get pods --context cluster1
+NAME                              READY   STATUS    RESTARTS   AGE
+details-v1-79c697d759-zmx7j       2/2     Running   0          49m
+ratings-v1-7d99676f7f-7stl7       2/2     Running   0          49m
+productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          49m
+reviews-v1-987d495c-mcg4z         2/2     Running   0          27s
+reviews-v2-6c5bf657cf-7nmf4       2/2     Running   0          27s
+```
+
+Now we can incrementally shift traffic back to `cluster1` by using the weighted destinations and subsets. For example, the overlay `2b-multi` demonstrates this
+```
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi
+```
+
+See the weighted destinations below where we let `reviews-v1` service in `cluster1` to take 25% of the traffic
+```
+policy:
+    trafficShift:
+      destinations:
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v1
+        weight: 25
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v2
+        weight: 0
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v3
+        weight: 0
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v1
+        weight: 15
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v2
+        weight: 30
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v3
+        weight: 30
+```
+
+### trafficshift back to cluster1
+Deploy this trafficshift overlay to shift the weights incrementally back to cluster1 as described above
+```
+kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context mgmt
+```
+
+## validate
+You can use the following commands to validate that the requests are now handled by both `cluster1` and `cluster2`
+```
+kubectl --context cluster1 logs -l app=reviews -c istio-proxy -f
+kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
+```
+
 ## cleanup
 To cleanup, remove the Gloo Mesh Gateway configs
 ```
-kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context mgmt
+kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context mgmt
 ``` 
 
 To remove bookinfo application
