@@ -97,6 +97,9 @@ kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml -
 
 # -------------------- demo gloo mesh gateway --------------------------------------------------
 
+# recover reviews-v1 and reviews-v2 in cluster1
+#kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context ${cluster1_context}
+
 # deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster only (no reviews should be available)
 #kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1a.yaml --context ${mgmt_context}
 
@@ -105,8 +108,11 @@ kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml -
 
 # -------------------- demo multi destination --------------------------------------------------
 
-# run 'kubectl kustomize overlay/gloo-mesh-workshop/gmg/2-multi' to view weighted destination config
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-multi.yaml --context ${mgmt_context}
+# run 'kubectl kustomize bookinfo/overlay/gloo-mesh-workshop/gmg/2a-multi' to view weighted destination config
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2a-multi.yaml --context ${mgmt_context}
+
+# shift traffic back to cluster1
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
 
 # ----------------------------------------------------------------------
 
@@ -118,5 +124,7 @@ echo
 echo "access argocd dashboard:"
 echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 --context <desired_context>"
 echo
-echo "You can use the following command to validate that the requests are handled by ${cluster2_context}"
+echo "You can use the following command to validate which cluster handles the requests:"
+echo "kubectl --context ${cluster1_context} logs -l app=reviews -c istio-proxy -f"
 echo "kubectl --context ${cluster2_context} logs -l app=reviews -c istio-proxy -f"
+echo
