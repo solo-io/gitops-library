@@ -32,11 +32,30 @@ kubectl create ns gloo-system
 ```
 
 ### deploy secret
+
+For Linux Users:
 ```
 kubectl apply -f - <<EOF
 apiVersion: v1
 data:
   license-key: $(echo -n "${LICENSE_KEY}" | base64 -w 0)
+kind: Secret
+metadata:
+  labels:
+    app: gloo
+    gloo: license
+  name: license
+  namespace: gloo-system
+type: Opaque
+EOF
+```
+
+For MacOS Users:
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+data:
+  license-key: $(echo -n "${LICENSE_KEY}" | base64)
 kind: Secret
 metadata:
   labels:
