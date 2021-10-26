@@ -28,5 +28,10 @@ Run the script below to set up keycloak with two users `user1/password` and `use
 ./scripts/keycloak-setup.sh
 ```
 
+## uninstall keycloak
+```
+kubectl delete -f argo/default/keycloak-default-12-0-4.yaml
+```
+
 ## Next Steps - Deploy hipstershop application and expose through gloo-edge
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/hipstershop)

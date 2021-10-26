@@ -279,7 +279,17 @@ to remove bookinfo application
 ```
 kubectl delete -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs.yaml
 kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
-kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-beta-default.yaml
+kubectl delete -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
+```
+
+remove keycloak
+```
+kubectl delete -f ../keycloak/argo/default/keycloak-default-12-0-4.yaml
+```
+
+removing gloo-edge depends on which overlay path was installed when going through the installation lab. Please uninstall the argo application you originally installed
+```
+kubectl delete -f ../gloo-edge/argo/ee/<path/to/version/used>
 ```
 
 ## Back to Table of Contents

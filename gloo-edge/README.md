@@ -150,6 +150,12 @@ kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml
 
 **NOTE:** Prior to Gloo Edge Enterprise v1.8.9, the Enterprise UI was only available if Gloo Federation was enabled. Starting in v1.8.9, the UI is included by default for all Gloo Edge Enterprise users as well. Note that if you have Gloo Federation enabled, the UI does not show any data until you register one or more clusters. If Gloo Federation is disabled, the UI shows the installed Gloo Edge instance automatically without cluster registration. See [this upgrade notice](https://docs.solo.io/gloo-edge/master/operations/upgrading/1.8.0/#enterprise-ui) for more details
 
+## Uninstalling Gloo Edge
+removing gloo-edge depends on which overlay path was installed when going through the installation lab. Please uninstall the argo application you originally installed
+```
+kubectl delete -f ../gloo-edge/argo/ee/<path/to/version/used>
+```
+
 ## Next Steps - deploy keycloak
 If you plan to follow along with the guides, it is recommended to install the keycloak argo application as well as we will be using this later.
 [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak)
