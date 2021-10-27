@@ -106,7 +106,7 @@ productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 
 # Lab
 
-### 1a - deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster (no reviews should be available)
+## 1a - deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster (no reviews should be available)
 Note that the config below is deployed only to the `mgmt` context where our Gloo Mesh control plane resides, rather than having to manage deployments to each cluster individually. Gloo Mesh will take care of the translation into Istio CRs in each individual cluster, reducing complexity and configuration of the system.
 ```
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1a.yaml --context mgmt
@@ -128,13 +128,46 @@ routeAction:
           namespace: default
 ```
 
+### deploy a generator to create load
+Lets deploy a load generator pointing to the `istio-ingressgateway` service on both clusters so that we can populate our service graph in the gloo mesh dashboard
+
+Assuming that you are still in the `bookinfo` directory you can run the commands below to deploy the load generator based on bombardier
+```
+kubectl apply -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml --context cluster1
+kubectl apply -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml --context cluster2
+```
+
+### view kustomize configuration
+If you are curious to review the `` GMG configuration in more detail, run the kustomize command below
+```
+kubectl kustomize ../bombardier-loadgen/overlay/bookinfo-loadgen-istio-ingressgateway
+```
+
+Output should look similar to below
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bombardier
+  name: bombardier
+<...>
+    spec:
+      containers:
+      - args:
+        - -c
+        - for run in $(seq 1 100); do bombardier -c 1 -d 60s -r 10 -p i,p,r http://istio-ingressgateway.istio-system/productpage;
+          done
+        command:
+        - /bin/sh
+<...>
+```
+
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways on `cluster1` and `cluster2` to the `productpage` and `reviews` services on `cluster1`. Since there are no reviews services available on `cluster1` we should expect to see an error when fetching product reviews and no traffic flowing to those services
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gmg1.png)
 
-**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
-
-### 1b - shift traffic for both clusters to reviews on cluster2
+## 1b - shift traffic for both clusters to reviews on cluster2
 ```
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1b.yaml --context mgmt
 ```
@@ -159,9 +192,7 @@ routeAction:
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from `cluster1` to the reviews services on `cluster2`
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gmg2.png)
 
-**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
-
-### 2 - Multi Weighted Destination
+## 2 - Multi Weighted Destination
 ```
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2a-multi.yaml --context mgmt
 ```
@@ -221,7 +252,7 @@ policy:
         weight: 30
 ```
 
-## validate
+### validate
 You can use the following commands to validate that the requests are handled by `cluster2` regardless of which ingressgateway is serving traffic
 ```
 kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
@@ -320,7 +351,7 @@ kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing back to `reviews-v1` in `cluster1`
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gmg3.png)
 
-However, if you refresh the browser several times to populate the graph with more data, you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
+If you navigate back to the gloo mesh service graph you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
 
 This is due to the route table that is configured in the `1a-simple-cluster1` overlay that we configured earlier. If you are curious to see the whole config you can run `kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi` to see the whole configuration, check the `RouteTable` for the details below
 ```
@@ -361,8 +392,6 @@ routeAction:
 
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
-
-**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4b.png)
 
@@ -418,7 +447,15 @@ policy:
 Using these examples above we can start to think of other multicluster use cases such as blue/green and canary strategies, east/west rate limiting, and more!
 
 ## cleanup
-To cleanup, remove the Gloo Mesh Gateway configs
+**Note:** Commands below assume that you are in the `bookinfo` directory
+
+To cleanup, first remove the load generator
+```
+kubectl delete -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml --context cluster1
+kubectl delete -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml --context cluster2
+```
+
+To remove the Gloo Mesh Gateway configs
 ```
 kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context mgmt
 ``` 
