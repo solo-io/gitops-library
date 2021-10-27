@@ -128,7 +128,13 @@ routeAction:
           namespace: default
 ```
 
-### 1b - point ingress traffic for both clusters to reviews on cluster2
+### gloo mesh dashboard
+If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways on `cluster1` and `cluster2` to the `productpage` and `reviews` services on `cluster1`. Since there are no reviews services available on `cluster1` we should expect to see an error when fetching product reviews and no traffic flowing to those services
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg1.png)
+
+**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
+
+### 1b - shift traffic for both clusters to reviews on cluster2
 ```
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1b.yaml --context mgmt
 ```
@@ -148,6 +154,12 @@ routeAction:
           name: productpage
           namespace: default
 ```
+
+### gloo mesh dashboard
+If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from `cluster1` to the reviews services on `cluster2`
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg2.png)
+
+**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
 
 ### 2 - Multi Weighted Destination
 ```
@@ -220,7 +232,7 @@ You should see a line like below each time you refresh the web page
 [2020-10-12T14:19:35.996Z] "GET /reviews/0 HTTP/1.1" 200 - "-" "-" 0 295 6 6 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" "d18da89b-8682-4e8d-9284-b3d5ff78f2f7" "reviews:9080" "127.0.0.1:9080" inbound|9080|http|reviews.default.svc.cluster.local 127.0.0.1:41542 192.168.163.201:9080 192.168.163.221:42110 outbound_.9080_.version-v1_.reviews.default.svc.cluster.local default
 ```
 
-# Recover cluster1 services and slowly shift traffic back
+## Recover cluster1 services and slowly shift traffic back
 Let's bring back our `reviews-v1` and `reviews-v2` services on `cluster1`
 ```
 kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
@@ -297,22 +309,72 @@ Deploy this trafficshift overlay to shift the weights incrementally back to clus
 kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context mgmt
 ```
 
-## validate
+### validate
 You can use the following commands to validate that the requests are now handled by both `cluster1` and `cluster2`
 ```
 kubectl --context cluster1 logs -l app=reviews -c istio-proxy -f
 kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
 ```
 
+### gloo mesh dashboard
+If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing back to `reviews-v1` in `cluster1`
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg3.png)
+
+However, if you refresh the browser several times to populate the graph with more data, you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
+
+This is due to the route table that is configured in the `1a-simple-cluster1` overlay that we configured earlier. If you are curious to see the whole config you can run `kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi` to see the whole configuration, check the `RouteTable` for the details below
+```
+routeAction:
+      destinations:
+      - kubeService:
+          clusterName: cluster1
+          name: productpage
+          namespace: default
+```
+
+## allow traffic to flow to productpage on both cluster1 and cluster2
+
+Deploy the `2c-multi` trafficshift overlay to allow traffic to flow to productpage on both cluster1 and cluster2
+```
+kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context mgmt
+```
+
+### view kustomize configuration
+If you are curious to review the overlay configuration in more detail, run the kustomize command below
+```
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/2c-multi
+```
+
+In the `RouteTable` object we should see that we have patched the `routeAction` which now selects `productpage` service from both `cluster1` and `cluster2` to route to
+```
+routeAction:
+      destinations:
+      - kubeService:
+          clusterName: cluster1
+          name: productpage
+          namespace: default
+      - kubeService:
+          clusterName: cluster2
+          name: productpage
+          namespace: default
+```
+
+### gloo mesh dashboard
+If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4.png)
+
+**Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
+
 ## cleanup
 To cleanup, remove the Gloo Mesh Gateway configs
 ```
-kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context mgmt
+kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context mgmt
 ``` 
 
 To remove bookinfo application
 ```
 kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
+kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
 kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
 ```
 
