@@ -115,12 +115,15 @@ kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml -
 # shift traffic back to cluster1
 #kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
 
+# allow traffic to flow to productpage on both cluster1 and cluster2
+#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context ${mgmt_context}
+
 # ----------------------------------------------------------------------
 
 # deploy bombardier loadgen on istio-ingressgateway on cluster1 and cluster2
-#cd ../bombardier-loadgen
-#kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster1_context}
-#kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster2_context}
+cd ../bombardier-loadgen
+kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster1_context}
+kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster2_context}
 
 # echo port-forward commands
 echo
