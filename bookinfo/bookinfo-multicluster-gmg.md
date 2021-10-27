@@ -361,9 +361,61 @@ routeAction:
 
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4.png)
 
 **Note:** You may need to drive traffic towards the system in order to generate data for the graph. Also, there will be a slight delay for a few minutes for the graphs to update properly
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4b.png)
+
+Take a look at the graph above, an interesting piece to note is that the path to the `reviews-v2` service on `cluster1` is greyed out. This is expected because the weighted destinations that we set in the section above only sends traffic to the `reviews-v1` service on `cluster1`
+```
+policy:
+    trafficShift:
+      destinations:
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v1
+        weight: 25
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v2
+        weight: 0
+      - kubeService:
+          clusterName: cluster1
+          name: reviews
+          namespace: default
+          subset:
+            version: v3
+        weight: 0
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v1
+        weight: 15
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v2
+        weight: 30
+      - kubeService:
+          clusterName: cluster2
+          name: reviews
+          namespace: default
+          subset:
+            version: v3
+        weight: 30
+```
+
+Using these examples above we can start to think of other multicluster use cases such as blue/green and canary strategies, east/west rate limiting, and more!
 
 ## cleanup
 To cleanup, remove the Gloo Mesh Gateway configs
