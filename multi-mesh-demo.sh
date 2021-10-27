@@ -6,7 +6,7 @@ cluster2_context="cluster2"
 mgmt_context="mgmt"
 gloo_mesh_overlay="1-2-0-rc2"
 meshctl_version="v1.2.0-rc2"
-istio_overlay="1-11-1"
+istio_overlay="1-10-4"
 
 # check to see if defined contexts exist
 if [[ $(kubectl config get-contexts | grep ${mgmt_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster1_context}) == "" ]] || [[ $(kubectl config get-contexts | grep ${cluster2_context}) == "" ]]; then
@@ -116,6 +116,11 @@ kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml -
 #kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
 
 # ----------------------------------------------------------------------
+
+# deploy bombardier loadgen on istio-ingressgateway on cluster1 and cluster2
+#cd ../bombardier-loadgen
+#kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster1_context}
+#kubectl apply -f argo/bookinfo-loadgen-istio-ingressgateway.yaml --context ${cluster2_context}
 
 # echo port-forward commands
 echo
