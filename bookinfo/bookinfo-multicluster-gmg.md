@@ -357,9 +357,9 @@ kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
 
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing back to `reviews-v1` in `cluster1`
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4a.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4b.png)
 
-If you navigate back to the gloo mesh service graph you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
+However, after some time has passed for new data to be populated, in the gloo mesh service graph you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then finally over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
 
 This is due to the route table that is configured in the `1a-simple-cluster1` overlay that we configured earlier. If you are curious to see the whole config you can run `kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi` to see the whole configuration, check the `RouteTable` for the details below
 ```
@@ -401,9 +401,9 @@ routeAction:
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
 
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg5a.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg5b.png)
 
-Take a look at the graph above, an interesting piece to note is that the path to the `reviews-v2` service on `cluster1` is greyed out. This is expected because the weighted destinations that we set in the section above only sends traffic to the `reviews-v1` service on `cluster1`
+Take a look at the graph above, an interesting piece to note is that the path to the `reviews-v2` service on `cluster1` is greyed out. This is expected because the weighted destinations that we set in the section above only sends traffic to the `reviews-v1` service on `cluster1`. However, this time our `productpage` service on `cluster2` should be active!
 ```
 policy:
     trafficShift:
