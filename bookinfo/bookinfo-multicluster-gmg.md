@@ -165,7 +165,7 @@ metadata:
 
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways on `cluster1` and `cluster2` to the `productpage` and `reviews` services on `cluster1`. Since there are no reviews services available on `cluster1` we should expect to see an error when fetching product reviews and no traffic flowing to those services
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg1.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg1b.png)
 
 ## 1b - shift traffic for both clusters to reviews on cluster2
 ```
@@ -188,9 +188,15 @@ routeAction:
           namespace: default
 ```
 
+### validate
+You can use the following command to validate that the requests are handled by the reviews services on `cluster2` regardless of which ingressgateway is serving traffic
+```
+kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
+```
+
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from `cluster1` to the reviews services on `cluster2`
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg2.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg2b.png)
 
 ## 2 - Multi Weighted Destination
 ```
@@ -262,6 +268,8 @@ You should see a line like below each time you refresh the web page
 ```
 [2020-10-12T14:19:35.996Z] "GET /reviews/0 HTTP/1.1" 200 - "-" "-" 0 295 6 6 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" "d18da89b-8682-4e8d-9284-b3d5ff78f2f7" "reviews:9080" "127.0.0.1:9080" inbound|9080|http|reviews.default.svc.cluster.local 127.0.0.1:41542 192.168.163.201:9080 192.168.163.221:42110 outbound_.9080_.version-v1_.reviews.default.svc.cluster.local default
 ```
+
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg3b.png)
 
 ## Recover cluster1 services and slowly shift traffic back
 Let's bring back our `reviews-v1` and `reviews-v2` services on `cluster1`
@@ -349,7 +357,7 @@ kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
 
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing back to `reviews-v1` in `cluster1`
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg3.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4a.png)
 
 If you navigate back to the gloo mesh service graph you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
 
@@ -393,7 +401,7 @@ routeAction:
 ### gloo mesh dashboard
 If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
 
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4b.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/gmg5a.png)
 
 Take a look at the graph above, an interesting piece to note is that the path to the `reviews-v2` service on `cluster1` is greyed out. This is expected because the weighted destinations that we set in the section above only sends traffic to the `reviews-v1` service on `cluster1`
 ```
