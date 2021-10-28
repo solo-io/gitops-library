@@ -19,7 +19,7 @@ spec:
         - name: "hub"
           value: "docker.io/istio"
         - name: "tag"
-          value: "1.10.4"
+          value: "1.11.4"
         - name: "operatorNamespace"
           value: "istio-operator"
         - name: "istioNamespace"
