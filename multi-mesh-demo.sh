@@ -81,8 +81,8 @@ kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_c
 
 # deploy bookinfo app into ${cluster1_context} and ${cluster2_context}
 cd ../bookinfo/
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-${cluster1_context}-noreviews.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-${cluster2_context}.yaml --context ${cluster2_context}
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster2_context}
