@@ -51,8 +51,8 @@ kubectl apply -f argo/deploy/${istio_overlay}/operator/istio-operator-${istio_ov
 ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster2_context}
 
-kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-${cluster1_context}-${istio_overlay}.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-${cluster2_context}-${istio_overlay}.yaml --context ${cluster2_context}
+kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-cluster1-${istio_overlay}.yaml --context ${cluster1_context}
+kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-cluster2-${istio_overlay}.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment istiod istio-system 10 ${cluster2_context}
