@@ -59,10 +59,16 @@ cd argocd
 cd ../gloo-edge/
 kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
 
+# wait for gloo-edge rollout
+../tools/wait-for-rollout.sh deployment gateway gloo-system 10
+
 # install keycloak
 cd ../keycloak
 kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
 ../tools/wait-for-rollout.sh deployment keycloak default 10
+
+# sleep for 20 seconds and set up keycloak
+sleep 20
 ./scripts/keycloak-setup.sh
 
 # install bookinfo application
