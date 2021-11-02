@@ -22,12 +22,6 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 ../tools/wait-for-rollout.sh deployment keycloak default 10
 ```
 
-## setting up keycloak
-Run the script below to set up keycloak with two users `user1/password` and `user2/password`
-```
-./scripts/keycloak-setup.sh
-```
-
 ## uninstall keycloak
 ```
 kubectl delete -f argo/default/keycloak-default-12-0-4.yaml

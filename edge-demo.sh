@@ -67,20 +67,19 @@ cd ../keycloak
 kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
 ../tools/wait-for-rollout.sh deployment keycloak default 10
 
-# sleep for 20 seconds and set up keycloak
-sleep 20
-./scripts/keycloak-setup.sh
-
 # install bookinfo application
 cd ../bookinfo/
 kubectl apply -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
 kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
 
-# configure bookinfo virtualservice
-kubectl apply -f argo/virtualservice/edge/1-bookinfo-vs-single.yaml
+# configure bookinfo virtualservice on https and keycloak on http
+kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
+
+# set up keycloak on http
+../keycloak/scripts/keycloak-setup-virtualservice.sh
 
 # echo proxy url
-echo "access the bookinfo application at: $(glooctl proxy url)/productpage"
+echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
 echo 
-echo "additional gloo edge feature demos can be found here: https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-edge.md#deploy-bookinfo-virtualservices-and-validate"
+echo "additional gloo edge feature demos can be found here: https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-edge.md#deploy-virtualservice-with-extauth-config"
 echo "Note: don't forget to cd into the bookinfo directory"
