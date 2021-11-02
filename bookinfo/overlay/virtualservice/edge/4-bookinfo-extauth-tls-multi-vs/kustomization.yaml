@@ -6,6 +6,3 @@ bases:
 
 patchesStrategicMerge:
 - patch/extauth.yaml
-
-resources:
-- keycloak-vs.yaml

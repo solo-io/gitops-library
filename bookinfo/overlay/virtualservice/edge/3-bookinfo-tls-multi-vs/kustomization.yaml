@@ -9,3 +9,6 @@ resources:
 
 patchesStrategicMerge:
 - patch/tls.yaml
+
+resources:
+- keycloak-vs.yaml
