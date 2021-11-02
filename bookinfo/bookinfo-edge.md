@@ -124,7 +124,9 @@ glooctl proxy url
 In your browser navigate to https://$(glooctl proxy url)/productpage
 
 ### extauth
-Applying the manifests below will build upon the last example and configure keycloak for extauth. Note that if you have not completed keycloak tutorial then [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak) before moving forward with this step
+Applying the manifests below will build upon the last example and configure keycloak for extauth. Note that if you have not completed keycloak tutorial then [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak) before moving forward with the next steps setting up keycloak
+
+### deploy virtualservice with extauth config
 ```
 kubectl apply -f argo/virtualservice/edge/4-bookinfo-extauth-tls-multi-vs.yaml
 ```
@@ -142,6 +144,16 @@ options:
         configRef:
           name: keycloak-oauth
           namespace: gloo-system
+```
+
+### setting up keycloak
+In a previous step we have deployed keycloak on our cluster, however at this point we have not exposed keycloak or set anything up.
+
+Now that we have keycloak exposed by gloo edge, we need to set it up with some users and set some attributes within keycloak
+
+Run the script below to set up keycloak with two users `user1/password` and `user2/password`
+```
+../keycloak/scripts/keycloak-setup-virtualservice.sh
 ```
 
 ### keycloak login
