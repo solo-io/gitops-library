@@ -115,6 +115,36 @@ The added configuration below instructs gloo to reference a secret named `upstre
       namespace: gloo-system
 ```
 
+In this step we have also exposed our keycloak on port 80 with a VirtualService for our next lab configuring oAuth
+```
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: keycloak-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /keycloak/
+      options:
+        prefixRewrite: /auth/
+      routeAction:
+        single:
+          upstream:
+            name: default-keycloak-8080
+            namespace: gloo-system
+    - matchers:
+      - prefix: /
+      routeAction:
+        single:
+          upstream:
+            name: default-keycloak-8080
+            namespace: gloo-system
+```
+
 #### view your exposed bookinfo service in the browser using https
 Get your gateway URL
 ```
@@ -124,7 +154,17 @@ glooctl proxy url
 In your browser navigate to https://$(glooctl proxy url)/productpage
 
 ### extauth
-Applying the manifests below will build upon the last example and configure keycloak for extauth. Note that if you have not completed keycloak tutorial then [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak) before moving forward with the next steps setting up keycloak
+Applying the manifests below will build upon the last example and configure keycloak for extauth. Note that if you have not completed keycloak tutorial then [Follow this Tutorial Here](https://github.com/solo-io/gitops-library/tree/main/keycloak) before moving forward with the next steps
+
+### setting up keycloak
+In a previous step we have deployed keycloak on our cluster, however at this point we have not exposed keycloak or set anything up.
+
+Now that we have keycloak exposed by gloo edge, we need to set it up with some users and set some attributes within keycloak
+
+Run the script below to set up keycloak with two users `user1/password` and `user2/password`
+```
+../keycloak/scripts/keycloak-setup-virtualservice.sh
+```
 
 ### deploy virtualservice with extauth config
 ```
@@ -144,16 +184,6 @@ options:
         configRef:
           name: keycloak-oauth
           namespace: gloo-system
-```
-
-### setting up keycloak
-In a previous step we have deployed keycloak on our cluster, however at this point we have not exposed keycloak or set anything up.
-
-Now that we have keycloak exposed by gloo edge, we need to set it up with some users and set some attributes within keycloak
-
-Run the script below to set up keycloak with two users `user1/password` and `user2/password`
-```
-../keycloak/scripts/keycloak-setup-virtualservice.sh
 ```
 
 ### keycloak login
