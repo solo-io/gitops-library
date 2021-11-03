@@ -75,7 +75,8 @@ kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
 # configure bookinfo virtualservice on https and keycloak on http
 kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
 
-# set up keycloak on http
+# sleep 20 seconds and set up keycloak on http
+sleep 20
 ../keycloak/scripts/keycloak-setup-virtualservice.sh
 
 # echo proxy url
