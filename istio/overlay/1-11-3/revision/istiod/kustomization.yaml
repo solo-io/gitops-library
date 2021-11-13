@@ -1,0 +1,24 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases: 
+- ../../../../base/profiles/minimal/
+
+patchesStrategicMerge:
+- patch/revisioned-patch.yaml
+- patch/version.yaml
+
+resources:
+- istiod-svc.yaml
+- namespace.yaml
+
+namespace: istio-system
+
+patchesJson6902:
+- target:
+    group: install.istio.io
+    version: v1alpha1
+    kind: IstioOperator
+    name: control-plane
+  path: patch/istiod-name-patch.yaml
