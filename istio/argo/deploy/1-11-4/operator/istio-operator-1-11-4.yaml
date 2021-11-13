@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio-operator-helm
+  name: istio-operator-helm-1-11-4
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: istio-operator
+    namespace: istio-operator-1-11-4
   project: default
   source:
     repoURL: https://github.com/istio/istio.git
@@ -16,14 +16,21 @@ spec:
     targetRevision: 1.11.4
     helm:
       parameters:
-        - name: "hub"
-          value: "docker.io/istio"
-        - name: "tag"
-          value: "1.11.4"
-        - name: "operatorNamespace"
-          value: "istio-operator"
-        - name: "istioNamespace"
-          value: "istio-system"
+      - name: hub
+        value: docker.io/istio
+      - name: tag
+        value: 1.11.4
+      - name: operatorNamespace
+        value: istio-operator-1-11-4
+      - name: istioNamespace
+        value: istio-system
+      - name: 1-11-4
+      - name: global.hub
+        value: docker.io/istio
+      - name: global.tag
+        value: 1.11.4
+      - name: revision
+        value: 1-11-4
   syncPolicy:
     automated:
       prune: true
