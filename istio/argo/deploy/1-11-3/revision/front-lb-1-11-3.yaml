@@ -13,6 +13,7 @@ spec:
     path: istio/overlay/1-11-3/revision/ingressgateway/front-lb/
   destination:
     server: https://kubernetes.default.svc
+    namespace: istio-ingress
   syncPolicy:
     automated:
       prune: false
