@@ -13,7 +13,10 @@ spec:
     path: istio/overlay/1-11-3/revision/istiod/
   destination:
     server: https://kubernetes.default.svc
+    namespace: istio-system
   syncPolicy:
     automated:
       prune: false
       selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

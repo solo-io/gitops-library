@@ -11,7 +11,7 @@ patchesStrategicMerge:
 
 resources:
 - istiod-svc.yaml
-- namespace.yaml
+#- namespace.yaml
 
 namespace: istio-system
 
