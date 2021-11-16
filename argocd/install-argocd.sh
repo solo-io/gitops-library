@@ -20,7 +20,7 @@ echo "Beginning install on context ${CONTEXT}...."
 kubectl --context ${CONTEXT} create namespace argocd
 
 # deploy argocd
-until kubectl --context ${CONTEXT} apply -k https://github.com/solo-io/gitops-library.git/argocd/overlay/; do sleep 2; done
+until kubectl --context ${CONTEXT} apply -k https://github.com/solo-io/gitops-library.git/argocd/overlay/default/; do sleep 2; done
 
 # bcrypt(password)=$2a$10$79yaoOg9dL5MO8pn8hGqtO4xQDejSEVNWAGQR268JHLdrCw6UCYmy
 # password: solo.io
