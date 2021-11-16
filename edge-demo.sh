@@ -50,7 +50,7 @@ EOF
 
 # install argocd 
 cd argocd
-./install-argocd.sh
+./install-argocd.sh insecure 
 
 # wait for argo cluster rollout
 ../tools/wait-for-rollout.sh deployment argocd-server argocd 10

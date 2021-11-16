@@ -28,9 +28,9 @@ sed -i -e "s/<INSERT_LICENSE_KEY_HERE>/${license_key}/g" gloo-mesh/argo/${gloo_m
 
 # install argocd on mgmt, ${cluster1_context}, and ${cluster2_context}
 cd argocd
-./install-argocd.sh ${mgmt_context}
-./install-argocd.sh ${cluster1_context}
-./install-argocd.sh ${cluster2_context}
+./install-argocd.sh default ${mgmt_context}
+./install-argocd.sh default ${cluster1_context}
+./install-argocd.sh default ${cluster2_context}
 
 # wait for argo cluster rollout
 ../tools/wait-for-rollout.sh deployment argocd-server argocd 10 ${mgmt_context}
