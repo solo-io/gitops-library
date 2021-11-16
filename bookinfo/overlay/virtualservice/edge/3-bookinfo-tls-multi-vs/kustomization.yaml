@@ -6,7 +6,8 @@ bases:
 
 resources:
 - upstream-tls.yaml
-- keycloak-vs.yaml
+#- keycloak-vs.yaml
+- http-vs.yaml
 
 patchesStrategicMerge:
 - patch/tls.yaml
