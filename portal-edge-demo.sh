@@ -2,7 +2,7 @@
 
 license_key=$1
 ingress_type="edge"
-portal_version="1-1-1"
+portal_version="1-2-0-beta4"
 edge_version="1-9-1"
 
 # check if cluster exists, uses current context if it does
