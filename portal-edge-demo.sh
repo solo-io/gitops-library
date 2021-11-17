@@ -81,6 +81,13 @@ kubectl apply -f argo/${ingress_type}/gloo-portal-helm-${portal_version}.yaml
 cd ../petstore/
 kubectl apply -f argo/petstore-apiproduct-1-0-2-${ingress_type}.yaml
 
+# wait for petstore portal
+../tools/wait-for-rollout.sh deployment petstore-v2 default 10
+
+# hack to get around CORS race issue
+kubectl delete portal ecommerce-portal
+# argocd will recreate the portal with correct CORS config
+
 # echo port-forward commands
 echo
 echo "access gloo portal dashboard at http://localhost:8000"
