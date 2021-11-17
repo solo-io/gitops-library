@@ -1,0 +1,7 @@
+apiVersion: v1
+binaryData:
+  faq: UTogSXMgdGhpcyBhIHN0YXRpYyBwYWdlIGZlYXR1cmUgZGVsaXZlcmVkIGJ5IGdsb28tcG9ydGFsPwpBOiBZZXMgaXQgaXMhIFNlZSB0aGlzICoqW3R1dG9yaWFsXShodHRwczovL2RvY3Muc29sby5pby9nbG9vLXBvcnRhbC9sYXRlc3QvZ3VpZGVzL2dldHRpbmdfc3RhcnRlZC9wYXJ0XzMvKSoqIGZvciBtb3JlIGluZm9ybWF0aW9uIA==
+kind: ConfigMap
+metadata:
+  name: default-petstore-portal-faq
+  namespace: default
