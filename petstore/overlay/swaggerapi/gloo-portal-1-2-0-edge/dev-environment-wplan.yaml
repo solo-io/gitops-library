@@ -14,8 +14,7 @@ spec:
     namespaces:
     - '*'
     usagePlans:
-    - basic2
-    - trusted
+    - basic
     versions:
       names:
       - v1
