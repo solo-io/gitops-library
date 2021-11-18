@@ -21,7 +21,7 @@ spec:
         glooMesh:
           enabled: false
         licenseKey: 
-          value: eyJleHAiOjE2NzI2MDc0NjksImlhdCI6MTYyNTc3ODY2OSwiayI6IlY4T044dyIsImx0IjoidHJpYWwiLCJwcm9kdWN0IjoiZ2xvbyJ9.IiS_yno2_YHR7xSOT2z0BcbCzsY0Bb1ESHt1nJcEAJE
+          value: <INSERT_LICENSE_KEY_HERE>
     repoURL: https://storage.googleapis.com/dev-portal-helm
     targetRevision: 1.1.2
   syncPolicy:
