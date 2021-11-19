@@ -19,7 +19,7 @@ cd argocd
 ## install argocd
 If you have done the above, just simply run the script to install argocd and optionally set the context.
 ```
-./install-argocd.sh ${CONTEXT}
+./install-argocd.sh
 ```
 
 Run this script to watch argocd install progress
@@ -35,6 +35,16 @@ Waiting 10 seconds for deployment argocd-server to come up.
 Waiting for deployment "argocd-server" rollout to finish: 0 of 1 updated replicas are available...
 deployment "argocd-server" successfully rolled out
 ```
+
+### input options
+You can provide the inputs below to specify a configuration of argocd
+```
+./install-argocd.sh {SECURITY} {CONTEXT}
+```
+
+SECURITY options: `default`/`insecure`
+- If undefined, the install will use the default install of argocd
+- `insecure` option allows us to terminate TLS at the edge, and expose argocd using a VirtualService instead of port-forward commands
 
 ### access argoCD UI
 using port forward:
