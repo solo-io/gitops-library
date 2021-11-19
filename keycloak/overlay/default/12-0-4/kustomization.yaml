@@ -2,10 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: default
-
 bases: 
 - ../../../base/12-0-4/
 
-#resources:
-#- keycloak-vs.yaml
+resources:
+- keycloak-vs.yaml

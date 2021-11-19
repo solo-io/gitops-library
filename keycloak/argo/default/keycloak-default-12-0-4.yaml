@@ -13,7 +13,6 @@ spec:
     path: keycloak/overlay/default/12-0-4/
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).

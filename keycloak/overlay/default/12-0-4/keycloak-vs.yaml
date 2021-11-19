@@ -6,7 +6,7 @@ metadata:
 spec:
   virtualHost:
     domains:
-    - '*'
+    - 'keycloak.solo.io'
     routes:
     - matchers:
        - prefix: '/keycloak/'
