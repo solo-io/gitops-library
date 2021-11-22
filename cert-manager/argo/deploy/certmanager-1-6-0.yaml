@@ -13,10 +13,10 @@ spec:
     path: cert-manager/overlay/1-6-0/
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
       selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
-    #syncOptions:
-    #- CreateNamespace=true
+    syncOptions:
+    - CreateNamespace=true

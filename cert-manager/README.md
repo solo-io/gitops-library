@@ -14,7 +14,7 @@ To install cert-manager on your cluster, deploy the argo app associated with the
 
 For example to deploy cert-manager v12.0.4 in the default namespace:
 ```
-kubectl apply -f argo/default/certmanager-default-1-6-0.yaml
+kubectl apply -f argo/deploy/certmanager-1-6-0.yaml
 ```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress
@@ -24,5 +24,5 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 
 ## uninstall cert-manager
 ```
-kubectl delete -f argo/default/certmanager-default-1-6-0.yaml
+kubectl delete -f argo/deploy/certmanager-1-6-0.yaml
 ```
