@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-default-1-6-0
+  name: cert-manager-1-6-0
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io

@@ -67,6 +67,11 @@ cd ../keycloak
 kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
 ../tools/wait-for-rollout.sh deployment keycloak default 10
 
+# install cert-manager
+#cd ../cert-manager
+#kubectl apply -f argo/deploy/certmanager-1-6-0.yaml
+#../tools/wait-for-rollout.sh deployment cert-manager cert-manager 10
+
 # install bookinfo application
 cd ../bookinfo/
 kubectl apply -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
