@@ -92,6 +92,8 @@ kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
 # sleep 20 seconds and set up keycloak on http
 sleep 20
 ../keycloak/scripts/keycloak-setup-virtualservice.sh
+# for cloudflare keycloak setup
+#../keycloak/scripts/keycloak-setup-virtualservice-cloudflare-https.sh
 
 # echo proxy url
 echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
