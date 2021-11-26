@@ -6,7 +6,6 @@ bases:
 
 resources:
 - upstream-tls.yaml
-#- http-vs.yaml
 
 patchesStrategicMerge:
 - patch/tls.yaml
