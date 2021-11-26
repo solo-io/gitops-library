@@ -5,5 +5,5 @@ kind: Kustomization
 bases: 
 - ../../../../base/profiles/minimal
 
-patchesStrategicMerge:
-- patch/version.yaml
+#patchesStrategicMerge:
+#- patch/version.yaml
