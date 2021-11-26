@@ -1,0 +1,15 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: hipstershop-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    options:
+      ratelimitBasic:
+        anonymousLimits:
+          requestsPerUnit: 10
+          unit: MINUTE
+        authorizedLimits:
+          requestsPerUnit: 20
+          unit: MINUTE
