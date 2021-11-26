@@ -7,3 +7,4 @@ bases:
 
 patchesStrategicMerge:
 - patch/tls.yaml
+- patch/argo-443-patch.yaml
