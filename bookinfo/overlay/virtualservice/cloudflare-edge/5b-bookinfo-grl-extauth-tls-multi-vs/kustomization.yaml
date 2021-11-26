@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../4-bookinfo-extauth-tls-multi-vs/
+
+resources:
+- global-ratelimitconfig.yaml
+
+patchesStrategicMerge:
+- patch/global-ratelimit.yaml
