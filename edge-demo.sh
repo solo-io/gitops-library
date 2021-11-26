@@ -70,6 +70,9 @@ kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
 # expose keycloak/argo on http
 cd ../gloo-edge
 kubectl apply -f argo/virtualservice/wildcard/edge-demo-http-vs.yaml
+# for cloudflare edge config
+#kubectl apply -f argo/virtualservice/cloudflare/edge-demo-http-vs.yaml
+#kubectl apply -f argo/virtualservice/cloudflare/edge-demo-https-vs.yaml
 
 # install cert-manager
 #cd ../cert-manager
@@ -83,7 +86,7 @@ kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
 
 # expose bookinfo on https
 kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
-# for cloudflare edge
+# for cloudflare edge config
 #kubectl apply -f argo/virtualservice/cloudflare-edge/3-bookinfo-tls-multi-vs.yaml
 
 # sleep 20 seconds and set up keycloak on http
