@@ -1,0 +1,16 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Group
+metadata:
+  name: developers
+  namespace: gloo-portal
+spec:
+  accessLevel:
+    portals:
+    - name: ecommerce-portal
+      namespace: default
+  displayName: ecommerce developers
+  userSelector:
+    matchLabels:
+      groups.portal.gloo.solo.io/gloo-portal.developers: "true"
+    namespaces:
+    - '*'
