@@ -6,4 +6,3 @@ bases:
 
 resources:
 - bookinfo-beta-ns.yaml
-- bookinfo-gateway.yaml

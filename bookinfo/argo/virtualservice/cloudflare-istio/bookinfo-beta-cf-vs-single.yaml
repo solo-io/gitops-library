@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bookinfo-vs
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/solo-io/gitops-library
+    targetRevision: HEAD
+    path: bookinfo/overlay/virtualservice/cloudflare-istio/1-bookinfo-vs-single/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bookinfo-beta
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
