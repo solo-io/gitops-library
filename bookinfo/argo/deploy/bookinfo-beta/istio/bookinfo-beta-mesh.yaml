@@ -13,7 +13,7 @@ spec:
     path: bookinfo/overlay/bookinfo-beta/istio/
   destination:
     server: https://kubernetes.default.svc
-    namespace: bookinfo-v1
+    namespace: bookinfo-beta
   syncPolicy:
     automated:
       prune: false
