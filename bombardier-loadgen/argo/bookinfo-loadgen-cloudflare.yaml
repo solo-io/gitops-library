@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bombardier-loadgen/overlay/bookinfo-loadgen-istio-ingressgateway/
+    path: bombardier-loadgen/overlay/bookinfo-loadgen-cloudflare/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
