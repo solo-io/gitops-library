@@ -34,4 +34,7 @@ spec:
 
   allApisPublicViewable: false
 
-  
+  tls:
+    secretRef:
+      name: cf-upstream-tls
+      namespace: gloo-system

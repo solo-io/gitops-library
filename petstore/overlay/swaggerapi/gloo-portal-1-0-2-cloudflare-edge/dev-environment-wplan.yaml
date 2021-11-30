@@ -36,3 +36,11 @@ spec:
       - basic
   gatewayConfig:
     disableRoutes: false # we actually want to expose the APIs on a Gateway (optional)
+    tls:
+      config:
+        secretRef:
+          name: cf-upstream-tls
+          namespace: gloo-system
+        sniDomains:
+        - '*.kapoozi.com'
+      enabled: true
