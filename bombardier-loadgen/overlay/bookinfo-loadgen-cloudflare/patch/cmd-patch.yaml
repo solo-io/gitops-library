@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bombardier
+spec:
+  template:
+    spec:
+      containers:
+      - name: bombardier
+        command: ["/bin/sh"]
+        args: ["-c", "for run in $(seq 1 1000); do bombardier -c 1 -d 30s -r 10 -p i,p,r https://bookinfo.kapoozi.com/productpage; done"]
