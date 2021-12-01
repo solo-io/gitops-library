@@ -1,0 +1,49 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+# ---------------- waf ------------------  
+  virtualHost:
+    options: 
+      waf:
+        customInterventionMessage: 'ModSecurity intervention! Please check access logs for more details: kubectl -n gloo-system logs deploy/gateway-proxy -f'
+        auditLogging:
+          action: ALWAYS
+          location: FILTER_STATE
+        coreRuleSet:
+          customSettingsString: |
+              # default rules section
+              SecRuleEngine On
+              SecRequestBodyAccess On
+              SecDefaultAction "phase:1,log,auditlog,pass,status:403"
+              SecDefaultAction "phase:2,log,auditlog,pass,status:403"
+              SecAction \
+              "id:900990,\
+                phase:1,\
+                nolog,\
+                pass,\
+                t:none,\
+                    setvar:tx.crs_setup_version=310"
+              #
+              # custom rules section
+              #
+              # block incoming header if User-Agent: scammer
+              SecRule REQUEST_HEADERS:User-Agent "scammer" "deny,status:403,id:107,phase:1,msg:'blocked scammer'"
+              #
+              # block incoming requests that do not match the ip below
+              #SecRule REMOTE_ADDR "!@ipMatch 173.175.0.0/16" "phase:1,deny,status:403,id:1,msg:'block ip'"
+              #
+              # only allow http2 connections
+              SecAction \
+                "id:900230,\
+                  phase:1,\
+                  nolog,\
+                  pass,\
+                  t:none,\
+                  setvar:'tx.allowed_http_versions=HTTP/2 HTTP/2.0'"
+              #
+              # allow only letters in username
+              SecRule ARGS:/username/ "[^a-zA-Z]" "t:none,phase:2,deny,id:6,log,msg:'allow only letters in username'"
+#------------------------------------------------------
