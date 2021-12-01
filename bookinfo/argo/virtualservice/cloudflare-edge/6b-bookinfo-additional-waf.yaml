@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/virtualservice/cloudflare-edge/6-bookinfo-additional-waf/
+    path: bookinfo/overlay/virtualservice/cloudflare-edge/6b-bookinfo-additional-waf/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
