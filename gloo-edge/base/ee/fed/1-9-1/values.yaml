@@ -19,4 +19,4 @@ gloo-ee:
                   path: /dev/stdout
                   jsonFormat:
                     httpMethod: '%REQ(:METHOD)%'
-                    wafFilterState: '%FILTER_STATE(io.solo.modsecurity.audit_log)%
+                    wafFilterState: '%FILTER_STATE(io.solo.modsecurity.audit_log)%'
