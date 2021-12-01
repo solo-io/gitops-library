@@ -9,3 +9,14 @@ gloo-ee:
   gloo-fed:
     enabled: false
     create_license_secret: false
+  gloo:
+    gatewayProxies:
+      gatewayProxy:
+        gatewaySettings:
+          accessLoggingService:
+            accessLog: # https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage
+              - fileSink:
+                  path: /dev/stdout
+                  jsonFormat:
+                    httpMethod: '%REQ(:METHOD)%'
+                    wafFilterState: '%FILTER_STATE(io.solo.modsecurity.audit_log)%'
