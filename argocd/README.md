@@ -47,7 +47,7 @@ SECURITY options: `default`/`insecure`
 - `insecure` option allows us to terminate TLS at the edge, and expose argocd using a VirtualService instead of port-forward commands
 
 ### access argoCD UI
-using port forward:
+using port forward, access argocd at localhost:8080 if using the default overlay and localhost:8080/argo if using the insecure overlay
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
