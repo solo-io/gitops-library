@@ -23,11 +23,11 @@ spec:
               # custom rules section
               #
               # -=[ Deny when a semi-colon is found in the 'ip' parameter ]=-
-              SecRule ARGS:ip ";" "t:none,log,deny,msg:'semi colon test',id:2"
+              SecRule ARGS:ip ";" "t:none,log,deny,msg:'semi-colon detected in ip parameter',id:2"
               #
               # 
               # -=[ block incoming request if argument `?param1=test` ]=-
-              SecRule ARGS:param1 "test" "id:1,deny,msg:'this',msg:'is',msg:'a',msg:'test'"
+              SecRule ARGS:param1 "test" "id:1,deny,msg:'failed test - param1=test'"
               #
               # 
               # -=[ block incoming request if header is set to User-Agent: scammer ]=-
@@ -57,13 +57,14 @@ spec:
               # risk country codes. These countries have to be defined in the variable
               # tx.high_risk_country_codes via their ISO 3166 two-letter country code:
               # https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
-              SecAction \
-               "id:900600,\
-                phase:1,\
-                nolog,\
-                pass,\
-                t:none,\
-                setvar:'tx.high_risk_country_codes=UA ID YU LT EG RO BG TR RU PK MY CN'"
+              #SecAction \
+              # "id:900600,\
+              #  phase:1,\
+              #  nolog,\
+              #  pass,\
+              #  t:none,\
+              #  msg:'requests from this country code are not allowed',\
+              #  setvar:'tx.high_risk_country_codes=UA ID YU LT EG RO BG TR RU PK MY CN'"
               #
               #
               # -- [[ End of setup ]] --------------------------------------------------------
