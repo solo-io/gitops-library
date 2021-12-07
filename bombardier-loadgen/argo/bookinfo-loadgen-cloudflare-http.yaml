@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-loadgen-cloudflare
+  name: bookinfo-loadgen-cloudflare-http
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bombardier-loadgen/overlay/bookinfo-loadgen-cloudflare/
+    path: bombardier-loadgen/overlay/bookinfo-loadgen-cloudflare-http/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
