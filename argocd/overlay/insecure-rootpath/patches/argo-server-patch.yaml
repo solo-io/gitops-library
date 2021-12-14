@@ -37,6 +37,10 @@ spec:
         - --staticassets
         - /shared/app
         - --insecure
+        - --basehref
+        - /argo
+        - --rootpath
+        - /argo
         env:
         - name: ARGOCD_SERVER_INSECURE
           valueFrom:

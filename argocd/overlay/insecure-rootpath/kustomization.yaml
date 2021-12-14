@@ -6,7 +6,7 @@ kind: Kustomization
 namespace: argocd
 
 bases: 
-- ../default/
+- ../insecure/
 
 patchesStrategicMerge:
 - patches/argo-server-patch.yaml
