@@ -32,10 +32,22 @@ spec:
         ratelimitServerConfigSelector:
           namespaces:
           - gloo-mesh
+# ---------------- add header config -----------------
+      headerManipulation:
+        appendResponseHeaders:
+          "x-name": "foo"
+          "x-type": "verified"
+# ---------------- add fixed delay config -----------------
+      faultInjection:
+        fixedDelay: "2s"
+        percentage: 100
+# ---------------- add retry config -----------------
+      retries: 
+        attempts: 3
 # -------------------------------------------------------
     routeAction:
       destinations:
       - kubeService:
-          clusterName: cluster1
+          clusterName: cluster2
           name: productpage
           namespace: default
