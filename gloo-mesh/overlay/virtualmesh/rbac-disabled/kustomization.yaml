@@ -7,3 +7,4 @@ bases:
 
 patchesStrategicMerge:
 - patch/virtualmesh-selectors.yaml
+- patch/rbac-disabled.yaml
