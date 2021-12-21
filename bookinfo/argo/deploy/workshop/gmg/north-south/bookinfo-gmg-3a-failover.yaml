@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/gloo-mesh-workshop/gmg/1b-simple-cluster2/
+    path: bookinfo/overlay/gloo-mesh-workshop/gmg/north-south/3a-failover/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

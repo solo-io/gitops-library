@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/gloo-mesh-workshop/gmg/2a-multi/
+    path: bookinfo/overlay/gloo-mesh-workshop/gmg/north-south/5a-addheader-rt/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/gloo-mesh-workshop/gmg/2c-multi/
+    path: bookinfo/overlay/gloo-mesh-workshop/gmg/east-west/ksvc-selector/2a-retries-reviews-ksvc/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
