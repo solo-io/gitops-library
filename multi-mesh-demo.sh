@@ -102,21 +102,21 @@ kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml -
 #kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context ${cluster1_context}
 
 # deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster only (no reviews should be available)
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1a.yaml --context ${mgmt_context}
+#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1a-simple.yaml --context ${mgmt_context}
 
 # configure routetable to point at cluster2 services instead (all reviews should be showing)
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1b.yaml --context ${mgmt_context}
+#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1b-simple.yaml --context ${mgmt_context}
 
 # -------------------- demo multi destination --------------------------------------------------
 
 # run 'kubectl kustomize bookinfo/overlay/gloo-mesh-workshop/gmg/2a-multi' to view weighted destination config
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2a-multi.yaml --context ${mgmt_context}
+#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2a-multi.yaml --context ${mgmt_context}
 
 # shift traffic back to cluster1
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
+#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
 
 # allow traffic to flow to productpage on both cluster1 and cluster2
-#kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context ${mgmt_context}
+#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context ${mgmt_context}
 
 # ----------------------------------------------------------------------
 

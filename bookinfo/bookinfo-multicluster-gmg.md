@@ -109,13 +109,13 @@ productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 ## 1a - deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster (no reviews should be available)
 Note that the config below is deployed only to the `mgmt` context where our Gloo Mesh control plane resides, rather than having to manage deployments to each cluster individually. Gloo Mesh will take care of the translation into Istio CRs in each individual cluster, reducing complexity and configuration of the system.
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1a.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1a-simple.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `1a-simple-cluster1` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/1a-simple-cluster1
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/1a-simple-cluster1
 ```
 
 Because our `RouteAction` points both ingress gateways to `cluster1` as our kube service destination and there are no reviews services available on `cluster1` we should expect to see an error when fetching product reviews when navigating to the ingressgateway of either cluster
@@ -169,13 +169,13 @@ If you navigate back to the gloo mesh dashboard graph we should see that traffic
 
 ## 1b - shift traffic for both clusters to reviews on cluster2
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-simple-1b.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1b-simple.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `1b-simple-cluster2` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/1b-simple-cluster2
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/1b-simple-cluster2
 ```
 
 Because our `RouteAction` points to `cluster2` as our kube service destination and `reviews-v1`, `reviews-v2`, and `reviews-v3` services are available on `cluster2` we should expect to see all three reviews available on either ingress gateway.
@@ -200,13 +200,13 @@ If you navigate back to the gloo mesh dashboard graph we should see that traffic
 
 ## 2 - Multi Weighted Destination
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2a-multi.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2a-multi.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `2a-multi` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/2a-multi
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2a-multi
 ```
 
 You can see the weights of the `trafficShift` policies below, since there are no reviews services available on `cluster1` we have decided to direct traffic to `cluster2` resources with `reviews-v1` (40%), `reviews-v2` (30%), and `reviews-v3` (30%).
@@ -290,7 +290,7 @@ reviews-v2-6c5bf657cf-7nmf4       2/2     Running   0          27s
 
 Now we can incrementally shift traffic back to `cluster1` by using the weighted destinations and subsets. For example, the overlay `2b-multi` demonstrates this
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2b-multi
 ```
 
 See the weighted destinations below where we let `reviews-v1` service in `cluster1` to take 25% of the traffic
@@ -345,7 +345,7 @@ policy:
 ### trafficshift back to cluster1
 Deploy this trafficshift overlay to shift the weights incrementally back to cluster1 as described above
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2b-multi.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2b-multi.yaml --context mgmt
 ```
 
 ### validate
@@ -375,13 +375,13 @@ routeAction:
 
 Deploy the `2c-multi` trafficshift overlay to allow traffic to flow to productpage on both cluster1 and cluster2
 ```
-kubectl apply -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context mgmt
+kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the overlay configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/2c-multi
+kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2c-multi
 ```
 
 In the `RouteTable` object we should see that we have patched the `routeAction` which now selects `productpage` service from both `cluster1` and `cluster2` to route to
@@ -465,7 +465,7 @@ kubectl delete -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgatew
 
 To remove the Gloo Mesh Gateway configs
 ```
-kubectl delete -f argo/deploy/workshop/gmg/bookinfo-gmg-2c-multi.yaml --context mgmt
+kubectl delete -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context mgmt
 ``` 
 
 To remove bookinfo application
