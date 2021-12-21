@@ -5,4 +5,4 @@ bases:
 - ../../../north-south/1b-simple-cluster2/
 
 resources:
-- trafficpolicy.yaml
+- delay-trafficpolicy.yaml

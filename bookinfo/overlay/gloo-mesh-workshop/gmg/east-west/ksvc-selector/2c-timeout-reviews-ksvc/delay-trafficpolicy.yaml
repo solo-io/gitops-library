@@ -1,0 +1,22 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: TrafficPolicy
+metadata:
+  namespace: gloo-mesh
+  name: add-delay-policy
+spec:
+  destinationSelector:
+  - kubeServiceRefs:
+      services:
+        #- clusterName: cluster2
+        #  name: details
+        #  namespace: default
+        #- clusterName: cluster2
+        #  name: reviews
+        #  namespace: default
+        - clusterName: cluster2
+          name: ratings
+          namespace: default
+  policy:
+    faultInjection:
+        fixedDelay: "4s"
+        percentage: 100
