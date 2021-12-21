@@ -78,6 +78,7 @@ kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context ${mgmt_contex
 
 # create virtualmesh
 kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_context}
+#kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-disabled.yaml --context ${mgmt_context}
 
 # deploy bookinfo app into ${cluster1_context} and ${cluster2_context}
 cd ../bookinfo/
