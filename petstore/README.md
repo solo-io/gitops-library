@@ -38,7 +38,7 @@ resources:
 ## Publish your petstore API
 Good thing is, everything is already packaged up in the form of a single argocd application!
 ```
-kubectl apply -f argo/petstore-apiproduct-1-0-2.yaml
+kubectl apply -f argo/petstore-apiproduct-1-0-2-edge.yaml
 ```
 
 ## View your custom resources
