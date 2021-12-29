@@ -68,6 +68,10 @@ If you would like to run through the Gloo Mesh multicluster demo end-to-end, you
 ./multi-mesh-demo.sh $LICENSE_KEY
 ```
 
+Resource Requirements:
+- This demo has been tested on 1x `n2-standard-4` instance for `mgmt` cluster
+- This demo has been tested on 2x `n2-standard-4` instances for `cluster1` and `cluster2`
+
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Mesh license key
 - By default, the script expects to deploy into three clusters named `mgmt`, `cluster1`, and `cluster2`. This is configurable by changing the variables in the `gm-multicluster-script.sh`. A check is done to ensure that the defined contexts exist before proceeding with the installation.
@@ -77,6 +81,9 @@ If you would like to run through the Gloo Edge single cluster demo end-to-end, y
 ```
 ./edge-demo.sh $LICENSE_KEY
 ```
+
+Resource Requirements:
+- This demo has been tested on 2x `n2-standard-4` instances
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
@@ -88,6 +95,9 @@ If you would like to run through the Gloo Edge single cluster demo end-to-end, y
 ```
 ./portal-edge-demo.sh $LICENSE_KEY
 ```
+
+Resource Requirements:
+- This demo has been tested on 2x `n2-standard-4` instances
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
