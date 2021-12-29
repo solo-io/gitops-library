@@ -108,7 +108,7 @@ bases:
 - ../../base/default/
 ```
 
-We then have to patch over the `${URL}` parameter, in our case `http://istio-ingressgateway.istio-system/productpage`, and provide the reference in our kustomization. In our case we will be using `patchesStrategicMerge` feature in kustomize
+We then have to patch over the `${URL}` parameter, in our case `http://istio-ingressgateway.istio-system/productpage`, and provide the reference in our kustomization. In our case we will be using `patchesStrategicMerge` feature in kustomize. This use-case is simple, but essentially anything under `spec:` in the manifest can be configured with a patch (or multiple layered patches provided as a list). Simplifying a single mono-patch into multiple-patches can help to simplify readability as well as potentially reusability in certain cases.
 ```
 patchesStrategicMerge:
 - patch/cmd-patch.yaml
