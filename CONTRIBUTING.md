@@ -1,5 +1,5 @@
 # How to Contribute to gitops-library
-This guide will walk through a couple examples on how to contribute your own examples to gitops-library
+This guide will walk through an example on how to contribute your own examples to gitops-library
 
 Preference is to have the root-level directory specify the type of technology/application to be deployed (i.e. cert-manager, istio, gloo-mesh, etc.)
 
@@ -27,7 +27,7 @@ Overlays do exactly as the name, and layer over base manifests and can additiona
 The `bombardier-loadgen` directory is a simple example containing just a single deployment that can help illustrate how to configure a new overlay
 
 Navigate to the `bombardier-loadgen` directory you will see the standard structure containing `argo`, `base`, and `overlay` directories
-![](https://github.com/solo-io/gitops-library/blob/main/images/contribute1.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/contributing1.png)
 
 In the `base` directory lives our base `bombardier.yaml` deployment and a `kustomization.yaml` that references it
 ```
@@ -69,7 +69,7 @@ As you can see, there is a variable `${URL}` that is expected to be patched in o
 
 ### Navigate to overlay directory
 If you navigate to the `bombardier-loadgen/overlay` directory you should see a few examples already available to be consumed
-![](https://github.com/solo-io/gitops-library/blob/main/images/contribute2.png)
+![](https://github.com/solo-io/gitops-library/blob/main/images/contributing2.png)
 
 Lets take a look at the `bombardier-loadgen/overlay/bookinfo-loadgen-istio-ingressgateway` overlay. This overlay is pretty simple:
 
