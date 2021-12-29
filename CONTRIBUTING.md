@@ -191,4 +191,4 @@ Taking a look at the above, we are doing the following:
 - referencing a github `repoURL: https://github.com/solo-io/gitops-library`
 - defining the path to our overlay `path: bombardier-loadgen/overlay/bookinfo-loadgen-istio-ingressgateway/`
 
-And thats it! Now if you have argocd installed on your cluster you can deploy your app which will be synced to git using `kubectl apply -f bookinfo-loadgen-istio-ingressgateway.yaml`
+And thats it! Once you have verified that this is all correct, push the updates to the repo. Once you have argocd installed on your cluster you can deploy your app which will be synced to git using `kubectl apply -f bookinfo-loadgen-istio-ingressgateway.yaml`
