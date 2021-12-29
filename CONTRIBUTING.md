@@ -9,7 +9,9 @@ Nested in each should be three directories:
 - `base` - provide the base manifests
 
 ## Kustomize Structure Overview
-This repo is structured using kustomize bases and overlays to foster re-use of configuration where possible. 
+This repo is structured using kustomize bases and overlays to foster re-use of configuration where possible. Kustomize has been a stable feature in Kubernetes since pre-1.14 and more details can be found [here](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
+
+[Examples of Kustomizable features](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#kustomize-feature-list)
 
 ### base
 base manifests are organized here. All overlay layers should inherit their configuration from the base manifests. Leave out instance-specific or environment-specific config out of the base manifests such as namespaces as these will be added/patched in the overlays. This helps us to preserve base configurations for reuse and to avoid configuration drift.
