@@ -57,7 +57,7 @@ cd argocd
 
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
-kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
+kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}-waf-al.yaml
 
 # wait for gloo-edge rollout
 ../tools/wait-for-rollout.sh deployment gateway gloo-system 10
@@ -83,6 +83,8 @@ kubectl apply -f argo/virtualservice/wildcard/edge-demo-http-vs.yaml
 cd ../bookinfo/
 kubectl apply -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
 kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
+../tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
+../tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-beta 10
 
 # expose bookinfo on https
 kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
@@ -90,10 +92,14 @@ kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
 #kubectl apply -f argo/virtualservice/cloudflare-edge/3-bookinfo-tls-multi-vs.yaml
 
 # sleep 20 seconds and set up keycloak on http
-sleep 20
+#sleep 20
+
+# set up keycloak users/groups
 ../keycloak/scripts/keycloak-setup-virtualservice.sh
 # for cloudflare keycloak setup
 #../keycloak/scripts/keycloak-setup-virtualservice-cloudflare-https.sh
+# for k3d + MetalLB setup on cluster1
+#../keycloak/scripts/keycloak-setup-virtualservice-k3d-metallb-cluster1.sh
 
 # echo proxy url
 echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
