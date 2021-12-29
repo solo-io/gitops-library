@@ -93,3 +93,6 @@ Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
 - The script assumes the current context as the one to be used for deploy. Use `kubectl config use-context <context>` to switch to the proper cluster that you desire
 - If there is no current-context defined, the script will exit.
+
+## Contributing
+Interested in contributing an example configuration to gitops-library? Take a look at the example walkthrough in the `CONTRIBUTING.md` for more details on structure and workflow
