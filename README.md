@@ -1,6 +1,6 @@
 # gitops-library
  
-Disclaimer: This is a work in progress, which means things may change as improvements and additions are made. Feel free to try the labs, ideally first locally using `KinD` or `k3d` for example, before testing on a cloud deployment like `GKE` or `EKS`.
+Disclaimer: This is a work in progress, which means things may change as improvements and additions are made. Feel free to try the labs, ideally first locally using `KinD` or `k3d` or a fresh cloud deployment (if possible). The instruction set has been tested successfully with `GKE`, `EKS`, and `AKS`.
 
 Blog to likely follow, so stay tuned :)
 
@@ -69,8 +69,8 @@ If you would like to run through the Gloo Mesh multicluster demo end-to-end, you
 ```
 
 Resource Requirements:
-- This demo has been tested on 1x `n2-standard-4` instance for `mgmt` cluster
-- This demo has been tested on 2x `n2-standard-4` instances for `cluster1` and `cluster2`
+- This demo has been tested on 1x `n2-standard-4` (gke), `m5.xlarge` (aws), or `Standard_DS3_v2` (azure) instance for `mgmt` cluster
+- This demo has been tested on 2x `n2-standard-4` (gke), `m5.xlarge` (aws), or `Standard_DS3_v2` (azure) instances for `cluster1` and `cluster2`
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Mesh license key
@@ -83,7 +83,7 @@ If you would like to run through the Gloo Edge single cluster demo end-to-end, y
 ```
 
 Resource Requirements:
-- This demo has been tested on 1x `n2-standard-4` instances
+- This demo has been tested on 1x `n2-standard-4` (gke), `m5.xlarge` (aws), or `Standard_DS3_v2` (azure) instances
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
@@ -100,7 +100,7 @@ If you would like to run through the Gloo Edge single cluster demo end-to-end, y
 ```
 
 Resource Requirements:
-- This demo has been tested on 1x `n2-standard-4` instances
+- This demo has been tested on 1x `n2-standard-4` (gke), `m5.xlarge` (aws), or `Standard_DS3_v2` (azure) instances
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
