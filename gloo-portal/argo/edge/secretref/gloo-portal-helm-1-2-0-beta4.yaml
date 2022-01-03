@@ -13,10 +13,14 @@ spec:
   source:
     chart: gloo-portal
     helm:
-      values: |2-
+      values: |
         glooEdge:
           enabled: true
-        licenseKey:
+        istio:
+          enabled: false
+        glooMesh:
+          enabled: false
+        licenseKey: 
           secretRef:
             name: license
             namespace: gloo-system
