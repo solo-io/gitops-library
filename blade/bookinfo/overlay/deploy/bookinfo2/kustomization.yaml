@@ -5,7 +5,7 @@ kind: Kustomization
 bases:
 - ../../../base/deploy/
 
-# list of resources to be Applied
-resources:
+# list of resources to be patched
+patchesStrategicMerge:
 - patch/productpage-beta-deployment.yaml
 - patch/reviews-v2-deployment.yaml
