@@ -8,4 +8,7 @@ resources:
 - bookinfo-vs.yaml
 - dex-cert.yaml
 - dex-vs.yaml
+
+
+patchesStrategicMerge:
 - gateway-proxy-svc.yaml

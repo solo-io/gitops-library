@@ -18,7 +18,16 @@ spec:
     - matchers:
       - prefix: /
       routeAction:
-        single:
-          upstream:
-            name: bookinfo-productpage-9080
-            namespace: gloo-system
+        multi:
+        multi:
+          destinations:
+          - weight: 50
+            destination:
+              upstream:
+                name: bookinfo-productpage-9080
+                namespace: gloo-system
+          - weight: 50
+            destination:
+              upstream:
+                name: bookinfo-productpage-v2-9080
+                namespace: gloo-system

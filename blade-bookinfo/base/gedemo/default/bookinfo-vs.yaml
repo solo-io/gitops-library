@@ -1,24 +1,24 @@
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
-  name: dex
+  name: bookinfo
   namespace: gloo-system
 spec:
-  displayName: dex
+  displayName: bookinfo
   sslConfig:
     secretRef:
-      name: dex
+      name: bookinfo
       namespace: gloo-system
     sniDomains:
-    - dex.jad.solo.io
+    - ${BOOKINFO_URL}
   virtualHost:
     domains:
-    - dex.jad.solo.io
+    - ${BOOKINFO_URL}
     routes:
     - matchers:
       - prefix: /
       routeAction:
         single:
           upstream:
-            name: dex-dex-5556
+            name: bookinfo-productpage-9080
             namespace: gloo-system

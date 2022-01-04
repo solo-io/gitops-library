@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: argocd
+  name: dex
   namespace: gloo-system
 spec:
-  secretName: argocd
-  commonName: argocd.jad.solo.io
+  secretName: dex
+  commonName: ${DEX_URL}
   dnsNames: 
-    - argocd.jad.solo.io
+    - ${DEX_URL}
   issuerRef:
-    name: letsencrypt-prod
+    name: ${CERT_MANAGER_ISSUER_NAME}
     kind: ClusterIssuer

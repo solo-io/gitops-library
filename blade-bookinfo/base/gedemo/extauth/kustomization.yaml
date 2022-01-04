@@ -3,8 +3,6 @@ kind: Kustomization
 
 resources:
 - authconfig.yaml
-
-bases:
 - ../../base/gloo/
 
 patchesStrategicMerge:

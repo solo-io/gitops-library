@@ -10,7 +10,7 @@ spec:
       namespace: gloo-system
   virtualHost:
     domains:
-    - argocd.jad.solo.io
+    - ${ARGOCD_URL}
     routes:
     - matchers:
       - prefix: /
@@ -30,12 +30,12 @@ metadata:
 spec:
   virtualHost:
     domains:
-    - argocd.jad.solo.io
+    - ${ARGOCD_URL}
     routes:
     - matchers:
       - prefix: /
       redirectAction:
-        hostRedirect: argocd.jad.solo.io
+        hostRedirect: ${ARGOCD_URL}
         httpsRedirect: true
 
 ---
@@ -52,7 +52,7 @@ spec:
       namespace: gloo-system
   virtualHost:
     domains:
-    - argocd.jad.solo.io:443
+    - ${ARGOCD_URL}:443
     routes:
     - matchers:
       - prefix: /

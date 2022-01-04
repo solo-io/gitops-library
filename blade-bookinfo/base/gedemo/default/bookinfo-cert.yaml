@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: dex
+  name: bookinfo
   namespace: gloo-system
 spec:
-  secretName: dex
-  commonName: dex.jad.solo.io
+  secretName: bookinfo
+  commonName: ${BOOKINFO_URL}
   dnsNames: 
-    - dex.jad.solo.io
+    - ${BOOKINFO_URL}
   issuerRef:
-    name: letsencrypt-prod
+    name: ${CERT_MANAGER_ISSUER_NAME}
     kind: ClusterIssuer

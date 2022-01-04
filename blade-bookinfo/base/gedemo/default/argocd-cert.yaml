@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: bookinfo
+  name: argocd
   namespace: gloo-system
 spec:
-  secretName: bookinfo
-  commonName: bookinfo.jad.solo.io
+  secretName: argocd
+  commonName: ${ARGOCD_URL}
   dnsNames: 
-    - bookinfo.jad.solo.io
+    - ${ARGOCD_URL}
   issuerRef:
-    name: letsencrypt-prod
+    name: ${CERT_MANAGER_ISSUER_NAME}
     kind: ClusterIssuer

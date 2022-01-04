@@ -19,6 +19,7 @@ resources:
 - reviews-v3-deployment.yaml
 - reviews-service.yaml
 - reviews-serviceacount.yaml
-- bookinfo-certificate.yaml
+- productpage-v2-deployment.yaml
+- productpage-v2-service.yaml
 
 namespace: bookinfo

@@ -1,0 +1,12 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../../base/deploy/
+
+# list of resources to be Applied
+resources:
+- reviews-v2-deployment.yaml
+- reviews-v3-deployment.yaml
+
