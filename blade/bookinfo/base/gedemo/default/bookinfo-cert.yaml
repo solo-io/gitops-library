@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bookinfo
+  namespace: gloo-system
+spec:
+  secretName: bookinfo
+  commonName: ${BOOKINFO_URL}
+  dnsNames: 
+    - ${BOOKINFO_URL}
+  issuerRef:
+    name: ${CERT_MANAGER_ISSUER_NAME}
+    kind: ClusterIssuer

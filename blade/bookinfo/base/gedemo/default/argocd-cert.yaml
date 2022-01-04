@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd
+  namespace: gloo-system
+spec:
+  secretName: argocd
+  commonName: ${ARGOCD_URL}
+  dnsNames: 
+    - ${ARGOCD_URL}
+  issuerRef:
+    name: ${CERT_MANAGER_ISSUER_NAME}
+    kind: ClusterIssuer

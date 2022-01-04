@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- authconfig.yaml
+- ../../base/gloo/
+
+patchesStrategicMerge:
+- patches/extauth.yaml
