@@ -18,5 +18,4 @@ resources:
 - reviews-v3-deployment.yaml
 - reviews-service.yaml
 - reviews-serviceacount.yaml
-- productpage-beta-deployment.yaml
-- productpage-beta-service.yaml
+
