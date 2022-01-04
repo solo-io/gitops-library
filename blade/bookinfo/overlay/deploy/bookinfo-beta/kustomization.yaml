@@ -6,5 +6,5 @@ bases:
 - ../../../base/deploy/
 
 patchesStrategicMerge:
-- productpage-deployment.yaml
+- patch/productpage-deployment.yaml
 

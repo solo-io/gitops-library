@@ -7,5 +7,5 @@ bases:
 
 # list of resources to be Applied
 resources:
-- productpage-beta-deployment.yaml
-- reviews-v2-deployment.yaml
+- patch/productpage-beta-deployment.yaml
+- patch/reviews-v2-deployment.yaml

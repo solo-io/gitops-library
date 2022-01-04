@@ -7,6 +7,6 @@ bases:
 
 # list of resources to be Applied
 patchesStrategicMerge:
-- productpage-beta-deployment.yaml
-- reviews-v3-deployment.yaml
+- patch/productpage-beta-deployment.yaml
+- patch/reviews-v3-deployment.yaml
 
