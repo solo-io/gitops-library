@@ -4,7 +4,6 @@ kind: Kustomization
 
 # list of resources to be Applied
 resources:
-- bookinfo-namespace.yaml
 - details-deployment.yaml
 - details-service.yaml
 - details-serviceaccount.yaml
@@ -15,11 +14,5 @@ resources:
 - ratings-service.yaml
 - ratings-serviceaccount.yaml
 - reviews-v1-deployment.yaml
-- reviews-v2-deployment.yaml
-- reviews-v3-deployment.yaml
 - reviews-service.yaml
 - reviews-serviceacount.yaml
-- productpage-v2-deployment.yaml
-- productpage-v2-service.yaml
-
-namespace: bookinfo
