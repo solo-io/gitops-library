@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-beta
+  name: bookinfo2
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -13,7 +13,7 @@ spec:
     path: blade-bookinfo/overlay/deploy/bookinfo2/
   destination:
     server: https://kubernetes.default.svc
-    namespace: bookinfo-beta
+    namespace: bookinfo2
   syncPolicy:
     automated:
       prune: false
