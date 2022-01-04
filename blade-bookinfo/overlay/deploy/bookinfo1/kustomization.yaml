@@ -8,5 +8,3 @@ bases:
 # list of resources to be Applied
 resources:
 - reviews-v2-deployment.yaml
-
-namespace: bookinfo1
