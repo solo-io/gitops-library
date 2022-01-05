@@ -1,9 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-- ../../../base/deploy/
-
 resources:
+- ../../../base/deploy/
 - reviews-v1.yaml
 - reviews-v3.yaml

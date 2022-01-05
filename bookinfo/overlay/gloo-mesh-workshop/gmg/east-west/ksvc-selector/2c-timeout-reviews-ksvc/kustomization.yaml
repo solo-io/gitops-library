@@ -1,9 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-- ../../../north-south/1b-simple-cluster2/
-
 resources:
+- ../../../north-south/1b-simple-cluster2/
 - delay-trafficpolicy.yaml
 - timeout-trafficpolicy.yaml
