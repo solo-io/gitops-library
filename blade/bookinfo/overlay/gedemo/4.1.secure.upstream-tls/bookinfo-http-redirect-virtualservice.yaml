@@ -1,0 +1,15 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-http-redirect
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - bookinfo.jad.solo.io
+    routes:
+    - matchers:
+      - prefix: /
+      redirectAction:
+        hostRedirect: bookinfo.jad.solo.io
+        httpsRedirect: true
