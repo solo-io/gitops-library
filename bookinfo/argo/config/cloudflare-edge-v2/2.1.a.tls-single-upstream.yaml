@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/cloudflare-edge-v2/2.6.a-transformation/
+    path: bookinfo/overlay/config/edge-virtualservice/cloudflare-edge-v2/2.1.a.tls-single-upstream/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/cloudflare-edge-v2/2.2.b-tls-multiple-upstream/
+    path: bookinfo/overlay/config/edge-virtualservice/cloudflare-edge-v2/2.3.a.tls-extauth-keycloak/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/cloudflare-edge-v2/1.2.a-route-multiple-upstream/
+    path: bookinfo/overlay/config/edge-virtualservice/cloudflare-edge-v2/2.4.a.vhost-ratelimit/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
