@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-vs-istio
+  name: bookinfo-v1-istio
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
