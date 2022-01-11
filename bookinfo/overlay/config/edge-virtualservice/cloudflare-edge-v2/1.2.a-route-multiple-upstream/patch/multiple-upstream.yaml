@@ -18,6 +18,6 @@ spec:
             weight: 5
           - destination:
               upstream:
-                name: bookinfo-beta-productpage-9080
+                name: bookinfo-v2-productpage-9080
                 namespace: gloo-system
             weight: 5
