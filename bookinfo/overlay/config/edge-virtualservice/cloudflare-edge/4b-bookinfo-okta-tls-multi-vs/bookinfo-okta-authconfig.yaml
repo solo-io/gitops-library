@@ -1,0 +1,18 @@
+apiVersion: enterprise.gloo.solo.io/v1
+kind: AuthConfig
+metadata:
+  name: bookinfo-okta-oidc
+  namespace: gloo-system
+spec:
+  configs:
+  - oauth2:
+      oidcAuthorizationCode:
+        appUrl: https://bookinfo.kapoozi.com
+        callbackPath: /callback
+        clientId: 0oa3is66effIOsv3r5d7
+        clientSecretRef:
+          name: bookinfo-okta-client-secret
+          namespace: gloo-system
+        issuerUrl: https://dev-22653158.okta.com/oauth2/default
+        scopes:
+        - email

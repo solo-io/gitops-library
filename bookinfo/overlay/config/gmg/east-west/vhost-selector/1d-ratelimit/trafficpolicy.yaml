@@ -1,0 +1,21 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: TrafficPolicy
+metadata:
+  namespace: gloo-mesh
+  name: add-ratelimit-policy
+spec:
+  routeSelector:
+  - virtualHostRefs:
+    - name: demo-virtualhost
+      namespace: gloo-mesh
+  policy:
+    rateLimit:
+      ratelimitServerConfigSelector:
+        namespaces:
+        - gloo-mesh
+      raw:
+        rateLimits:
+        - actions:
+          - genericKey:
+              descriptorValue: counter
+    rateLimitSettings: {}
