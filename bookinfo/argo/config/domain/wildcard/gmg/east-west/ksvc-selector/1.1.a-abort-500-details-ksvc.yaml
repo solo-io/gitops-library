@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/wildcard/gmg/east-west/1.1.a-abort-500-details-ksvc/
+    path: bookinfo/overlay/config/domain/wildcard/gmg/east-west/ksvc-selector/1.1.a-abort-500-details-ksvc/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-mesh
