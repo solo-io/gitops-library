@@ -1,0 +1,28 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: AccessPolicy
+metadata:
+  name: bookinfo-productpage-details-reviews-accesspolicy
+  namespace: gloo-mesh
+spec:
+  destinationSelector:
+  - kubeServiceMatcher:
+      labels:
+        service: details
+      namespaces:
+      - default
+  - kubeServiceMatcher:
+      labels:
+        service: reviews
+      namespaces:
+      - default
+  sourceSelector:
+  - kubeServiceAccountRefs:
+      serviceAccounts:
+      - clusterName: cluster1
+        name: bookinfo-productpage
+        namespace: default
+  - kubeServiceAccountRefs:
+      serviceAccounts:
+      - clusterName: cluster2
+        name: bookinfo-productpage
+        namespace: default

@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- bookinfo-gateway-productpage-accesspolicy.yaml
+- bookinfo-productpage-details-reviews-accesspolicy.yaml
+- bookinfo-reviews-ratings-accesspolicy.yaml

@@ -4,6 +4,3 @@ kind: Kustomization
 
 resources:
 - addons-accesspolicy/
-- bookinfo-gateway-productpage-accesspolicy/
-- bookinfo-productpage-details-reviews-accesspolicy/
-- bookinfo-reviews-ratings-accesspolicy/
