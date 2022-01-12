@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: relay-gateway
+  namespace: istio-system
+spec:
+  selector:
+    service.istio.io/canonical-name: istio-ingressgateway-ew
+  servers:
+    hosts:
+    - "relay.jad.solo.io"
+   
+  

@@ -1,0 +1,11 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- reviews-service.yaml
+- reviews-serviceacount.yaml
+- reviews-v3-deployment.yaml
+- bookinfo-namespace.yaml
+
+namespace: bookinfo

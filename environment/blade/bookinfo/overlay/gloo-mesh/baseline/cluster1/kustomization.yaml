@@ -1,0 +1,16 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# list of resources to be applied
+resources:
+- ../../../../base/gloo-mesh/cluster1/
+- ../../../app/bookinfo/
+
+# list of resources to be patched
+patchesStrategicMerge:
+- patch/istio-ingressgateway-ns-service.yaml
+- patch/bookinfo-namespace-istio-injection.yaml
+
+
+

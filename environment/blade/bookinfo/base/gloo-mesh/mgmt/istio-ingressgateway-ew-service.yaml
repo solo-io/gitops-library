@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz/ready
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "15021"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: *
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+  labels:
+    app: istio-ingressgateway
+    ingressgateway.istio.io/direction: east-west
+    ingressgateway.istio.io/type: internal
+    istio: ingressgateway
+    istio.io/rev: default
+    release: istio
+  name: istio-ingressgateway-ew
+spec:
+  ports:
+  - name: status-port
+    port: 15021
+    protocol: TCP
+    targetPort: 15021
+  - name: http2
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  - name: relay
+    port: 9900
+    protocol: TCP
+    targetPort: 9900
+  selector:
+    app: istio-ingressgateway
+    istio: ingressgateway
+    service.istio.io/canonical-name: istio-ingressgateway-ew
+  type: LoadBalancer

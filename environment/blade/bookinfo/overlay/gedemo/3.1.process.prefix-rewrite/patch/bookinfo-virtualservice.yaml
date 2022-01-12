@@ -1,0 +1,26 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - bookinfo.jad.solo.io
+    routes:
+    - matchers:
+      - exact: /
+      routeAction:
+        single:
+          upstream:
+            name: bookinfo-productpage-9080
+            namespace: gloo-system
+      options:
+        prefixRewrite: /productpage
+    - matchers:    
+      - prefix: /
+      routeAction:
+        single:
+          upstream:
+            name: bookinfo-productpage-9080
+            namespace: gloo-system

@@ -1,0 +1,11 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../0.baseline
+- ../../app/bookinfo-beta/
+
+# list of resources to be patched
+patchesStrategicMerge:
+- patch/bookinfo-virtualservice.yaml
