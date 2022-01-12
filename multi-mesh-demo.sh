@@ -49,7 +49,7 @@ kubectl apply -f argo/deploy/${istio_overlay}/operator/istio-operator-${istio_ov
 kubectl apply -f argo/deploy/${istio_overlay}/operator/istio-operator-${istio_overlay}.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster1_context}
-../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster2_context}
+#../tools/wait-for-rollout.sh deployment istio-operator istio-operator 10 ${cluster2_context}
 
 kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-cluster1-${istio_overlay}.yaml --context ${cluster1_context}
 kubectl apply -f argo/deploy/${istio_overlay}/gm-istio-profiles/gm-istio-workshop-cluster2-${istio_overlay}.yaml --context ${cluster2_context}
@@ -74,7 +74,8 @@ kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-dataplane-addons.yaml --con
 ../tools/wait-for-rollout.sh deployment ext-auth-service gloo-mesh-addons 10 ${cluster2_context}
 
 # deploy gloo-mesh controlplane addons (accesspolicy)
-kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context ${mgmt_context}
+#kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context ${mgmt_context}
+kubectl apply -k overlay/controlplane-config/
 
 # create virtualmesh
 kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_context}
@@ -82,44 +83,17 @@ kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_c
 
 # deploy bookinfo app into ${cluster1_context} and ${cluster2_context}
 cd ../bookinfo/
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context ${cluster2_context}
+kubectl apply -f argo/app/namespace/default/mesh/1.2.a-reviews-v1-v2.yaml --context ${cluster1_context}
+kubectl apply -f argo/app/namespace/default/mesh/1.3.a-reviews-all.yaml --context ${cluster2_context}
 
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster1_context}
 ../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster2_context}
 
-# -------------------- demo default istio ingressgateway + traffic shift --------------------------------------------------
+# north/south ingress
+kubectl apply -f argo/config/domain/wildcard/gmg/north-south/1.1.b-route-cluster2.yaml --context ${mgmt_context}
 
-# deploy default istio-ingressgateway and virtualservice for cluster1 and cluster2
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context ${cluster2_context}
-
-# deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context ${mgmt_context}
-
-# -------------------- demo gloo mesh gateway --------------------------------------------------
-
-# recover reviews-v1 and reviews-v2 in cluster1
-#kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context ${cluster1_context}
-
-# deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster only (no reviews should be available)
-#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1a-simple.yaml --context ${mgmt_context}
-
-# configure routetable to point at cluster2 services instead (all reviews should be showing)
-#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1b-simple.yaml --context ${mgmt_context}
-
-# -------------------- demo multi destination --------------------------------------------------
-
-# run 'kubectl kustomize bookinfo/overlay/gloo-mesh-workshop/gmg/2a-multi' to view weighted destination config
-#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2a-multi.yaml --context ${mgmt_context}
-
-# shift traffic back to cluster1
-#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2b-multi.yaml --context ${mgmt_context}
-
-# allow traffic to flow to productpage on both cluster1 and cluster2
-#kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context ${mgmt_context}
-
-# ----------------------------------------------------------------------
+# east/west trafficpolicy
+kubectl apply -f argo/config/domain/wildcard/gmg/east-west/vhost-selector/1.3.a-ratelimit-vhost.yaml --context ${mgmt_context}
 
 # deploy bombardier loadgen on istio-ingressgateway on cluster1 and cluster2
 cd ../bombardier-loadgen
@@ -132,12 +106,12 @@ echo "access gloo mesh dashboard:"
 echo "kubectl port-forward -n gloo-mesh svc/dashboard 8090 --context ${mgmt_context}"
 echo 
 echo "access argocd dashboard:"
-echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 --context <desired_context>"
+echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 --context ${mgmt_context}"
 echo
 echo "You can use the following command to validate which cluster handles the requests:"
 echo "kubectl --context ${cluster1_context} logs -l app=reviews -c istio-proxy -f"
 echo "kubectl --context ${cluster2_context} logs -l app=reviews -c istio-proxy -f"
 echo
 echo "Continue on with bookinfo gloo-mesh-gateway lab in gitops-library git repo:"
-echo "https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-multicluster-gmg.md"
+echo "cd bookinfo/argo/config/domain/wildcard/gmg/"
 echo 
