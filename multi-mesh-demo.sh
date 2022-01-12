@@ -74,8 +74,7 @@ kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-dataplane-addons.yaml --con
 ../tools/wait-for-rollout.sh deployment ext-auth-service gloo-mesh-addons 10 ${cluster2_context}
 
 # deploy gloo-mesh controlplane addons (accesspolicy)
-#kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context ${mgmt_context}
-kubectl apply -k overlay/controlplane-config/
+kubectl apply -f argo/gloo-mesh-controlplane-config.yaml --context ${mgmt_context}
 
 # create virtualmesh
 kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_context}
