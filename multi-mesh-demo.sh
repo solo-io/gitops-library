@@ -4,8 +4,8 @@ license_key=$1
 cluster1_context="cluster1"
 cluster2_context="cluster2"
 mgmt_context="mgmt"
-gloo_mesh_overlay="1-2-0-rc3"
-meshctl_version="v1.2.0-rc3"
+gloo_mesh_overlay="1-2-7"
+meshctl_version="v1.2.7"
 istio_overlay="1-11-4"
 
 # check to see if defined contexts exist
