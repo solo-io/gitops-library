@@ -87,4 +87,4 @@ kubectl apply -f argo/config/domain/wildcard/edge/2.2.a-tls-multiple-upstream.ya
 # echo proxy url
 echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
 echo 
-echo "additional gloo edge feature demos can be found here: cd argo/config/domain/wildcard/edge"
+echo "additional gloo edge feature demos can be found here: cd bookinfo/argo/config/domain/wildcard/edge"
