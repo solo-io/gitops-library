@@ -12,7 +12,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
   labels:
     app: istio-ingressgateway
-    ingressgateway.istio.io/direction: east-west
+    ingressgateway.istio.io/direction: north-south
     ingressgateway.istio.io/type: internal
     istio: ingressgateway
     istio.io/rev: default

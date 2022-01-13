@@ -1,0 +1,20 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: VirtualHost
+metadata:
+  name: dashboard-virtualhost
+  namespace: gloo-mesh
+  labels:
+    app: dashboard
+spec:
+  domains:
+  - 'dashboard.jad.solo.io'
+  routes:
+  - matchers:
+    - uri:
+        prefix: /
+    routeAction:
+      destinations:
+      - kubeService:
+          clusterName: jad-mgmt
+          name: dashboard
+          namespace: gloo-mesh

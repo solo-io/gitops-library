@@ -4,6 +4,11 @@ kind: Kustomization
 
 # list of resources to be applied
 resources:
-- gloo-edge-service.yaml
+- argocd-certificate.yaml
+- argocd-virtualgateway.yaml
+- argocd-virtualhost.yaml
+
+
+
 
 

@@ -1,0 +1,20 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: VirtualHost
+metadata:
+  name: prometheus-virtualhost
+  namespace: gloo-mesh
+  labels:
+    app: prometheus
+spec:
+  domains:
+  - 'prometheus.jad.solo.io'
+  routes:
+  - matchers:
+    - uri:
+        prefix: /
+    routeAction:
+      destinations:
+      - kubeService:
+          clusterName: jad-mgmt
+          name: prometheus-server
+          namespace: gloo-mesh

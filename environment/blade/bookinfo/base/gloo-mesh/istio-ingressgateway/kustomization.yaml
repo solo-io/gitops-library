@@ -4,6 +4,7 @@ kind: Kustomization
 
 # list of resources to be applied
 resources:
-- gloo-edge-service.yaml
+- istio-ingressgateway-ns-service.yaml
+- istio-ingressgateway-ew-service.yaml
 
 

@@ -4,8 +4,6 @@ kind: Kustomization
 
 # list of resources to be applied
 resources:
-- istio-ingressgateway-ew-service.yaml
-- istio-ingressgateway-ns-service.yaml
 - enterprise-networking-service.yaml
 - enterprise-networking-gateway.yaml
 - enterprise-networking-virtualservice.yaml

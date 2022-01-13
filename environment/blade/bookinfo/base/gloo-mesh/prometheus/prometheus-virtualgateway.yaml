@@ -1,0 +1,31 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: VirtualGateway
+metadata:
+  name: prometheus-virtualgateway
+  namespace: gloo-mesh
+spec:
+  ingressGatewaySelectors:
+  - portName: http2
+    destinationSelectors:
+    - kubeServiceMatcher:
+        clusters:
+        - jad-mgmt
+        labels:
+          ingressgateway.istio.io/direction: north-south
+        namespaces:
+        - istio-system
+  connectionHandlers:
+  - connectionOptions:
+      sslConfig:
+        secretName: prometheus
+        tlsMode: SIMPLE
+    connectionMatch:
+      serverNames:
+      - prometheus.jad.solo.io
+    http:
+      routeConfig:
+      - virtualHostSelector:
+          namespaces:
+          - gloo-mesh
+          labels:
+            app: prometheus

@@ -4,13 +4,13 @@ kind: Kustomization
 
 # list of resources to be applied
 resources:
-- ../../../../base/gloo-mesh/cluster1/
-- ../../../app/bookinfo/
+- ../../../../base/gloo-mesh/istio-ingressgateway/
 
-# list of resources to be patched
+# list of patches to be applied
 patchesStrategicMerge:
+- patch/istio-ingressgateway-ew-service.yaml
 - patch/istio-ingressgateway-ns-service.yaml
-- patch/bookinfo-namespace-istio-injection.yaml
+
 
 
 

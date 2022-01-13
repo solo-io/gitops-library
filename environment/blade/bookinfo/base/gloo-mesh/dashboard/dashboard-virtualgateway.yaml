@@ -1,0 +1,31 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: VirtualGateway
+metadata:
+  name: dashboard-virtualgateway
+  namespace: gloo-mesh
+spec:
+  ingressGatewaySelectors:
+  - portName: http2
+    destinationSelectors:
+    - kubeServiceMatcher:
+        clusters:
+        - jad-mgmt
+        labels:
+          ingressgateway.istio.io/direction: north-south
+        namespaces:
+        - istio-system
+  connectionHandlers:
+  - connectionOptions:
+      sslConfig:
+        secretName: dashboard
+        tlsMode: SIMPLE
+    connectionMatch:
+      serverNames:
+      - dashboard.jad.solo.io
+    http:
+      routeConfig:
+      - virtualHostSelector:
+          namespaces:
+          - gloo-mesh
+          labels:
+            app: dashboard
