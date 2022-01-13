@@ -24,13 +24,13 @@ cd bookinfo
 
 Deploy the bookinfo (with reviews) app on `cluster1`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
+kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/1.2.a-reviews-v1-v2.yaml --context cluster1
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire `bookinfo-cluster1` configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1/
+kubectl kustomize overlay/app/1.2.a-reviews-v1-v2/istio/ 
 ```
 
 What we should expect in this overlay implementation is that `reviews-v1` (no reviews) and `reviews-v2` (black stars) should be present, but `reviews-v3` (red stars) are not available because there is no `reviews-v3` pod. You can check this by running the command `kubectl get pods -n default --context cluster1`
@@ -47,13 +47,13 @@ reviews-v1-987d495c-kj6x8         2/2     Running   0          11m
 ## deploy bookinfo application on cluster2
 Deploy the bookinfo app with all reviews on `cluster2`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
+kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/1.3.a-reviews-all.yaml --context cluster1
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire bookinfo configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster2
+kubectl kustomize overlay/app/1.3.a-reviews-all/istio/ 
 ```
 
 What we should expect in this overlay implementation is that `reviews-v1` (no stars), `reviews-v2` (black stars), and `reviews-v3` (red stars) should all be present. You can check this by running the command `kubectl get pods -n default --context cluster2`
@@ -71,15 +71,15 @@ productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 ## deploy ingress gateways and virtualservices for cluster1 and cluster2
 Expose our bookinfo service on `cluster1` and `cluster2` by deploying an istio ingressgateway and virtualservice on each cluster
 ```
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context ${cluster1_context}
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context ${cluster2_context}
+kubectl apply -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
+kubectl apply -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
 ```
 
 ### view kustomize configuration
 If you are curious to review the ingressgateway and virtualservice configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/cluster1/
-kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/cluster2/
+kubectl kustomize overlay/config/domain/wildcard/istio-ingressgateway/cluster1
+kubectl kustomize overlay/config/domain/wildcard/istio-ingressgateway/cluster2
 ```
 
 ## navigate to bookinfo application on cluster1
@@ -132,7 +132,7 @@ In order to demonstrate traffic shift and failover capabilities, we will leverag
 
 Use the kustomize command below to view the `VirtualDestination` and `TrafficShift` configs:
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/istio-ig/trafficshift-mgmt/
+kubectl kustomize overlay/config/domain/wildcard/istio-ingressgateway/trafficpolicy
 ```
 
 Output should look similar to below:
@@ -200,19 +200,19 @@ We have also defined a `TrafficPolicy` to make sure all the requests for the rev
 
 ### deploy virtualdestination and trafficpolicy to demonstrate trafficshift & failover
 ```
-kubectl apply -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
+kubectl apply -f argo/config/domain/wildcard/istio-ingressgateway/reviews-shift-failover.yaml --context mgmt
 ```
 
 ### simulate failure
 Let's simulate a failure in `cluster1` by setting `replicas=0` to both deployments of `reviews-v1` and `reviews-v2`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
+kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/0-no-reviews.yaml --context cluster1
 ```
 
 ### view kustomize configuration
 If you are curious to review the overlay configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews/
+kubectl kustomize overlay/app/0-no-reviews/istio
 ```
 
 You can see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
@@ -301,9 +301,9 @@ kubectl port-forward -n gloo-mesh svc/dashboard 8090
 ## cleanup
 To remove the ingress gateway and policies from `cluster1` and `cluster2`
 ```
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/reviews-shift-failover.yaml --context mgmt
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
 ``` 
 
 ## Next Steps - Replace Istio ingressgateway with Gloo Mesh Gateway

@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../2.2.b-tls-multiple-upstream
+- ../2.2.a-tls-multiple-upstream
 
 patchesStrategicMerge:
 - patch/okta-extauth.yaml

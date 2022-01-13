@@ -1,6 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-- ../../../overlay/bookinfo-beta/default
-- bookinfo-default-ns.yaml

@@ -24,9 +24,9 @@ cd bookinfo
 ```
 
 ```
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-mgmt-trafficshift.yaml --context mgmt
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/istio-ig/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/reviews-shift-failover.yaml --context mgmt
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster1-istio-ig-vs.yaml --context cluster1
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster2-istio-ig-vs.yaml --context cluster2
 ```
 
 **NOTE:** You can also skip the section below if you already have bookinfo deployed on `cluster1` and `cluster2` from the previous lab.
@@ -39,13 +39,13 @@ cd bookinfo
 
 Deploy the bookinfo (no reviews) app on `cluster1`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
+kubectl apply -f argo/app/namespace/default/mesh/0-no-reviews.yaml --context cluster1
 ```
 
 ### view kustomize configuration
 If you are curious to review the overlay configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster1-noreviews/
+kubectl kustomize overlay/app/0-no-reviews/istio
 ```
 
 You can see that the `reviews-v1` and `reviews-v2` deployment replicas have been scaled down to 0
@@ -83,13 +83,13 @@ productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          26m
 ## deploy bookinfo application on cluster2
 Deploy the bookinfo app with all reviews on `cluster2`
 ```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
+kubectl apply -f argo/app/namespace/default/mesh/1.3.a-reviews-all.yaml --context cluster2
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire bookinfo configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/bookinfo-cluster2
+kubectl kustomize overlay/app/1.3.a-reviews-all/istio
 ```
 
 What we should expect in this overlay implementation is that `reviews-v1` (no stars), `reviews-v2` (black stars), and `reviews-v3` (red stars) should all be present. You can check this by running the command `kubectl get pods -n default --context cluster2`
@@ -109,13 +109,13 @@ productpage-v1-65576bb7bf-tthjf   2/2     Running   0          155m
 ## 1a - deploy default gloo mesh gateway with virtualgateway, virtualhost, and routetable onto mgmt cluster (no reviews should be available)
 Note that the config below is deployed only to the `mgmt` context where our Gloo Mesh control plane resides, rather than having to manage deployments to each cluster individually. Gloo Mesh will take care of the translation into Istio CRs in each individual cluster, reducing complexity and configuration of the system.
 ```
-kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1a-simple.yaml --context mgmt
+kubectl apply -f argo/config/domain/wildcard/gmg/north-south/1.1.a-route-cluster1.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `1a-simple-cluster1` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/1a-simple-cluster1
+kubectl kustomize overlay/config/domain/wildcard/gmg/north-south/1.1.a-route-cluster1/
 ```
 
 Because our `RouteAction` points both ingress gateways to `cluster1` as our kube service destination and there are no reviews services available on `cluster1` we should expect to see an error when fetching product reviews when navigating to the ingressgateway of either cluster
@@ -169,13 +169,13 @@ If you navigate back to the gloo mesh dashboard graph we should see that traffic
 
 ## 1b - shift traffic for both clusters to reviews on cluster2
 ```
-kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-1b-simple.yaml --context mgmt
+kubectl apply -f argo/config/domain/wildcard/gmg/north-south/1.1.b-route-cluster2.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `1b-simple-cluster2` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/1b-simple-cluster2
+kubectl kustomize overlay/config/domain/wildcard/gmg/north-south/1.1.b-route-cluster2
 ```
 
 Because our `RouteAction` points to `cluster2` as our kube service destination and `reviews-v1`, `reviews-v2`, and `reviews-v3` services are available on `cluster2` we should expect to see all three reviews available on either ingress gateway.
@@ -200,13 +200,13 @@ If you navigate back to the gloo mesh dashboard graph we should see that traffic
 
 ## 2 - Multi Weighted Destination
 ```
-kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2a-multi.yaml --context mgmt
+kubectl apply -f argo/config/domain/wildcard/gmg/north-south/1.2.a-weighted-multicluster.yaml --context mgmt
 ```
 
 ### view kustomize configuration
 If you are curious to review the `2a-multi` GMG configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2a-multi
+kubectl kustomize overlay/config/domain/wildcard/gmg/north-south/1.2.a-weighted-multicluster
 ```
 
 You can see the weights of the `trafficShift` policies below, since there are no reviews services available on `cluster1` we have decided to direct traffic to `cluster2` resources with `reviews-v1` (40%), `reviews-v2` (30%), and `reviews-v3` (30%).
@@ -220,14 +220,14 @@ policy:
           namespace: default
           subset:
             version: v1
-        weight: 0
+        weight: 20
       - kubeService:
           clusterName: cluster1
           name: reviews
           namespace: default
           subset:
             version: v2
-        weight: 0
+        weight: 20
       - kubeService:
           clusterName: cluster1
           name: reviews
@@ -241,26 +241,27 @@ policy:
           namespace: default
           subset:
             version: v1
-        weight: 40
+        weight: 0
       - kubeService:
           clusterName: cluster2
           name: reviews
           namespace: default
           subset:
             version: v2
-        weight: 30
+        weight: 0
       - kubeService:
           clusterName: cluster2
           name: reviews
           namespace: default
           subset:
             version: v3
-        weight: 30
+        weight: 40
 ```
 
 ### validate
-You can use the following commands to validate that the requests are handled by `cluster2` regardless of which ingressgateway is serving traffic
+You can use the following commands to validate that the requests are handled by `cluster1` and `cluster2`
 ```
+kubectl --context cluster1 logs -l app=reviews -c istio-proxy -f
 kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
 ```
 
@@ -270,187 +271,6 @@ You should see a line like below each time you refresh the web page
 ```
 
 ![](https://github.com/solo-io/gitops-library/blob/main/images/gmg3b.png)
-
-## Recover cluster1 services and slowly shift traffic back
-Let's bring back our `reviews-v1` and `reviews-v2` services on `cluster1`
-```
-kubectl apply -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
-```
-
-We should see our reviews services available now if we run `kubectl get pods --context cluster1`
-```
-% kubectl get pods --context cluster1
-NAME                              READY   STATUS    RESTARTS   AGE
-details-v1-79c697d759-zmx7j       2/2     Running   0          49m
-ratings-v1-7d99676f7f-7stl7       2/2     Running   0          49m
-productpage-v1-65576bb7bf-mcjfr   2/2     Running   0          49m
-reviews-v1-987d495c-mcg4z         2/2     Running   0          27s
-reviews-v2-6c5bf657cf-7nmf4       2/2     Running   0          27s
-```
-
-Now we can incrementally shift traffic back to `cluster1` by using the weighted destinations and subsets. For example, the overlay `2b-multi` demonstrates this
-```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2b-multi
-```
-
-See the weighted destinations below where we let `reviews-v1` service in `cluster1` to take 25% of the traffic
-```
-policy:
-    trafficShift:
-      destinations:
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v1
-        weight: 25
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v2
-        weight: 0
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v3
-        weight: 0
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v1
-        weight: 15
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v2
-        weight: 30
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v3
-        weight: 30
-```
-
-### trafficshift back to cluster1
-Deploy this trafficshift overlay to shift the weights incrementally back to cluster1 as described above
-```
-kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2b-multi.yaml --context mgmt
-```
-
-### validate
-You can use the following commands to validate that the requests are now handled by both `cluster1` and `cluster2`
-```
-kubectl --context cluster1 logs -l app=reviews -c istio-proxy -f
-kubectl --context cluster2 logs -l app=reviews -c istio-proxy -f
-```
-
-### gloo mesh dashboard
-If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing back to `reviews-v1` in `cluster1`
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg4b.png)
-
-However, after some time has passed for new data to be populated, in the gloo mesh service graph you will see that traffic to the istio-ingressgateway in `cluster2` is routed back to `cluster1` > `productpage-v1` on `cluster1` > then finally over to the `reviews-v1`, `reviews-v2`, and `reviews-v3` on `cluster2`
-
-This is due to the route table that is configured in the `1a-simple-cluster1` overlay that we configured earlier. If you are curious to see the whole config you can run `kubectl kustomize overlay/gloo-mesh-workshop/gmg/2b-multi` to see the whole configuration, check the `RouteTable` for the details below
-```
-routeAction:
-      destinations:
-      - kubeService:
-          clusterName: cluster1
-          name: productpage
-          namespace: default
-```
-
-## allow traffic to flow to productpage on both cluster1 and cluster2
-
-Deploy the `2c-multi` trafficshift overlay to allow traffic to flow to productpage on both cluster1 and cluster2
-```
-kubectl apply -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context mgmt
-```
-
-### view kustomize configuration
-If you are curious to review the overlay configuration in more detail, run the kustomize command below
-```
-kubectl kustomize overlay/gloo-mesh-workshop/gmg/north-south/2c-multi
-```
-
-In the `RouteTable` object we should see that we have patched the `routeAction` which now selects `productpage` service from both `cluster1` and `cluster2` to route to
-```
-routeAction:
-      destinations:
-      - kubeService:
-          clusterName: cluster1
-          name: productpage
-          namespace: default
-      - kubeService:
-          clusterName: cluster2
-          name: productpage
-          namespace: default
-```
-
-### gloo mesh dashboard
-If you navigate back to the gloo mesh dashboard graph we should see that traffic is now flowing from both ingressgateways to `productpage` on both `cluster1` and `cluster2`
-
-![](https://github.com/solo-io/gitops-library/blob/main/images/gmg5b.png)
-
-Take a look at the graph above, an interesting piece to note is that the path to the `reviews-v2` service on `cluster1` is greyed out. This is expected because the weighted destinations that we set in the section above only sends traffic to the `reviews-v1` service on `cluster1`. However, this time our `productpage` service on `cluster2` should be active!
-```
-policy:
-    trafficShift:
-      destinations:
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v1
-        weight: 25
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v2
-        weight: 0
-      - kubeService:
-          clusterName: cluster1
-          name: reviews
-          namespace: default
-          subset:
-            version: v3
-        weight: 0
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v1
-        weight: 15
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v2
-        weight: 30
-      - kubeService:
-          clusterName: cluster2
-          name: reviews
-          namespace: default
-          subset:
-            version: v3
-        weight: 30
-```
 
 Using these examples above we can start to think of other multicluster use cases such as blue/green and canary strategies, east/west rate limiting, and more!
 
@@ -465,14 +285,13 @@ kubectl delete -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgatew
 
 To remove the Gloo Mesh Gateway configs
 ```
-kubectl delete -f argo/deploy/workshop/gmg/north-south/bookinfo-gmg-2c-multi.yaml --context mgmt
+kubectl delete -f argo/config/domain/wildcard/gmg/north-south/1.2.a-weighted-multicluster.yaml --context mgmt
 ``` 
 
 To remove bookinfo application
 ```
-kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster1-noreviews.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster1.yaml --context cluster1
-kubectl delete -f argo/deploy/workshop/bookinfo-workshop-cluster2.yaml --context cluster2
+kubectl delete -f argo/app/namespace/default/mesh/0-no-reviews.yaml --context cluster1
+kubectl delete -f argo/app/namespace/default/mesh/1.3.a-reviews-all.yaml --context cluster2
 ```
 
 ## Back to Table of Contents

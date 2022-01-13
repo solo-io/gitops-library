@@ -13,28 +13,20 @@ cd bookinfo
 
 Deploy the bookinfo-v1-istio app
 ```
-kubectl apply -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml --context <context>
+kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/1.2.a-reviews-v1-v2.yaml
 ```
 
 ### view kustomize configuration
-If you are curious to review the entire hipstershop-istio configuration in more detail, run the kustomize command below
+If you are curious to review the entire bookinfo configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/bookinfo-v1/istio/
+kubectl kustomize overlay/app/1.2.a-reviews-v1-v2/istio/
 ```
 
-A key difference between the `bookinfo-v1-default` overlay and the `bookinfo-v1-istio` overlay is the use of the label `istio-injection=enabled` on the bookinfo-v1 namespace. Other than that, this example shows a very good use-case for Kustomize as we use bases/overlays to minimize duplication of configuration between the default and istio overlays.
-```
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: enabled
-  name: bookinfo-v1
-```
+What we should expect in this overlay implementation is that `reviews-v1` (no reviews) and `reviews-v2` (black stars) should be present, but `reviews-v3` (red stars) are not available because there is no `reviews-v3` pod. You can check this by running the command `kubectl get pods -n default --context cluster1`
 
 watch status of bookinfo-v1 deployment
 ```
-kubectl get pods -n bookinfo-v1 --context <context> -w
+kubectl get pods -n bookinfo-v1 -w
 ```
 
 ## validate istio is configured
@@ -83,7 +75,7 @@ Events:
 ## Exposing the bookinfo-v1 application using Istio
 Deploy bookinfo-v1 virtualservice and validate
 ```
-kubectl apply -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml --context <context>
+kubectl apply -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster1-istio-ig-vs.yaml 
 ```
 
 ## navigate to bookinfo-v1 application
@@ -130,8 +122,8 @@ kubectl port-forward svc/grafana -n istio-system 3000:3000 --context <context>
 ## cleanup
 to remove bookinfo-v1 application
 ```
-kubectl delete -f argo/virtualservice/istio/1-bookinfo-vs-single.yaml --context <context>
-kubectl delete -f argo/deploy/bookinfo-v1/istio/bookinfo-v1-mesh.yaml --context <context>
+kubectl delete -f argo/app/namespace/bookinfo-v1/mesh/1.2.a-reviews-v1-v2.yaml
+kubectl delete -f argo/config/domain/wildcard/istio-ingressgateway/bookinfo-cluster1-istio-ig-vs.yaml 
 ``` 
 
 ## Back to Table of Contents

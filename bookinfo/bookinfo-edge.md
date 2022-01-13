@@ -17,28 +17,28 @@ cd bookinfo
 
 Deploy the bookinfo-v1 app
 ```
-kubectl apply -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
+kubectl apply -f argo/app/namespace/bookinfo-v1/non-mesh/1.2.a-reviews-v1-v2.yaml
 ```
 
-**NOTE:** This app will only have reviews-v2 which is black stars
+**NOTE:** This app will have `reviews-v1` (no stars) and `reviews-v2` (black stars)
 
 watch status of bookinfo-v1 deployment
 ```
 kubectl get pods -n bookinfo-v1 -w
 ```
 
-### deploy bookinfo-beta application
+### deploy bookinfo-v2 application
 
-Deploy the bookinfo-beta app
+Deploy the bookinfo-v2 app
 ```
-kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
+kubectl apply -f argo/app/namespace/bookinfo-v2/non-mesh/1.3.a-reviews-all.yaml
 ```
 
 **NOTE:** This app will have `reviews-v1` (no reviews), `reviews-v2` (black stars), and `reviews-v3` (red stars)
 
-watch status of bookinfo-beta deployment
+watch status of bookinfo-v2 deployment
 ```
-kubectl get pods -n bookinfo-beta -w
+kubectl get pods -n bookinfo-v2 -w
 ```
 
 ## deploy bookinfo virtualservices and validate
@@ -47,13 +47,13 @@ The examples below will take you through the many features that the `VirtualServ
 ### single route virtualservice
 Deploying the manifest below will expose our virtual service using gloo.
 ```
-kubectl apply -f argo/virtualservice/edge/1-bookinfo-vs-single.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/1.1.a-route-single-upstream.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/1-bookinfo-vs-single/
+kubectl kustomize overlay/config/domain/wildcard/edge/1.1.a-route-single-upstream
 ```
 
 #### view your exposed bookinfo-v1 service in the browser
@@ -67,15 +67,15 @@ In your browser navigate to http://$(glooctl proxy url)/productpage
 We should expect to see the bookinfo application with just black stars
 
 ### traffic splitting
-Applying the manifest below will split traffic 50/50 between `bookinfo-v1` and `bookinfo-beta` applications. 
+Applying the manifest below will split traffic 50/50 between `bookinfo-v1` and `bookinfo-v2` applications. 
 ```
-kubectl apply -f argo/virtualservice/edge/2-bookinfo-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/1.2.a-route-multiple-upstream.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/2-bookinfo-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/1.2.a-route-multiple-upstream
 ```
 
 The added configuration below instructs gloo to split traffic across multiple destination upstreams with specified weights
@@ -90,7 +90,7 @@ routeAction:
             weight: 5
           - destination:
               upstream:
-                name: bookinfo-beta-productpage-9080
+                name: bookinfo-v2-productpage-9080
                 namespace: gloo-system
             weight: 5
 ```
@@ -98,13 +98,13 @@ routeAction:
 ### tls
 Applying the manifests below will build upon the last example and secure TLS with a `secretRef` to our upstream TLS secret.
 ```
-kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.2.b-tls-multiple-upstream.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/3-bookinfo-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.2.b-tls-multiple-upstream
 ```
 
 The added configuration below instructs gloo to reference a secret named `upstream-tls` in the `gloo-system` namespace for the tls certificate
@@ -168,13 +168,13 @@ Run the script below to set up keycloak with two users `user1/password` and `use
 
 ### deploy virtualservice with extauth config
 ```
-kubectl apply -f argo/virtualservice/edge/4-bookinfo-extauth-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.3.a-tls-extauth-keycloak.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/4-bookinfo-extauth-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.3.a-tls-extauth-keycloak/
 ```
 
 The added configuration below instructs gloo to use keycloak by referencing a configmap named `keycloak-oauth` in the `gloo-system` namespace
@@ -193,16 +193,16 @@ Username: User1
 Password: password
 ```
 
-### instance rate limit
-Applying the manifests below will build upon the last example and add an instance rate limit for authenticated and anonymous users.
+### VirtualHost rate limit
+Applying the manifests below will build upon the last example and add a rate limit at the VirtualHost level for authenticated and anonymous users.
 ```
-kubectl apply -f argo/virtualservice/edge/5a-bookinfo-irl-extauth-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.4.a-vhost-ratelimit.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/5a-bookinfo-irl-extauth-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.4.a-vhost-ratelimit
 ```
 
 The added configuration below rate limits anonymous and authorized users at different rates
@@ -216,19 +216,19 @@ ratelimitBasic:
           unit: MINUTE
 ```
 
-### testing instance ratelimit
-Navigate to your bookinfo application and refresh until you hit the instance ratelimit. This should result in a `HTTP ERROR 429` error code. Wait for the instance ratelimit to pass and you will be able to access the page again.
+### testing VirtualHost ratelimit
+Navigate to your bookinfo application and refresh until you hit the ratelimit. This should result in a `HTTP ERROR 429` error code. Wait for the instance ratelimit to pass and you will be able to access the page again.
 
 ### global rate limit
 Applying the manifests below will build upon the last example and switch out the instance rate limit for a global rate limit of 10 requests per minute.
 ```
-kubectl apply -f argo/virtualservice/edge/5b-bookinfo-grl-extauth-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.4.b-global-ratelimit.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/5b-bookinfo-grl-extauth-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.4.b-global-ratelimit
 ```
 
 The added configuration below instructs gloo to refer to a global RateLimitConfig by referencing a configmap named `global-limit` in the `gloo-system` namespace
@@ -266,13 +266,13 @@ Navigate to your bookinfo application and refresh until you hit the global ratel
 ### waf
 Applying the manifests below will build upon the last example add a web application firewall example that will restrict logging into the bookinfo application so that logging in with any numbers (i.e. user123) will result in an error. 
 ```
-kubectl apply -f argo/virtualservice/edge/6-bookinfo-waf-grl-extauth-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.5.a-simple-waf.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/6-bookinfo-waf-grl-extauth-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.5.a-simple-waf
 ```
 
 The added configuration below instructs gloo to use the `waf` feature
@@ -289,13 +289,13 @@ waf:
 ### transformation
 Applying the manifests below will build upon the last example and add a transformation that will transform the 429 rate limit error code into a more descriptive and colorful webpage. 
 ```
-kubectl apply -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs.yaml
+kubectl apply -f argo/config/domain/wildcard/edge/2.6.a-transformation.yaml
 ```
 
 ### view kustomize configuration
 If you are curious to review the entire VirtualService configuration in more detail, run the kustomize command below
 ```
-kubectl kustomize overlay/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs/
+kubectl kustomize overlay/config/domain/wildcard/edge/2.6.a-transformation
 ```
 
 The added configuration below instructs gloo to use the `transformations` feature
@@ -319,9 +319,9 @@ At this point you have successfully navigated through exploring many features wh
 ## cleanup
 to remove bookinfo application
 ```
-kubectl delete -f argo/virtualservice/edge/7-bookinfo-trans-waf-grl-extauth-tls-multi-vs.yaml
-kubectl delete -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
-kubectl delete -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
+kubectl delete -f argo/config/domain/wildcard/edge/2.6.a-transformation.yaml
+kubectl delete -f argo/app/namespace/bookinfo-v1/non-mesh/1.2.a-reviews-v1-v2.yaml
+kubectl delete -f argo/app/namespace/bookinfo-v2/non-mesh/1.3.a-reviews-all.yaml
 ```
 
 remove keycloak

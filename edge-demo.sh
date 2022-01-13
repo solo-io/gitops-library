@@ -70,39 +70,21 @@ kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
 # expose keycloak/argo on http
 cd ../gloo-edge
 kubectl apply -f argo/virtualservice/wildcard/edge-demo-http-vs.yaml
-# for cloudflare edge config
-#kubectl apply -f argo/virtualservice/cloudflare/edge-demo-http-vs.yaml
-#kubectl apply -f argo/virtualservice/cloudflare/edge-demo-https-vs.yaml
-
-# install cert-manager
-#cd ../cert-manager
-#kubectl apply -f argo/deploy/certmanager-1-6-0.yaml
-#../tools/wait-for-rollout.sh deployment cert-manager cert-manager 10
 
 # install bookinfo application
 cd ../bookinfo/
-kubectl apply -f argo/deploy/bookinfo-v1/default/bookinfo-v1-default.yaml
-kubectl apply -f argo/deploy/bookinfo-beta/default/bookinfo-beta-default.yaml
+kubectl apply -f argo/app/namespace/bookinfo-v1/non-mesh/1.2.a-reviews-v1-v2.yaml
+kubectl apply -f argo/app/namespace/bookinfo-v2/non-mesh/1.3.a-reviews-all.yaml
 ../tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
-../tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-beta 10
+../tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v2 10
 
 # expose bookinfo on https
-kubectl apply -f argo/virtualservice/edge/3-bookinfo-tls-multi-vs.yaml
-# for cloudflare edge config
-#kubectl apply -f argo/virtualservice/cloudflare-edge/3-bookinfo-tls-multi-vs.yaml
-
-# sleep 20 seconds and set up keycloak on http
-#sleep 20
+kubectl apply -f argo/config/domain/wildcard/edge/2.2.a-tls-multiple-upstream.yaml
 
 # setup keycloak user/groups 
 ../keycloak/scripts/keycloak-setup-virtualservice.sh
-# for cloudflare keycloak setup
-#../keycloak/scripts/keycloak-setup-virtualservice-cloudflare-https.sh
-# for k3d + MetalLB keycloak setup on cluster1
-#../keycloak/scripts/keycloak-setup-virtualservice-k3d-metallb-cluster1.sh
 
 # echo proxy url
 echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
 echo 
-echo "additional gloo edge feature demos can be found here: https://github.com/solo-io/gitops-library/blob/main/bookinfo/bookinfo-edge.md#deploy-virtualservice-with-extauth-config"
-echo "Note: don't forget to cd into the bookinfo directory"
+echo "additional gloo edge feature demos can be found here: cd argo/config/domain/wildcard/edge"

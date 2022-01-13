@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-- ../../istio/1-bookinfo-vs-single
-
-patchesStrategicMerge:
-- patch/vs-domain.yaml
-- patch/gateway-patch.yaml
