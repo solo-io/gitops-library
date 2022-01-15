@@ -1,0 +1,18 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: User
+metadata:
+  labels:
+    app.kubernetes.io/instance: petstore-swagger-apiproduct-1-0-2
+    groups.portal.gloo.solo.io/gloo-portal.developers: "true"
+  name: developer1
+  namespace: gloo-portal
+spec:
+  accessLevel:
+    portals:
+    - name: ecommerce-portal
+      namespace: default
+  basicAuth:
+    passwordSecretKey: password
+    passwordSecretName: developer1-password
+    passwordSecretNamespace: gloo-portal
+  username: developer1

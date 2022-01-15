@@ -1,0 +1,10 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Portal
+metadata:
+  name: ecommerce-portal
+  namespace: default
+spec:
+  tls:
+    secretRef:
+      name: cf-upstream-tls
+      namespace: gloo-system

@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- default-petstore-portal-faq-cm.yaml
+#- developer-group.yaml
+- developer-group-wplan.yaml
+- developer1-user.yaml
+- developer1-password.yaml
