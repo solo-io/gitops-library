@@ -8,6 +8,8 @@ resources:
 - petstore-apiproduct.yaml    
 #- petstore-portal.yaml
 - petstore-portal-wstatic.yaml
+#- dev-environment.yaml
+- dev-environment-wplan.yaml
 
 #patchesStrategicMerge:
 #- patch/domain-patch.yaml

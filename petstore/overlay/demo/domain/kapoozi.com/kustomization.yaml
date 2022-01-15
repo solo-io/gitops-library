@@ -7,5 +7,6 @@ resources:
 - ../../../config/petstore-portal/
 
 patchesStrategicMerge:
-- patch/domain-patch.yaml
+- patch/portal-domain-patch.yaml
+- patch/environment-domain-patch.yaml
 - patch/tls-patch.yaml
