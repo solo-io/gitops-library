@@ -95,7 +95,7 @@ Known Issues:
 - Currently keycloak oauth redirects will not work properly on a local deployment (i.e. k3d + MetalLB) if there is not a properly accessible `EXTERNAL-IP` (i.e. non-private, non-localhost). Current recommended approach is to run on GKE/EKS to leverage the LoadBalancer integration there
 
 ## e2e gloo-portal + gloo-edge single cluster demo
-If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
+If you would like to run through the Gloo Edge + Gloo Portal single cluster demo end-to-end, you can do so by running the script
 ```
 ./portal-edge-demo.sh $LICENSE_KEY
 ```
@@ -107,6 +107,9 @@ Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Edge license key
 - The script assumes the current context as the one to be used for deploy. Use `kubectl config use-context <context>` to switch to the proper cluster that you desire
 - If there is no current-context defined, the script will exit.
+
+Known Issues:
+- Currently keycloak oauth redirects will not work properly on a local deployment (i.e. k3d + MetalLB) if there is not a properly accessible `EXTERNAL-IP` (i.e. non-private, non-localhost). Current recommended approach is to run on GKE/EKS to leverage the LoadBalancer integration there
 
 ## Contributing
 Interested in contributing an example configuration to gitops-library? Take a look at the example walkthrough in the `CONTRIBUTING.md` for more details on structure and workflow
