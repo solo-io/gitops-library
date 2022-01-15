@@ -16,7 +16,7 @@ spec:
   staticPages: []
 
   domains:
-  - portal.kapoozi.com
+  - portal.example.com
 
   publishedEnvironments:
   - name: dev

@@ -6,5 +6,21 @@ metadata:
 spec:
   tls:
     secretRef:
-      name: yourdomain-upstream-tls
+      name: upstream-tls
       namespace: gloo-system
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  gatewayConfig:
+    tls:
+      config:
+        secretRef:
+          name: upstream-tls
+          namespace: gloo-system
+        sniDomains:
+        - '*.yourdomain.com'
+      enabled: true

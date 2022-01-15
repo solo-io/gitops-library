@@ -1,4 +1,13 @@
 apiVersion: portal.gloo.solo.io/v1beta1
+kind: Portal
+metadata:
+  name: ecommerce-portal
+  namespace: default
+spec:
+  domains:
+  - portal.example.com
+---
+apiVersion: portal.gloo.solo.io/v1beta1
 kind: Environment
 metadata:
   name: dev

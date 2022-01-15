@@ -6,3 +6,12 @@ metadata:
 spec:
   domains:
   - portal.kapoozi.com
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  domains:
+    - api.kapoozi.com # the domain name where the API will be exposed

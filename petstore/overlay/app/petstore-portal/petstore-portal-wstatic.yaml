@@ -26,15 +26,10 @@ spec:
     path: /faq
 
   domains:
-  - portal.kapoozi.com
+  - portal.example.com
 
   publishedEnvironments:
   - name: dev
     namespace: default
 
   allApisPublicViewable: false
-
-  tls:
-    secretRef:
-      name: cf-upstream-tls
-      namespace: gloo-system

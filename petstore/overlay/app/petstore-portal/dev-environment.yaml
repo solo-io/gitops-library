@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   domains:
-    - api.kapoozi.com # the domain name where the API will be exposed
+    - api.example.com # the domain name where the API will be exposed
   displayInfo:
     description: This environment is meant for developers to deploy and test their APIs.
     displayName: Development
