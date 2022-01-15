@@ -1,0 +1,8 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  domains:
+    - api.example.com # the domain name where the API will be exposed
