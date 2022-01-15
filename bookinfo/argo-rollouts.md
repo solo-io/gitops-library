@@ -72,7 +72,7 @@ kubectl argo rollouts get rollout productpage-rollout --watch
 
 # deploy bombardier to generate load on our istio ingress gateway
 ```
-ka ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml
+kubectl apply -f ../bombardier-loadgen/argo/bookinfo-loadgen-istio-ingressgateway.yaml
 ```
 
 # watch logs of bombardier
@@ -121,6 +121,15 @@ in another tab you can watch your virtualservice to observe traffic shifting. Yo
 ```
 kubectl get virtualservice productpage-rollout-vsvc -o yaml -w
 ```
+
+# Visualize in browser
+Navigate to the bookinfo application in your browser
+```
+echo "http://$(kubectl -n istio-system get svc istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].*}')/productpage"
+```
+
+When complete, you should see that the title of the productpage has changed to say `The Comedy of Errors - Hello Version 2 (canary)`
+![](https://github.com/solo-io/gitops-library/blob/main/images/rollout1.png)
 
 ## if you need to abort rollout
 ```
