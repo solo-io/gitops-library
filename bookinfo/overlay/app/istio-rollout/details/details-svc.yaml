@@ -13,4 +13,4 @@ spec:
   - port: 9080
     name: http
   selector:
-    app: details
+    app: details-rollout
