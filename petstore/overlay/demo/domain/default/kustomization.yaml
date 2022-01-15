@@ -5,7 +5,7 @@ resources:
 - ../../../app/petstore/swaggerapi/
 - ../../../app/petstore-portal
 - ../../../config/petstore-portal/
-- upstream-tls.yaml
+#- upstream-tls.yaml
 
 patchesStrategicMerge:
 - patch/domain-patch.yaml
