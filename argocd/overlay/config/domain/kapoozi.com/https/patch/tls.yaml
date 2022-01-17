@@ -7,6 +7,6 @@ spec:
 # ------------------- secure TLS -------------------
   sslConfig:
     secretRef:
-      name: upstream-tls
+      name: cf-upstream-tls
       namespace: gloo-system
 # --------------------------------------------------
