@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/solo-io/gitops-library
-    targetRevision: HEAD
+    targetRevision: doc-fixes
     path: bookinfo/overlay/app/1.3.a-reviews-all/istio/
   destination:
     server: https://kubernetes.default.svc
