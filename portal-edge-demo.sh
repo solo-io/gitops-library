@@ -83,7 +83,7 @@ kubectl apply -f argo/app/namespace/bookinfo-v2/non-mesh/1.3.a-reviews-all.yaml
 # setup keycloak user/groups 
 ../keycloak/scripts/keycloak-setup-virtualservice.sh
 
-# expose bookinfo on https
+# expose bookinfo on https w/ keycloak extauth enabled
 kubectl apply -f argo/config/domain/wildcard/edge/2.3.a-tls-extauth-keycloak.yaml 
 
 # install gloo-portal
@@ -106,6 +106,10 @@ echo
 echo "installation complete:"
 echo 
 echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
+echo
+echo "keycloak credentials:"
+echo "user: user1"
+echo "password: password"
 echo 
 echo "additional gloo edge feature demos can be found here: cd bookinfo/argo/config/domain/wildcard/edge"
 echo
