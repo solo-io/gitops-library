@@ -24,7 +24,7 @@ cd bookinfo
 
 Deploy the bookinfo (with reviews) app on `cluster1`
 ```
-kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/1.2.a-reviews-v1-v2.yaml --context cluster1
+kubectl apply -f argo/app/namespace/default/mesh/1.2.a-reviews-v1-v2.yaml --context cluster1
 ```
 
 ### view kustomize configuration
@@ -47,7 +47,7 @@ reviews-v1-987d495c-kj6x8         2/2     Running   0          11m
 ## deploy bookinfo application on cluster2
 Deploy the bookinfo app with all reviews on `cluster2`
 ```
-kubectl apply -f argo/app/namespace/bookinfo-v1/mesh/1.3.a-reviews-all.yaml --context cluster1
+kubectl apply -f argo/app/namespace/default/mesh/1.3.a-reviews-all.yaml --context cluster2
 ```
 
 ### view kustomize configuration

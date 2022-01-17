@@ -24,7 +24,7 @@ If you have done the above, just simply run the script to install argocd and opt
 
 Run this script to watch argocd install progress
 ```
-./tools/wait-for-rollout.sh deployment argocd-server argocd 10
+../tools/wait-for-rollout.sh deployment argocd-server argocd 10
 ```
 
 Output should look similar to below:
