@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: argo/overlay/config/domain/wildcard/https/
+    path: argocd/overlay/config/domain/wildcard/https/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
