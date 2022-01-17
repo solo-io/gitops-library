@@ -23,8 +23,10 @@ fi
 
 while [ "$OUTPUT" -ne 1 ]; do
   OUTPUT=`kubectl get ${rollout_type}/${rollout_name} -n ${namespace} --context ${context} 2>/dev/null | grep -c ${rollout_name}`;
-  seconds=$((seconds+${period}))
-  printf "Waiting %s seconds for ${rollout_type} ${rollout_name} to come up.\n" "${seconds}"
-  sleep ${period}
   kubectl rollout status ${rollout_type}/${rollout_name} -n ${namespace} --context ${context}
+  if [ "$OUTPUT" -ne 1 ]; then
+    seconds=$((seconds+${period}))
+    printf "Waiting %s seconds for ${rollout_type} ${rollout_name} to come up.\n" "${seconds}"
+    sleep ${period}
+  fi
 done

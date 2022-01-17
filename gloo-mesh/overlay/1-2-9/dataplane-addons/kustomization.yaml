@@ -1,0 +1,10 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../../base/dataplane-addons/
+- gloo-mesh-addons-ns.yaml
+
+patchesStrategicMerge:
+- patch/target-revision.yaml
