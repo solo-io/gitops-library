@@ -1,8 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-- ../../../base/swaggerapi/v1/
-
-resources:
-- petstore-v1-apidoc.yaml

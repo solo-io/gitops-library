@@ -1,9 +1,0 @@
-apiVersion: portal.gloo.solo.io/v1beta1
-kind: APIDoc
-metadata:
-  name: petstore-v2
-  namespace: default
-spec:
-  openApi:
-    content:
-      fetchUrl: https://github.com/solo-io/workshops/raw/master/gloo-portal/swagger-petstore-v2.json
