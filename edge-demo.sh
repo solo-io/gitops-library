@@ -55,6 +55,9 @@ cd argocd
 # wait for argo cluster rollout
 ../tools/wait-for-rollout.sh deployment argocd-server argocd 10
 
+# expose argocd at argocd.example.com
+kubectl apply -f argo/config/domain/example.com/argo-http-vs.yaml
+
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
 kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
@@ -64,12 +67,11 @@ kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
 
 # install keycloak
 cd ../keycloak
-kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
+kubectl apply -f argo/app/namespace/default/keycloak-12-0-4.yaml
 ../tools/wait-for-rollout.sh deployment keycloak default 10
 
-# expose keycloak/argo on http
-cd ../gloo-edge
-kubectl apply -f argo/virtualservice/wildcard/edge-demo-http-vs.yaml
+# expose keycloak on http
+kubectl apply -f argo/config/domain/wildcard/keycloak-http-vs.yaml
 
 # install bookinfo application
 cd ../bookinfo/
@@ -82,9 +84,31 @@ kubectl apply -f argo/app/namespace/bookinfo-v2/non-mesh/1.3.a-reviews-all.yaml
 kubectl apply -f argo/config/domain/wildcard/edge/2.2.a-tls-multiple-upstream.yaml
 
 # setup keycloak user/groups 
-../keycloak/scripts/keycloak-setup-virtualservice.sh
+cd ../keycloak/
+./scripts/keycloak-setup-virtualservice.sh
 
 # echo proxy url
-echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
 echo 
+echo "installation complete:"
+echo
+echo "run the commands below to access argocd dashboard at argocd.example.com domain:"
+echo 
+echo "cat <<EOF | sudo tee -a /etc/hosts"
+echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') argocd.example.com"
+echo "EOF"
+echo
+echo "access argocd at http://argocd.example.com/argo"
+echo "alternatively, access argocd using port-forward command: kubectl port-forward svc/argocd-server -n argocd 8080:443"
+echo
+echo "argocd credentials:"
+echo "user: admin"
+echo "password: solo.io"
+echo 
+echo "access the bookinfo application at: $(glooctl proxy url --port https | cut -d: -f1-2)/productpage"
+echo
 echo "additional gloo edge feature demos can be found here: cd bookinfo/argo/config/domain/wildcard/edge"
+echo
+echo "keycloak credentials for bookinfo demo:"
+echo "user: user1"
+echo "password: password"
+echo 
