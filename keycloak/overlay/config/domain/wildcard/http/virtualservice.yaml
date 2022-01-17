@@ -9,9 +9,7 @@ spec:
     - '*'
     routes:
     - matchers:
-      - prefix: /keycloak/
-      options:
-        prefixRewrite: /auth/
+      - prefix: /
       routeAction:
         single:
           upstream:
