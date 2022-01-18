@@ -7,8 +7,6 @@ resources:
 - argocd-certificate.yaml
 - argocd-virtualgateway.yaml
 - argocd-virtualhost.yaml
-
-
-
-
+- argocd-destination.yaml
+- argocd-trafficpolicy.yaml
 

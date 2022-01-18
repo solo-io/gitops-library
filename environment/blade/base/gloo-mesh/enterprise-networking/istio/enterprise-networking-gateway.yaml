@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: relay-gateway
+  name: enterprise-networking
   namespace: istio-system
 spec:
   selector:
@@ -12,6 +12,6 @@ spec:
       name: relay
       protocol: tcp
     hosts:
-    - "relay.jad.solo.io"
+    - relay.jad.solo.io
    
   

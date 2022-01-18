@@ -20,4 +20,4 @@ spec:
   selector:
     app: enterprise-networking
   sessionAffinity: None
-  type: LoadBalancer
+  type: ClusterIP

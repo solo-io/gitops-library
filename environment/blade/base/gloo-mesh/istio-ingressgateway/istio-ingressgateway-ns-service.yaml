@@ -4,9 +4,9 @@ metadata:
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
     service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz/ready
-    service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "15021"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "30001"
     service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: *
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
     service.beta.kubernetes.io/aws-load-balancer-type: external
@@ -18,12 +18,9 @@ metadata:
     istio.io/rev: default
     release: istio
   name: istio-ingressgateway-ns
+  namespace: istio-system
 spec:
   ports:
-  - name: status-port
-    port: 15021
-    protocol: TCP
-    targetPort: 15021
   - name: http2
     port: 80
     protocol: TCP
@@ -32,10 +29,22 @@ spec:
     port: 443
     protocol: TCP
     targetPort: 8443
-  - name: relay
-    port: 9900
+  - name: status-port
+    nodePort: 30001
+    port: 15021
     protocol: TCP
-    targetPort: 9900
+    targetPort: 15021
+  - name: tls
+    port: 15443
+    targetPort: 15443
+  - name: tcp-istiod
+    port: 15012
+    protocol: TCP
+    targetPort: 15012
+  - name: tcp-webhook
+    port: 15017
+    protocol: TCP
+    targetPort: 15017
   selector:
     app: istio-ingressgateway
     istio: ingressgateway

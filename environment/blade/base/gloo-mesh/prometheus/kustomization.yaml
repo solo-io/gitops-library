@@ -7,7 +7,8 @@ resources:
 - prometheus-certificate.yaml
 - prometheus-virtualgateway.yaml
 - prometheus-virtualhost.yaml
-
+- prometheus-destination.yaml
+- prometheus-trafficpolicy.yaml
 
 
 

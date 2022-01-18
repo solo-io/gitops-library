@@ -7,6 +7,8 @@ resources:
 - dashboard-certificate.yaml
 - dashboard-virtualgateway.yaml
 - dashboard-virtualhost.yaml
+- dashboard-destination.yaml
+- dashboard-trafficpolicy.yaml
 
 
 

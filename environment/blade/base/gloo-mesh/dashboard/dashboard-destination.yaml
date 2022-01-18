@@ -1,0 +1,22 @@
+# manually create destination for non mesh dashboard service
+apiVersion: discovery.mesh.gloo.solo.io/v1
+kind: Destination
+metadata:
+  name: dashboard
+  namespace: gloo-mesh
+spec:
+  kubeService:
+    labels:
+      app: dashboard
+    ports:
+    - name: http
+      port: 8090
+      protocol: TCP
+      targetPortNumber: 8090
+    ref:
+      clusterName: jad-mgmt
+      name: dashboard
+      namespace: gloo-mesh
+  mesh:
+    name: istiod-istio-system-jad-mgmt
+    namespace: gloo-mesh
