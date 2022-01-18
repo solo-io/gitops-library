@@ -8,4 +8,5 @@ resources:
 - argocd-virtualgateway.yaml
 - argocd-virtualhost.yaml
 - argocd-destination.yaml
+- argocd-trafficpolicy.yaml
 

@@ -9,6 +9,7 @@ resources:
 #- enterprise-networking-virtualgateway.yaml
 - istio/enterprise-networking-gateway.yaml
 - istio/enterprise-networking-virtualservice.yaml
+- enterprise-networking-trafficpolicy.yaml
 
 
 
