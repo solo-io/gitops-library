@@ -14,7 +14,7 @@ To install keycloak on your cluster, deploy the argo app associated with the key
 
 For example to deploy keycloak v12.0.4 in the default namespace:
 ```
-kubectl apply -f argo/default/keycloak-default-12-0-4.yaml
+kubectl apply -f argo/app/namespace/default/keycloak-12-0-4.yaml
 ```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress
@@ -24,7 +24,7 @@ You can run the `wait-for-rollout.sh` script to watch deployment progress
 
 ## uninstall keycloak
 ```
-kubectl delete -f argo/default/keycloak-default-12-0-4.yaml
+kubectl delete -f argo/app/namespace/default/keycloak-12-0-4.yaml
 ```
 
 ## Next Steps - Deploy hipstershop application and expose through gloo-edge
