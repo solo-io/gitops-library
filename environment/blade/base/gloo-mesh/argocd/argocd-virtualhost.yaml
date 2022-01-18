@@ -7,7 +7,7 @@ metadata:
     app: argocd
 spec:
   domains:
-  - 'argocd.jad.solo.io'
+  - argocd.jad.solo.io
   routes:
   - matchers:
     - uri:

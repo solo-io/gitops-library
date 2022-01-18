@@ -1,0 +1,20 @@
+apiVersion: discovery.mesh.gloo.solo.io/v1
+kind: Destination
+metadata:
+  name: argocd
+  namespace: gloo-mesh
+spec:
+  kubeService:
+    labels:
+      app.kubernetes.io/name: argocd-server
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+    ref:
+      clusterName: jad-mgmt
+      name: argocd-server
+      namespace: argocd
+  mesh:
+    name: istiod-istio-system-jad-mgmt
+    namespace: gloo-mesh

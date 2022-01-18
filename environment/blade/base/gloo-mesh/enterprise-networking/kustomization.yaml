@@ -5,8 +5,11 @@ kind: Kustomization
 # list of resources to be applied
 resources:
 - enterprise-networking-service.yaml
-- enterprise-networking-gateway.yaml
-- enterprise-networking-virtualservice.yaml
+- enterprise-networking-destination.yaml
+#- enterprise-networking-virtualgateway.yaml
+- istio/enterprise-networking-gateway.yaml
+- istio/enterprise-networking-virtualservice.yaml
+
 
 
 

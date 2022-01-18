@@ -1,0 +1,21 @@
+apiVersion: discovery.mesh.gloo.solo.io/v1
+kind: Destination
+metadata:
+  name: enterprise-networking
+  namespace: gloo-mesh
+spec:
+  kubeService:
+    labels:
+      app: enterprise-networking
+    ports:
+    - name: tcp
+      port: 9900
+      protocol: TCP
+      targetPortNumber: 9900
+    ref:
+      clusterName: jad-mgmt
+      name: enterprise-networking
+      namespace: gloo-mesh
+  mesh:
+    name: istiod-istio-system-jad-mgmt
+    namespace: gloo-mesh

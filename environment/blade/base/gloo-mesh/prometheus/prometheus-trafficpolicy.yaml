@@ -1,0 +1,20 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: TrafficPolicy
+metadata:
+  namespace: gloo-mesh
+  name: prometheus-tls-disable
+spec:
+  sourceSelector:
+  - kubeWorkloadMatcher:
+      namespaces:
+      - istio-system
+  destinationSelector:
+  - kubeServiceRefs:
+      services:
+        - clusterName: jad-mgmt
+          name: prometheus
+          namespace: gloo-mesh
+  policy:
+    mtls:
+      istio:
+        tlsMode: DISABLE

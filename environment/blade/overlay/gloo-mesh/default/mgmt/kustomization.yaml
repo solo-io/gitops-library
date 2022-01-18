@@ -8,11 +8,13 @@ resources:
 - ../../../../base/gloo-mesh/enterprise-networking/
 - ../../../../base/gloo-mesh/dashboard/
 - ../../../../base/gloo-mesh/prometheus/
+- ../../../../base/gloo-mesh/argocd/
 
 # list of patches to be applied
 patchesStrategicMerge:
 - patch/istio-ingressgateway-ew-service.yaml
 - patch/istio-ingressgateway-ns-service.yaml
+- patch/enterprise-networking-service.yaml
 
 
 

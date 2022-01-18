@@ -5,9 +5,9 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
-  - "relay.jad.solo.io"
+  - relay.jad.solo.io
   gateways:
-  - relay-gateway
+  - enterprise-networking
   tcp:
   - match:
     - port: 9900
