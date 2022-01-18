@@ -75,15 +75,15 @@ Resource Requirements:
 
 Note:
 - If a license key is not provided, the script will prompt for a valid Gloo Mesh license key
-- By default, the script expects to deploy into three clusters named `mgmt`, `cluster1`, and `cluster2`. This is configurable by changing the variables in the `gm-multicluster-script.sh`. A check is done to ensure that the defined contexts exist before proceeding with the installation.
+- By default, the script expects to deploy into three clusters named `mgmt`, `cluster1`, and `cluster2`. This is configurable by changing the variables in the `multi-mesh-demo.sh`. A check is done to ensure that the defined contexts exist before proceeding with the installation.
 
 ## Youtube Video Demonstration
-[![Multi Mesh Youtube Demo](https://github.com/solo-io/gitops-library/blob/main/images/youtube1.png)](https://youtu.be/N7MM0iqsvaU)
+[Multi Mesh Youtube Demo](https://youtu.be/tMBINOlwZRI)
 
-## e2e gloo-edge single cluster demo
-If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
+## e2e gloo-portal + gloo-edge single cluster demo
+If you would like to run through the Gloo Edge + Gloo Portal single cluster demo end-to-end, you can do so by running the script
 ```
-./edge-demo.sh $LICENSE_KEY
+./portal-edge-demo.sh $LICENSE_KEY
 ```
 
 Resource Requirements:
@@ -97,10 +97,13 @@ Note:
 Known Issues:
 - Currently keycloak oauth redirects will not work properly on a local deployment (i.e. k3d + MetalLB) if there is not a properly accessible `EXTERNAL-IP` (i.e. non-private, non-localhost). Current recommended approach is to run on GKE/EKS to leverage the LoadBalancer integration there
 
-## e2e gloo-portal + gloo-edge single cluster demo
-If you would like to run through the Gloo Edge + Gloo Portal single cluster demo end-to-end, you can do so by running the script
+## Youtube Video Demonstration
+[Gloo Edge + Portal Youtube Demo](https://youtu.be/RUZLf5HSSNs)
+
+## e2e gloo-edge single cluster demo
+If you would like to run through the Gloo Edge single cluster demo end-to-end, you can do so by running the script
 ```
-./portal-edge-demo.sh $LICENSE_KEY
+./edge-demo.sh $LICENSE_KEY
 ```
 
 Resource Requirements:
