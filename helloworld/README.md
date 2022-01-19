@@ -29,3 +29,14 @@ in another tab you can watch your virtualservice to observe traffic shifting. Yo
 ```
 kubectl get virtualservice helloworld-vsvc -o yaml -w
 ```
+
+## if you need to abort rollout
+```
+kubectl argo rollouts abort helloworld
+```
+
+## revert to desired state to complete abort
+```
+kubectl argo rollouts set image helloworld \
+  helloworld=docker.io/istio/examples-helloworld-v1
+```
