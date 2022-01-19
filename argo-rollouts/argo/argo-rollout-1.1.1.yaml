@@ -13,6 +13,7 @@ spec:
     path: argo-rollouts/overlay/app/1.1.1/
   destination:
     server: https://kubernetes.default.svc
+    namespace: argo-rollouts
   syncPolicy:
     automated:
       prune: false # Specifies if resources should be pruned during auto-syncing ( false by default ).
