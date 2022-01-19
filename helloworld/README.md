@@ -27,5 +27,5 @@ visualize trafficshift in virtualservice
 
 in another tab you can watch your virtualservice to observe traffic shifting. You should see the weights shift from 100% stable incrementally to 100% canary, and then result in setting the canary to the stable tag once complete.
 ```
-kubectl get virtualservice httpbin-vsvc -o yaml -w
+kubectl get virtualservice helloworld-vsvc -o yaml -w
 ```
