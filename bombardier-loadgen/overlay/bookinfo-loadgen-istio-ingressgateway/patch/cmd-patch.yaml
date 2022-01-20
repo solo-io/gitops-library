@@ -8,4 +8,4 @@ spec:
       containers:
       - name: bombardier
         command: ["/bin/sh"]
-        args: ["-c", "for run in $(seq 1 100); do bombardier -c 1 -d 60s -r 10 -p i,p,r http://istio-ingressgateway.istio-system/productpage; done"]
+        args: ["-c", "for run in $(seq 1 100); do bombardier -c 1 -d 60s -r 1 -p i,p,r http://istio-ingressgateway.istio-system/productpage; done"]
