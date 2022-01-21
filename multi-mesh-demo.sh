@@ -5,7 +5,7 @@ cluster1_context="cluster1"
 cluster2_context="cluster2"
 mgmt_context="mgmt"
 gloo_mesh_overlay="1-2-7"
-meshctl_version="v1.2.7"
+gloo_mesh_version="1.2.7"
 istio_overlay="1-11-4"
 
 # check to see if defined contexts exist
@@ -63,8 +63,10 @@ kubectl apply -f argo/deploy/mtls/strict-mtls.yaml --context ${cluster2_context}
 
 # register clusters to gloo mesh
 cd ../gloo-mesh/
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context} ${meshctl_version}
-./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context} ${meshctl_version}
+#./scripts/meshctl-register.sh ${mgmt_context} ${cluster1_context} ${meshctl_version}
+#./scripts/meshctl-register.sh ${mgmt_context} ${cluster2_context} ${meshctl_version}
+./scripts/meshctl-register-helm-argocd.sh ${mgmt_context} ${cluster1_context} ${cluster2_context} ${gloo_mesh_version}
+
 
 # deploy gloo-mesh dataplane addons
 kubectl apply -f argo/${gloo_mesh_overlay}/gloo-mesh-dataplane-addons.yaml --context ${cluster1_context}
