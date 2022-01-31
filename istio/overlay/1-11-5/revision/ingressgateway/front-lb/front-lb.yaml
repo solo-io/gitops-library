@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-ingressgateway-front
+  namespace: istio-ingress
+spec:
+  type: LoadBalancer
+  selector:
+    istio: ingressgateway
+    # select the revision
+    version: 1-11-5
+  ports:
+    - name: status-port
+      port: 15021
+      targetPort: 15021
+    - name: http2
+      port: 80
+      targetPort: 8080
+    - name: https
+      port: 443
+      targetPort: 8443
+    - name: tcp
+      port: 31400
+      targetPort: 31400
+    - name: tls
+      port: 15443
+      targetPort: 15443

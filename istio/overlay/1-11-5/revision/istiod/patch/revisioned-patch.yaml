@@ -1,0 +1,43 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: control-plane
+  #namespace: istio-system
+spec:
+  meshConfig:
+    # enable access logging. Empty value disables access logging.
+    # accessLogFile: /dev/stdout
+    # Encoding for the proxy access log (TEXT or JSON). Default value is TEXT.
+    accessLogEncoding: JSON
+    enableTracing: false
+    defaultConfig:
+      # location of istiod service
+      discoveryAddress: istiod-1-11-5.istio-system.svc:15012
+      # enable GlooMesh metrics service
+      envoyMetricsService:
+        address: enterprise-agent.gloo-mesh:9977
+      # enable GlooMesh accesslog service
+      envoyAccessLogService:
+        address: enterprise-agent.gloo-mesh:9977
+      # tracing:
+      #   # sample 1% of traffic
+      #   sampling: 01.0
+      proxyMetadata:
+        # Enable Istio agent to handle DNS requests for known hosts
+        # Unknown hosts will automatically be resolved using upstream dns servers in resolv.conf
+        ISTIO_META_DNS_CAPTURE: "true"
+        # Enable automatic address allocation, optional
+        ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+        # Used for gloo mesh metrics aggregation
+        # should match trustDomain
+        GLOO_MESH_CLUSTER_NAME: cluster1
+    # Set the default behavior of the sidecar for handling outbound traffic from the application.
+    outboundTrafficPolicy:
+      mode: ALLOW_ANY
+    # The trust domain corresponds to the trust root of a system. For Gloo Mesh this should be the name of the cluster that cooresponds with the CA certificate CommonName identity
+    #trustDomain: production-cluster.solo.io
+    # The namespace to treat as the administrative root namespace for Istio configuration.
+    rootNamespace: istio-system
+    enablePrometheusMerge: true
+  profile: minimal
+  revision: 1-11-5

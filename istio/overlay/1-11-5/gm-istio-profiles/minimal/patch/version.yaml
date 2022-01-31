@@ -1,0 +1,7 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: control-plane
+spec:
+  hub: gcr.io/istio-enterprise
+  tag: 1.11.5

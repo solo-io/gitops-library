@@ -1,0 +1,8 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: istio-demo-profile
+  namespace: istio-system
+spec:
+  hub: docker.io/istio
+  tag: 1.11.5
