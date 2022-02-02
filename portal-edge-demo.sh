@@ -2,7 +2,7 @@
 
 LICENSE_KEY=$1
 edge_version="1-9-1"
-portal_version="1-2-0-beta4"
+portal_version="1-2-0-beta8"
 portal_domain_overlay="default"
 
 # check if cluster exists, uses current context if it does
@@ -99,10 +99,6 @@ kubectl apply -f argo/edge/secretref/gloo-portal-helm-${portal_version}.yaml
 cd ../petstore/
 kubectl apply -f argo/demo/domain/${portal_domain_overlay}/petstore-portal-demo.yaml
 ../tools/wait-for-rollout.sh deployment petstore-v2 default 10
-
-# hack to get around CORS race issue
-kubectl delete portal ecommerce-portal
-# argocd will recreate the portal with correct CORS config
 
 # echo proxy url
 echo 
