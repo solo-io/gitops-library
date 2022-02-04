@@ -1,22 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: cert-manager
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/solo-io/gitops-library
-    targetRevision: HEAD
-    path: environment/blade/overlay/external-dns
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: 1.7.0
+    helm:
+      releaseName: cert-manager
+      parameters:
+      - name: installCRDs
+        value: 'true'
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-dns
+    namespace: cert-manager
   syncPolicy:
     automated:
-      prune: false
-      selfHeal: false
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true

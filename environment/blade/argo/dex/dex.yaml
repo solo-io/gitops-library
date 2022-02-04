@@ -1,27 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-load-balancer-controller
+  name: dex
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    chart: aws-load-balancer-controller
-    repoURL: https://aws.github.io/eks-charts
-    targetRevision: 1.3.3
+    chart: dex
+    repoURL: https://charts.dexidp.io
+    targetRevision: 0.6.5
     helm:
-      releaseName: aws-load-balancer-controller
+      releaseName: dex
       parameters:
-      - name: clusterName
-        value: cluster
-      - name: replicaCount
+      - name: replicas
         value: '1'
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: dex
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

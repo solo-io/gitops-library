@@ -1,18 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ebs-csi-controller
+  name: aws-ebs-csi-driver
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    chart: aws-ebs-csi-driver/aws-ebs-csi-driver
-    repoURL: https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
-    targetRevision: 2.4.0
+    chart: aws-ebs-csi-driver
+    repoURL: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+    targetRevision: 2.6.2
     helm:
       releaseName: aws-ebs-csi-driver
+    helm:
+      releaseName: aws-ebs-csi-driver
+      parameters:
+      - name: replicaCount
+        value: '1'
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
