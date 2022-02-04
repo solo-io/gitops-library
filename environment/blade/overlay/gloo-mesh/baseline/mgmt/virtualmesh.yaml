@@ -1,0 +1,32 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: VirtualMesh
+metadata:
+  name: virtual-mesh
+  namespace: gloo-mesh
+spec:
+  mtlsConfig:
+    autoRestartPods: true
+    shared:
+      rootCertificateAuthority:
+        generated: {}
+  federation:
+    ingressGatewaySelectors:
+      - portName: tls
+        destinationSelectors:
+        - kubeServiceMatcher:
+           clusters:
+           - jad-mgmt
+           - jad-cluster1
+           - jad-cluster2
+           labels:
+             ingressgateway.istio.io/direction: east-west
+           namespaces:
+           - istio-system
+  globalAccessPolicy: ENABLED
+  meshes:
+  - name: istiod-istio-system-jad-mgmt
+    namespace: gloo-mesh
+  - name: istiod-istio-system-jad-cluster1
+    namespace: gloo-mesh
+  - name: istiod-istio-system-jad-cluster2
+    namespace: gloo-mesh

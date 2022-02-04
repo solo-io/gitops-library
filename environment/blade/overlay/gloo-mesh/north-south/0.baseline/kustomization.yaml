@@ -1,0 +1,15 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# list of resources to be applied
+resources:
+- bookinfo-virtualgateway.yaml
+- bookinfo-virtualhost.yaml
+
+
+
+
+
+
+

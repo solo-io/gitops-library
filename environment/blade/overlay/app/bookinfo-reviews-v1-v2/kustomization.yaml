@@ -7,7 +7,6 @@ resources:
 - bookinfo-namespace.yaml
 
 patchesStrategicMerge:
-- patch/reviews-v1-deployment.yaml
-- patch/reviews-v2-deployment.yaml
+- patch/reviews-v3-deployment.yaml
 
 namespace: bookinfo
