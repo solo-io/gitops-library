@@ -4,6 +4,7 @@ kind: Kustomization
 
 resources:
 - ../../../base/gedemo/
+- ../../../argo/bookinfo/
 - bookinfo-virtualservice.yaml
 - bookinfo-cert.yaml
 - gloo-argocd-virtualservice.yaml
