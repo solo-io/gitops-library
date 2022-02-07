@@ -1,0 +1,13 @@
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  name: static-argocd-grpc
+  namespace: gloo-system
+spec:
+  kube:
+    selector:
+      app.kubernetes.io/name: argocd-server
+    serviceName: argocd-server
+    serviceNamespace: argocd
+    servicePort: 443
+  useHttp2: true

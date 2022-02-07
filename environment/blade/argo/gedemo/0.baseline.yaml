@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo
+  name: 0.baseline
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,15 +10,10 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: environment/blade/overlay/app/bookinfo-reviews-v1-v2
+    path: environment/blade/overlay/gedemo/0.baseline
   destination:
     server: https://kubernetes.default.svc
-    namespace: bookinfo
   syncPolicy:
     automated:
       prune: false
       selfHeal: false
-    syncOptions:
-      - CreateNamespace=true
-
-      
