@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../../base/gedemo/
+- ../../base/baseline
 - bookinfo-virtualservice.yaml
 - bookinfo-cert.yaml
 - gloo-argocd-virtualservice.yaml
