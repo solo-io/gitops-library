@@ -8,3 +8,5 @@ spec:
     secretRef:
       name: bookinfo
       namespace: gloo-system
+    sniDomains:
+    - bookinfo.jad.solo.io
