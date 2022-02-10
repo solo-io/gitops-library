@@ -1,0 +1,22 @@
+# disable fed and require user to create a secret named "license" with base64 encoded gloo ee license key in the gloo-system namespace
+gloo-fed:
+  enabled: false
+  create_license_secret: false
+
+gloo-ee:
+  create_license_secret: false
+  license_secret_name: "license"
+  gloo-fed:
+    enabled: false
+    create_license_secret: false
+  gloo:
+    gatewayProxies:
+      gatewayProxy:
+        gatewaySettings:
+          accessLoggingService:
+            accessLog: # https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage
+              - fileSink:
+                  path: /dev/stdout
+                  jsonFormat:
+                    httpMethod: '%REQ(:METHOD)%'
+                    wafFilterState: '%FILTER_STATE(io.solo.modsecurity.audit_log)%'
