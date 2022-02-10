@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/wildcard/edge/0.baseline/
+    path: bookinfo/overlay/config/domain/jad.solo.io/edge/0.baseline/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

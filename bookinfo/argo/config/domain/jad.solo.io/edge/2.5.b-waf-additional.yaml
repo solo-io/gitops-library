@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/wildcard/edge/2.5.b-waf-additional/
+    path: bookinfo/overlay/config/domain/jad.solo.io/edge/2.5.b-waf-additional/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
