@@ -6,4 +6,4 @@ metadata:
 spec:
   virtualHost:
     domains:
-    - '*'
+    - jad.solo.io

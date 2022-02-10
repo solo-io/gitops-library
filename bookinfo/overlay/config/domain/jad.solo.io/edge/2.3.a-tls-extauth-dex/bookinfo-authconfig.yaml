@@ -1,0 +1,21 @@
+apiVersion: enterprise.gloo.solo.io/v1
+kind: AuthConfig
+metadata:
+  name: bookinfo-oidc-dex
+  namespace: gloo-system
+spec:
+  configs:
+  - oauth2:
+      oidcAuthorizationCode:
+        appUrl: https://bookinfo.jad.solo.io
+        callbackPath: /callback
+        clientId: bookinfo
+        clientSecretRef:
+          name: oidc-dex
+          namespace: gloo-system
+        issuerUrl: http://dex.dex.svc.cluster.local:5556
+        scopes:
+        - email
+        session:
+          cookieOptions:
+            notSecure: true

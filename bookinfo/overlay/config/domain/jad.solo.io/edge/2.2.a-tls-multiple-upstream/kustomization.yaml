@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - ../1.2.a-route-multiple-upstream
-- upstream-tls.yaml
 
 patchesStrategicMerge:
 - patch/ssl-config.yaml

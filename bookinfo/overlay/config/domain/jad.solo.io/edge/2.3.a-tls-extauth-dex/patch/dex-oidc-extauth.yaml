@@ -9,6 +9,6 @@ spec:
     options:
       extauth:
         configRef:
-          name: okta-oauth
+          name: bookinfo-oidc-dex
           namespace: gloo-system
 #---------------------------------------------     

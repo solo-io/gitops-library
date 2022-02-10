@@ -6,5 +6,5 @@ metadata:
 spec:
   sslConfig:
     secretRef:
-      name: upstream-tls
+      name: bookinfo
       namespace: gloo-system

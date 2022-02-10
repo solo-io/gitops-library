@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - ../2.2.a-tls-multiple-upstream
+- bookinfo-authconfig
 
 patchesStrategicMerge:
-- patch/okta-extauth.yaml
+- patch/dex-oidc-extauth.yaml
