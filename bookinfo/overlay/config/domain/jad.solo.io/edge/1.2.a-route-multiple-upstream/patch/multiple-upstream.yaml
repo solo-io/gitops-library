@@ -21,5 +21,5 @@ spec:
                 name: bookinfo-v2-productpage-9080
                 namespace: gloo-system
             weight: 5
-      options:
-        prefixRewrite: /productpage
+#      options:
+#        prefixRewrite: /productpage
