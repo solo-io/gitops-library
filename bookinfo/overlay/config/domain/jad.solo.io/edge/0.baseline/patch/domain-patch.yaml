@@ -6,4 +6,4 @@ metadata:
 spec:
   virtualHost:
     domains:
-      - bookinfo.jad.solo.io
+    - 'bookinfo.jad.solo.io'
