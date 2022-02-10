@@ -1,0 +1,16 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: RateLimitServerConfig
+metadata:
+  labels:
+    app: bookinfo-policies
+    app.kubernetes.io/name: bookinfo-policies
+  name: rl-config
+  namespace: gloo-mesh
+spec:
+  raw:
+    descriptors:
+      - key: generic_key
+        value: counter
+        rateLimit:
+          requestsPerUnit: 2
+          unit: MINUTE

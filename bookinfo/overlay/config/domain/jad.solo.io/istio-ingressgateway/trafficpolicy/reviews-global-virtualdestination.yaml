@@ -1,0 +1,23 @@
+apiVersion: networking.enterprise.mesh.gloo.solo.io/v1beta1
+kind: VirtualDestination
+metadata:
+  name: reviews-global
+  namespace: gloo-mesh
+spec:
+  hostname: reviews.global
+  port:
+    number: 9080
+    protocol: http
+  localized:
+    outlierDetection:
+      consecutiveErrors: 1
+      maxEjectionPercent: 100
+      interval: 5s
+      baseEjectionTime: 120s
+    destinationSelectors:
+    - kubeServiceMatcher:
+        labels:
+          app: reviews
+  virtualMesh:
+    name: virtual-mesh
+    namespace: gloo-mesh

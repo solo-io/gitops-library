@@ -1,0 +1,14 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+# ------------------- extauth -------------------
+  virtualHost:
+    options:
+      extauth:
+        configRef:
+          name: bookinfo-oidc-dex
+          namespace: gloo-system
+#---------------------------------------------     

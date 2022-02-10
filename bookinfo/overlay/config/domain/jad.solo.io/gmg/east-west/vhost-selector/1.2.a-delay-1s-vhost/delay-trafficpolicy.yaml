@@ -1,0 +1,14 @@
+apiVersion: networking.mesh.gloo.solo.io/v1
+kind: TrafficPolicy
+metadata:
+  namespace: gloo-mesh
+  name: add-delay-policy
+spec:
+  routeSelector:
+  - virtualHostRefs:
+    - name: demo-virtualhost
+      namespace: gloo-mesh
+  policy:
+    faultInjection:
+        fixedDelay: "1s"
+        percentage: 100
