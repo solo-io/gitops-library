@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - ../2.2.a-tls-multiple-upstream
-- bookinfo-authconfig
+- bookinfo-authconfig.yaml
 
 patchesStrategicMerge:
 - patch/dex-oidc-extauth.yaml
