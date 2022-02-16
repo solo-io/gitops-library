@@ -15,3 +15,5 @@ spec:
             upstream:
               name: bookinfo-v1-productpage-9080
               namespace: gloo-system
+#        options:
+#          prefixRewrite: /productpage
