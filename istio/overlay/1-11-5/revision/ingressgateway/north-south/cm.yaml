@@ -3,7 +3,7 @@ data:
   mesh: |-
     accessLogEncoding: JSON
     defaultConfig:
-      discoveryAddress: istiod-1-11-4.istio-system.svc:15012
+      discoveryAddress: istiod-1-11-5.istio-system.svc:15012
       envoyAccessLogService:
         address: enterprise-agent.gloo-mesh:9977
       envoyMetricsService:
@@ -26,14 +26,14 @@ kind: ConfigMap
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"mesh":"defaultConfig:\n  discoveryAddress: istiod-1-11-4.istio-system.svc:15012\n  proxyMetadata:\n    ISTIO_META_DNS_CAPTURE: \"true\"\n  tracing:\n    zipkin:\n      address: zipkin.istio-system:9411\nenablePrometheusMerge: true\nrootNamespace: istio-system\ntrustDomain: cluster.local","meshNetworks":"networks: {}"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"install.operator.istio.io/owning-resource":"control-plane","install.operator.istio.io/owning-resource-namespace":"istio-system","istio.io/rev":"1-11-4","operator.istio.io/component":"Pilot","operator.istio.io/managed":"Reconcile","operator.istio.io/version":"1.11.4","release":"istio"},"name":"istio-1-11-4","namespace":"istio-system"}}
+      {"apiVersion":"v1","data":{"mesh":"defaultConfig:\n  discoveryAddress: istiod-1-11-5.istio-system.svc:15012\n  proxyMetadata:\n    ISTIO_META_DNS_CAPTURE: \"true\"\n  tracing:\n    zipkin:\n      address: zipkin.istio-system:9411\nenablePrometheusMerge: true\nrootNamespace: istio-system\ntrustDomain: cluster.local","meshNetworks":"networks: {}"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"install.operator.istio.io/owning-resource":"control-plane","install.operator.istio.io/owning-resource-namespace":"istio-system","istio.io/rev":"1-11-5","operator.istio.io/component":"Pilot","operator.istio.io/managed":"Reconcile","operator.istio.io/version":"1.11.4","release":"istio"},"name":"istio-1-11-5","namespace":"istio-system"}}
   labels:
     install.operator.istio.io/owning-resource: control-plane
     install.operator.istio.io/owning-resource-namespace: istio-system
-    istio.io/rev: 1-11-4
+    istio.io/rev: 1-11-5
     operator.istio.io/component: Pilot
     operator.istio.io/managed: Reconcile
-    operator.istio.io/version: 1.11.4
+    operator.istio.io/version: 1.11.5
     release: istio
-  name: istio-1-11-4
+  name: istio-1-11-5
   namespace: istio-ingress
