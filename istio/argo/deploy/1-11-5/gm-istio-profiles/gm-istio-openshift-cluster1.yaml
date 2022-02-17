@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gm-istio-openshift-1-11-4
+  name: gm-istio-openshift-cluster1
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: istio/overlay/1-11-4/gm-istio-profiles/openshift/
+    path: istio/overlay/1-11-5/gm-istio-profiles/openshift/cluster1/
   destination:
     server: https://kubernetes.default.svc
     namespace: istio-system
