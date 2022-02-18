@@ -1,0 +1,10 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources: 
+- ../../../../../base/profiles/openshift
+
+patchesStrategicMerge:
+- patch/version.yaml
+- patch/gm-workshop-patch.yaml
