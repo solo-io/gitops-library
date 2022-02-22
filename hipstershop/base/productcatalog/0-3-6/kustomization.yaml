@@ -4,5 +4,5 @@ kind: Kustomization
 
 # list of Resource Config to be Applied
 resources:
-- productcatalog-0-2-4.yaml
+- productcatalog.yaml
 
