@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-ee-helm-1-10-14-waf-al
+  name: gloo-edge-ee-helm-1-10-12
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: gloo-edge/base/ee/fed/1-10-14/waf-al/
+    path: gloo-edge/base/ee/fed/1-10-12/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
