@@ -4,4 +4,4 @@ kind: Kustomization
 
 # list of Resource Config to be Applied
 resources:
-- argocd-2.1.7.yaml
+- argocd-2.3.0.yaml

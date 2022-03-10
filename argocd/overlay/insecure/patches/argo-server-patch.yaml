@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,6 +6,7 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
+  namespace: argocd
 spec:
   selector:
     matchLabels:
@@ -182,7 +182,13 @@ spec:
               key: server.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v2.1.7
+        - name: ARGOCD_MAX_COOKIE_NUMBER
+          valueFrom:
+            configMapKeyRef:
+              key: server.http.cookie.maxnumber
+              name: argocd-cmd-params-cm
+              optional: true
+        image: quay.io/argoproj/argocd:v2.3.0
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
