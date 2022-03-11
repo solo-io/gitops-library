@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bookinfo-frontends
+  labels:
+    istio.io/rev=1-11
