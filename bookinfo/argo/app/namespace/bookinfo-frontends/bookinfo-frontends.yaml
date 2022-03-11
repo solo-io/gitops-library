@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-backends
+  name: bookinfo-frontends
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/app/revisioned/1-11/bookinfo-backends/v1-v2-v3/
+    path: bookinfo/overlay/app/bookinfo-frontends/
   destination:
     server: https://kubernetes.default.svc
-    namespace: bookinfo-backends
+    namespace: bookinfo-frontends
   syncPolicy:
     automated:
       prune: false

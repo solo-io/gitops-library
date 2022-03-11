@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/app/revisioned/1-11/bookinfo-backends/v1-v2/
+    path: bookinfo/overlay/app/bookinfo-backends/v1-v2-v3/
   destination:
     server: https://kubernetes.default.svc
     namespace: bookinfo-backends
