@@ -32,6 +32,11 @@ spec:
           mountPath: /tmp
         securityContext:
           runAsUser: 1000
+        env:
+        - name: DETAILS_HOSTNAME
+          value: details.bookinfo-backends.svc.cluster.local
+        - name: REVIEWS_HOSTNAME
+          value: reviews.bookinfo-backends.svc.cluster.local
       volumes:
       - name: tmp
         emptyDir: {}
