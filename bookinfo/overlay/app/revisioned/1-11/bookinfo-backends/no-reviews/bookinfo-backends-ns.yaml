@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: bookinfo-backends
   labels:
-    istio.io/rev=1-11
+    istio.io/rev: 1-11

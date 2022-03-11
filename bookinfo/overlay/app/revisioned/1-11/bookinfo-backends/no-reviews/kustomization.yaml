@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
 - ../../../../../../base/app/bookinfo-backends/no-reviews/
-- bookinfo-backends-ns.yaml
+#- bookinfo-backends-ns.yaml
