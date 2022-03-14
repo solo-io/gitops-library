@@ -8,5 +8,18 @@ spec:
     routes:
     - matchers:
       - prefix: /
+      routeAction:
+        multi:
+          destinations:
+          - destination:
+              upstream:
+                name: bookinfo-v1-productpage-9080
+                namespace: gloo-system
+            weight: 5
+          - destination:
+              upstream:
+                name: bookinfo-v2-productpage-9080
+                namespace: gloo-system
+            weight: 5
       options:
         prefixRewrite: /productpage
