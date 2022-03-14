@@ -20,6 +20,6 @@ spec:
     routeAction:
       destinations:
       - kubeService:
-          clusterName: cluster2
+          clusterName: jad-cluster3
           name: productpage
           namespace: default

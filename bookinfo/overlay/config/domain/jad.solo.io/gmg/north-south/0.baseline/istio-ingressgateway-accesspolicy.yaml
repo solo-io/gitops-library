@@ -9,10 +9,10 @@ spec:
       serviceAccounts:
         - name: istio-ingressgateway-service-account
           namespace: istio-system
-          clusterName: cluster1
+          clusterName: jad-cluster2
         - name: istio-ingressgateway-service-account
           namespace: istio-system
-          clusterName: cluster2
+          clusterName: jad-cluster3
   destinationSelector:
   - kubeServiceMatcher:
       namespaces:

@@ -15,8 +15,8 @@ spec:
     destinationSelectors:
     - kubeServiceMatcher:
         clusters:
-        - cluster1
-        - cluster2
+        - jad-cluster2
+        - jad-cluster3
         labels:
           istio: ingressgateway
         namespaces:

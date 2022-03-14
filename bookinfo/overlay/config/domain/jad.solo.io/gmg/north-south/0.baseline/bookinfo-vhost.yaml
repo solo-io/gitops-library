@@ -5,7 +5,7 @@ metadata:
   namespace: gloo-mesh
 spec:
   domains:
-  - '*'
+  - 'bookinfo.jad.solo.io'
   routes:
   - matchers:
     - uri:

@@ -18,11 +18,11 @@ spec:
   sourceSelector:
   - kubeServiceAccountRefs:
       serviceAccounts:
-      - clusterName: cluster1
+      - clusterName: jad-cluster2
         name: bookinfo-productpage
         namespace: default
   - kubeServiceAccountRefs:
       serviceAccounts:
-      - clusterName: cluster2
+      - clusterName: jad-cluster3
         name: bookinfo-productpage
         namespace: default
