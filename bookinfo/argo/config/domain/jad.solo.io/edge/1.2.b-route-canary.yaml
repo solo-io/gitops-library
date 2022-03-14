@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/jad.solo.io/edge/1.2.a-route-canary/
+    path: bookinfo/overlay/config/domain/jad.solo.io/edge/1.2.b-route-canary/
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
