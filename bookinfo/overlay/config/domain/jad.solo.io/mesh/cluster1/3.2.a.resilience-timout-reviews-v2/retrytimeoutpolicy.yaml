@@ -1,0 +1,12 @@
+apiVersion: resilience.policy.gloo.solo.io/v2
+kind: RetryTimeoutPolicy
+metadata:
+  name: reviews-request-timeout
+  namespace: bookinfo-backends
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        request_timeout: "0.5s"
+  config:
+    requestTimeout: 0.5s

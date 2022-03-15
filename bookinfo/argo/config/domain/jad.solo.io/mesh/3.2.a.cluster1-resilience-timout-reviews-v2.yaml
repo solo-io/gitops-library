@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: timeout-reviews
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/solo-io/gitops-library
+    targetRevision: HEAD
+    path: bookinfo/overlay/config/domain/jad.solo.io/mesh/cluster1/3.2.a.resilience-timout-reviews-v2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
