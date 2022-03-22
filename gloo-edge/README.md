@@ -70,9 +70,9 @@ EOF
 ## deploy gloo edge
 Once the Enterprise license key has been created, navigate to the version of Gloo Edge that you want and deploy the associated argo application.
 
-For example, to deploy Gloo Edge Enterprise v1.8.9 with Gloo Fed enabled (default)
+For example, to deploy Gloo Edge Enterprise v1.10.12 with Gloo Fed enabled (default)
 ```
-kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-1-8-9.yaml
+kubectl apply -f argo/ee/1.10.12/gloo-edge-ee-fed.yaml
 ```
 
 ## wait for rollout
@@ -95,7 +95,7 @@ deployment "gateway" successfully rolled out
 ```
 
 ## configuring gloo-fed
-gloo-fed is deployed by default as a sub-chart of the `gloo-edge` helm installation. By default, the gloo-edge install configures gloo-fed as part of the installation. Use this command below to check the status of `gloo-fed` in your cluster
+By default, the gloo-edge install configures gloo-fed as part of the installation. Use this command below to check the status of `gloo-fed` in your cluster
 ```
 ../tools/wait-for-rollout.sh deployment gloo-fed gloo-system 10
 ```
@@ -142,18 +142,13 @@ kubectl port-forward svc/gloo-fed-console -n gloo-system 8090:8090
 
 ## Deploy gloo-edge with gloo-fed disabled
 gloo-fed is a feature `gloo-edge` that is enabled default, the gloo-edge helm chart configures gloo-fed as part of the installation. Disabling gloo-fed is as simple as setting `gloo-fed.enabled=false` in the Gloo Edge Enterprise Helm chart. 
-
-Since we are using gitops, we have already created an argo application [here](https://github.com/solo-io/gitops-library/blob/main/gloo-edge/argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml) that disables gloo-fed so we can just deploy it.
 ```
-kubectl apply -f argo/ee/1-8-9/gloo-edge-ee-helm-nofed-1-8-9.yaml
+kubectl apply -f argo/ee/1.10.12/gloo-edge-ee-nofed.yaml
 ```
 
-**NOTE:** Prior to Gloo Edge Enterprise v1.8.9, the Enterprise UI was only available if Gloo Federation was enabled. Starting in v1.8.9, the UI is included by default for all Gloo Edge Enterprise users as well. Note that if you have Gloo Federation enabled, the UI does not show any data until you register one or more clusters. If Gloo Federation is disabled, the UI shows the installed Gloo Edge instance automatically without cluster registration. See [this upgrade notice](https://docs.solo.io/gloo-edge/master/operations/upgrading/1.8.0/#enterprise-ui) for more details
-
-## Uninstalling Gloo Edge
-removing gloo-edge depends on which overlay path was installed when going through the installation lab. Please uninstall the argo application you originally installed
+## Uninstalling Gloo Edge Argo Application
 ```
-kubectl delete -f ../gloo-edge/argo/ee/<path/to/version/used>
+kubectl delete -f argo/ee/<path/to/version/used>
 ```
 
 ## Next Steps - deploy keycloak
