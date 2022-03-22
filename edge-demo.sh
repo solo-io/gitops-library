@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LICENSE_KEY=$1
-edge_version="1-9-1"
+edge_version="1.10.12"
 
 # check if cluster exists, uses current context if it does
 CONTEXT=`kubectl config current-context`
@@ -60,7 +60,7 @@ kubectl apply -f argo/config/domain/example.com/argo-http-vs.yaml
 
 # install gloo-edge without gloo-fed
 cd ../gloo-edge/
-kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-helm-${edge_version}.yaml
+kubectl apply -f argo/ee/${edge_version}/gloo-edge-ee-nofed.yaml
 
 # wait for gloo-edge rollout
 ../tools/wait-for-rollout.sh deployment gateway gloo-system 10
