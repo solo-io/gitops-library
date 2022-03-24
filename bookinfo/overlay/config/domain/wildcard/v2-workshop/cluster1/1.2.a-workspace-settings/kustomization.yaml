@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+#- ../../baseline/cluster1
+- gateways-workspace-settings.yaml
+- bookinfo-workspace-settings.yaml

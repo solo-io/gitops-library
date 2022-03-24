@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workspace-settings
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/solo-io/gitops-library
+    targetRevision: v2-workshop
+    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/1.2.a-workspace-settings
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
