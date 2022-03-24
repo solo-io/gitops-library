@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../2.3.a-routing-federation-productpage
+- failoverpolicy.yaml
+- outlierdetectionpolicy.yaml
+
+patchesStrategicMerge:
+- patch/enable-failover.yaml
+- patch/match-both-ingressgateway.yaml

@@ -1,0 +1,25 @@
+apiVersion: trafficcontrol.policy.gloo.solo.io/v2
+kind: RateLimitPolicy
+metadata:
+  name: productpage
+  namespace: bookinfo-frontends
+  labels:
+    workspace.solo.io/exported: "true"
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        ratelimited: "true"
+  config:
+    serverSettings:
+      name: rate-limit-server
+      namespace: bookinfo-frontends
+      cluster: cluster1
+    ratelimitClientConfig:
+      name: productpage
+      namespace: bookinfo-frontends
+      cluster: cluster1
+    ratelimitServerConfig:
+      name: productpage
+      namespace: bookinfo-frontends
+      cluster: cluster1

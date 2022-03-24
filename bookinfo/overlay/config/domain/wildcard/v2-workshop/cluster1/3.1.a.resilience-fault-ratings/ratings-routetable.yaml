@@ -1,0 +1,26 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  name: ratings
+  namespace: bookinfo-backends
+spec:
+  hosts:
+    - 'ratings.bookinfo-backends.svc.cluster.local'
+  workloadSelectors:
+  - selector:
+      labels:
+        app: reviews
+  http:
+    - name: ratings
+      labels:
+        fault_injection: "true"
+      matchers:
+      - uri:
+          prefix: /
+      forwardTo:
+        destinations:
+          - ref:
+              name: ratings
+              namespace: bookinfo-backends
+            port:
+              number: 9080

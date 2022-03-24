@@ -1,0 +1,14 @@
+apiVersion: resilience.policy.gloo.solo.io/v2
+kind: FaultInjectionPolicy
+metadata:
+  name: ratings-fault-injection
+  namespace: bookinfo-backends
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        fault_injection: "true"
+  config:
+    delay:
+      fixedDelay: 2s
+      percentage: 100

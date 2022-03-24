@@ -1,0 +1,19 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: VirtualGateway
+metadata:
+  name: north-south-gw
+  namespace: istio-gateways
+spec:
+  workloads:
+    - selector:
+        labels:
+          istio: ingressgateway
+        cluster: cluster2
+  listeners:
+    - http: {}
+      port:
+        number: 80
+        name: http
+        protocol: HTTP
+      allowedRouteTables:
+        - host: 'bookinfo2.jad.solo.io'

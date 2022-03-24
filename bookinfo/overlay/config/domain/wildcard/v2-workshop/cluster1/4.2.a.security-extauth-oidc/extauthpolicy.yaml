@@ -1,0 +1,32 @@
+apiVersion: security.policy.gloo.solo.io/v2
+kind: ExtAuthPolicy
+metadata:
+  name: productpage
+  namespace: bookinfo-frontends
+  labels:
+    workspace.solo.io/exported: "true"
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        oauth: "true"
+  config:
+    server:
+      name: ext-auth-server
+      namespace: bookinfo-frontends
+      cluster: cluster1
+    glooAuth:
+      configs:
+      - oauth2:
+          oidcAuthorizationCode:
+            appUrl: https://${ENDPOINT_HTTPS_GW_CLUSTER1_EXT}
+            callbackPath: /callback
+            clientId: ${CLIENT}
+            clientSecretRef:
+              name: oauth
+              namespace: bookinfo-frontends
+            issuerUrl: "${KEYCLOAK_URL}/realms/master/"
+            scopes:
+            - email
+            headers:
+              idTokenHeader: jwt
