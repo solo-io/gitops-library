@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: v2-workshop
-    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/mgmt/root-trust
+    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/mgmt/1.1.a-root-trust
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
