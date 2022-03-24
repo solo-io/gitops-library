@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: workspace-settings
+  name: bookinfo-config
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/jad.solo.io/mesh/cluster1/4.1.a.security-zero-trust
+    path: bookinfo/overlay/config/domain/jad.solo.io/v2-workshop/cluster1/4.2.a.security-extauth-oidc
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

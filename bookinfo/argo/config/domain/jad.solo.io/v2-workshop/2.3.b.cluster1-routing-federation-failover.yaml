@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/jad.solo.io/mesh/cluster1/4.4.a.security-rate-limiting
+    path: bookinfo/overlay/config/domain/jad.solo.io/v2-workshop/cluster1/2.3.b-routing-federation-failover
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

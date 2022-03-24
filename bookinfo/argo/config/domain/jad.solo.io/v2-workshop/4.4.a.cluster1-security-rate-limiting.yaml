@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-trust
+  name: bookinfo-config
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/jad.solo.io/mesh/mgmt/root-trust
+    path: bookinfo/overlay/config/domain/jad.solo.io/v2-workshop/cluster1/4.4.a.security-rate-limiting
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system

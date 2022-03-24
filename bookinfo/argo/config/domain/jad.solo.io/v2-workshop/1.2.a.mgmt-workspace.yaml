@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fault-ratings
+  name: workspace
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/jad.solo.io/mesh/cluster1/3.1.a.resilience-fault-ratings
+    path: bookinfo/overlay/config/domain/jad.solo.io/v2-workshop/mgmt/1.2.a-workspace
   destination:
     server: https://kubernetes.default.svc
     namespace: gloo-system
