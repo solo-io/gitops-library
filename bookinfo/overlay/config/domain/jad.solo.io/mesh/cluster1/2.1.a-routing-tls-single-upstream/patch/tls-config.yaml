@@ -13,5 +13,3 @@ spec:
       tls:
         mode: SIMPLE
         secretName: tls-secret
-      allowedRouteTables:
-        - host: 'bookinfo1.jad.solo.io'

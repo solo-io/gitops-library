@@ -2,10 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../2.1.a-routing-tls-single-upstream
+- ../2.3.a-routing-federation-productpage
 - failoverpolicy.yaml
 - outlierdetectionpolicy.yaml
 
 patchesStrategicMerge:
-- enable-failover.yaml
-- match-both-ingressgateway.yaml
+- patch/enable-failover.yaml
+- patch/match-both-ingressgateway.yaml

@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - ../2.1.a-routing-tls-single-upstream
-- review-routetable.yaml
+- reviews-routetable.yaml
 
-patchesStrategicMerge:
-- discover-all-reviews.yaml
+#patchesStrategicMerge:
+#- patch/discover-all-reviews.yaml

@@ -6,4 +6,4 @@ resources:
 - virtualdestination.yaml
 
 patchesStrategicMerge:
-- match-all-ingressgateway.yaml
+- patch/match-all-ingressgateway.yaml
