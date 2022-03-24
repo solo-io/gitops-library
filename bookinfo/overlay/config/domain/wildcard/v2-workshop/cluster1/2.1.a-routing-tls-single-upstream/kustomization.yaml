@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - ../../baseline/cluster1
-- tls-secret.yaml
 
 patchesStrategicMerge:
 - patch/tls-config.yaml
