@@ -3,8 +3,8 @@ kind: Kustomization
 
 resources:
 - ../2.1.a-routing-tls-single-upstream
-- oidc-secret.yaml
-- extauthpolicy.yaml
+#- oidc-secret.yaml
+#- extauthpolicy.yaml
 - extauthserver.yaml
 
 patchesStrategicMerge:
