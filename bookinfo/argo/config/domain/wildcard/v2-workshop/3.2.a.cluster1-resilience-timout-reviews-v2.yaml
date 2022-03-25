@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/solo-io/gitops-library
-    targetRevision: v2-workshop
+    targetRevision: HEAD
     path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/3.2.a.resilience-timout-reviews-v2
   destination:
     server: https://kubernetes.default.svc

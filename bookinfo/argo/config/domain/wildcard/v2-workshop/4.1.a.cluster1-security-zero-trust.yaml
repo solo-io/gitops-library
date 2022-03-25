@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/solo-io/gitops-library
-    targetRevision: v2-workshop
+    targetRevision: HEAD
     path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/4.1.a.security-zero-trust
   destination:
     server: https://kubernetes.default.svc
