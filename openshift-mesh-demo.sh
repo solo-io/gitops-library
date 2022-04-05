@@ -94,6 +94,28 @@ cd ../gloo-mesh/
 #kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-enabled.yaml --context ${mgmt_context}
 kubectl apply -f argo/gloo-mesh-virtualmesh-rbac-disabled.yaml --context ${mgmt_context}
 
+cat <<EOF | oc --context ${cluster1_context} -n default create -f -
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: istio-cni
+EOF
+
+cat <<EOF | oc --context ${cluster2_context} -n default create -f -
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: istio-cni
+EOF
+
+# deploy bookinfo app into ${cluster1_context} and ${cluster2_context}
+cd ../bookinfo/
+kubectl apply -f argo/app/namespace/default/mesh/1.2.a-reviews-v1-v2.yaml --context ${cluster1_context}
+kubectl apply -f argo/app/namespace/default/mesh/1.3.a-reviews-all.yaml --context ${cluster2_context}
+
+../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster1_context}
+../tools/wait-for-rollout.sh deployment productpage-v1 default 10 ${cluster2_context}
+
 # echo port-forward commands
 echo
 echo "access gloo mesh dashboard:"
