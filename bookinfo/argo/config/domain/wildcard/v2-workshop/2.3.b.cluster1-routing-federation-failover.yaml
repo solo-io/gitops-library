@@ -13,7 +13,6 @@ spec:
     path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/2.3.b-routing-federation-failover
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
   syncPolicy:
     automated:
       prune: true

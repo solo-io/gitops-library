@@ -13,7 +13,6 @@ spec:
     path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/4.4.a.security-rate-limiting
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
   syncPolicy:
     automated:
       prune: true

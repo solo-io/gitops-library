@@ -13,7 +13,6 @@ spec:
     path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/4.2.a.security-extauth-oidc
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
   syncPolicy:
     automated:
       prune: true

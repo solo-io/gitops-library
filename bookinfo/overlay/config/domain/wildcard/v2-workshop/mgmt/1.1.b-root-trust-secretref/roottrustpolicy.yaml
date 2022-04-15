@@ -6,7 +6,5 @@ metadata:
 spec:
   config:
     mgmtServerCa:
-      secretRef:
-        name: relay-server-tls-secret-certmanager
-        namespace: gloo-mesh
+      generated: {}
     autoRestartPods: true
