@@ -1,0 +1,12 @@
+apiVersion: admin.gloo.solo.io/v2
+kind: RootTrustPolicy
+metadata:
+  name: root-trust-policy
+  namespace: gloo-mesh
+spec:
+  config:
+    mgmtServerCa:
+      secretRef:
+        name: relay-server-tls-secret-certmanager
+        namespace: gloo-mesh
+    autoRestartPods: true
