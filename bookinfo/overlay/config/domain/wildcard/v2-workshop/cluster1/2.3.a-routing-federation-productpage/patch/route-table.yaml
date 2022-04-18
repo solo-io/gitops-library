@@ -1,0 +1,19 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  labels:
+    workspace.solo.io/exported: "true"
+  name: productpage
+  namespace: bookinfo-frontends
+spec:
+  hosts:
+  - '*'
+  http:
+  - forwardTo:
+      destinations:
+      - port:
+          number: 9080
+        ref:
+          name: productpage
+          namespace: bookinfo-frontends
+        kind: VIRTUAL_DESTINATION

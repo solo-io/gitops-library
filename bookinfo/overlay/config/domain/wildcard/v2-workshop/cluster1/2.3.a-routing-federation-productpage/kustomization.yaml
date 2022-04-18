@@ -7,3 +7,4 @@ resources:
 
 patchesStrategicMerge:
 - patch/match-all-ingressgateway.yaml
+- patch/route-table.yaml

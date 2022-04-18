@@ -5,7 +5,3 @@ resources:
 - ../2.3.a-routing-federation-productpage
 - failoverpolicy.yaml
 - outlierdetectionpolicy.yaml
-
-patchesStrategicMerge:
-- patch/enable-failover.yaml
-- patch/match-both-ingressgateway.yaml
