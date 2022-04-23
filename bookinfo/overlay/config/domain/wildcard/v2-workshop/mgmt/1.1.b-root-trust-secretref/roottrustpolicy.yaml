@@ -7,6 +7,6 @@ spec:
   config:
     mgmtServerCa:
       secretRef:
-        name: relay-server-tls-secret-certmanager
+        name: istio-intermediate-ca-secret
         namespace: gloo-mesh
     autoRestartPods: true

@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../2.1.a-routing-tls-single-upstream
+- ../2.1.b-routing-tls-single-upstream
 #- oidc-secret.yaml
 #- extauthpolicy.yaml
 - extauthserver.yaml

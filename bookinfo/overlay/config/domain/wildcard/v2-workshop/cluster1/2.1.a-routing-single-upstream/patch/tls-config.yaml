@@ -8,8 +8,6 @@ spec:
     - http: {}
       port:
         number: 443
-        name: https
-        protocol: HTTPS
       tls:
         mode: SIMPLE
         secretName: bookinfo-secret

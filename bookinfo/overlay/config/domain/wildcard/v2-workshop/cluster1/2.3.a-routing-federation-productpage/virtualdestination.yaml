@@ -4,7 +4,7 @@ metadata:
   name: productpage
   namespace: bookinfo-frontends
   labels:
-    workspace.solo.io/exported: "true"
+    expose: "true"
 spec:
   hosts:
   - productpage.global
@@ -13,6 +13,5 @@ spec:
     labels:
       app: productpage
   ports:
-    - name: http
-      number: 9080
+    - number: 9080
       protocol: HTTP

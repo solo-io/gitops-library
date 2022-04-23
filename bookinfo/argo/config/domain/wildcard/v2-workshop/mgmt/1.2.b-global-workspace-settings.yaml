@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bookinfo-config
+  name: global-workspace-settings
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/2.2.a-routing-federation-reviews
+    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/mgmt/1.2.b-global-workspace-settings
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

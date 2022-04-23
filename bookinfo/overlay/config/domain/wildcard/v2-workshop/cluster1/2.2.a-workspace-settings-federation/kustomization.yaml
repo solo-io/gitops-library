@@ -5,4 +5,5 @@ resources:
 - ../1.3.a-workspace-settings
 
 patchesStrategicMerge:
-- patch/enable-service-isolation.yaml
+- patch/bookinfo-workspace-settings.yaml
+

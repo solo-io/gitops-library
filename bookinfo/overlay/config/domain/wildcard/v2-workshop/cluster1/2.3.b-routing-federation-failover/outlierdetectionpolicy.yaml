@@ -3,8 +3,6 @@ kind: OutlierDetectionPolicy
 metadata:
   name: outlier-detection
   namespace: bookinfo-frontends
-  labels:
-    workspace.solo.io/exported: "true"
 spec:
   applyToDestinations:
   - kind: VIRTUAL_DESTINATION

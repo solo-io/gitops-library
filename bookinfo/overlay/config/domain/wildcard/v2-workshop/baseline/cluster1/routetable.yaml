@@ -4,7 +4,7 @@ metadata:
   name: productpage
   namespace: bookinfo-frontends
   labels:
-    workspace.solo.io/exported: "true"
+    expose: "true"
 spec:
   hosts:
     - '*'

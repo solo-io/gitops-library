@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/solo-io/gitops-library
     targetRevision: HEAD
-    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/1.2.a-workspace-settings
+    path: bookinfo/overlay/config/domain/wildcard/v2-workshop/cluster1/2.2.a-workspace-settings-federation
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

@@ -9,11 +9,9 @@ spec:
         labels:
           istio: ingressgateway
         cluster: cluster1
-  listeners:
+  listeners: 
     - http: {}
       port:
         number: 80
-        name: http
-        protocol: HTTP
       allowedRouteTables:
         - host: '*'
