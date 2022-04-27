@@ -14,6 +14,6 @@ spec:
         number: 443
       tls:
         mode: SIMPLE
-        secretName: bookinfo-secret
+        secretName: tls-secret
       allowedRouteTables:
         - host: '*'
