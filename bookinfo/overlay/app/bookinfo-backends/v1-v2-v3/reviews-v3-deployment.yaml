@@ -29,6 +29,8 @@ spec:
         env:
         - name: LOG_DIR
           value: "/tmp/logs"
+        - name: CLUSTER_NAME
+          value: cluster2
         ports:
         - containerPort: 9080
         volumeMounts:
@@ -38,9 +40,6 @@ spec:
           mountPath: /opt/ibm/wlp/output
         securityContext:
           runAsUser: 1000
-        env:
-        - name: CLUSTER_NAME
-          value: cluster2
       volumes:
       - name: wlp-output
         emptyDir: {}
