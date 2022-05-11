@@ -23,7 +23,7 @@ spec:
         licenseKey: 
           value: <INSERT_LICENSE_KEY_HERE>
     repoURL: https://storage.googleapis.com/dev-portal-helm
-    targetRevision: 1.2.0-beta8
+    targetRevision: 1.2.4
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).

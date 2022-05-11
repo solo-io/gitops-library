@@ -25,9 +25,14 @@ helm:
           value: <INSERT_LICENSE_KEY_HERE>
 ```
 
-Deploy the `gloo-portal-helm.yaml` app for your deployment target, either Gloo Edge or Istio. For example, to deploy Gloo Portal 1.1.1 on Gloo Edge, use this command:
+Deploy the `gloo-portal-helm.yaml` app for your deployment target, either Gloo Edge or Istio. For example, to deploy Gloo Portal 1.2.4 on Gloo Edge, use this command:
 ```
-kubectl apply -f argo/edge/gloo-portal-helm-1-1-1.yaml
+kubectl apply -f argo/edge/gloo-portal-helm-1-2-4.yaml
+```
+
+Alternatively, if you'd prefer to use an already-deployed Gloo Edge license secret instead of entering a `licenseKey` into the yaml, you can use this command instead:
+```
+kubectl apply -f argo/edge/secretref/gloo-portal-helm-1-2-4.yaml
 ```
 
 You can run the `wait-for-rollout.sh` script to watch deployment progress
