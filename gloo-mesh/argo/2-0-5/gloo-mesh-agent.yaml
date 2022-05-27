@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gm-enterprise-agent-cluster1
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-mesh
+  source:
+    repoURL: 'https://storage.googleapis.com/gloo-mesh-enterprise/gloo-mesh-agent'
+    targetRevision: ${gloo_mesh_version}
+    chart: gloo-mesh-agent
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: cluster
+          value: 'cluster1'
+        - name: relay.serverAddress
+          value: '${SVC}:9900'
+        - name: relay.authority
+          value: 'gloo-mesh-mgmt-server.gloo-mesh'
+        - name: rate-limiter.enabled
+          value: 'false'
+        - name: ext-auth-service.enabled
+          value: 'false'
+        - name: relay.tokenSecret.namespace
+          value: 'gloo-mesh'
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+    - CreateNamespace=true
+    - Replace=true
+    - ApplyOutOfSyncOnly=true
+  project: default

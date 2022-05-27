@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gloo-mesh-enterprise-helm
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-mesh
+  project: default
+  source:
+    chart: gloo-mesh-enterprise
+    helm:
+      values: |
+        licenseKey: ${LICENSE_KEY}
+        mgmtClusterName: mgmt
+        glooMeshMgmtServer:
+          ports:
+            healthcheck: 8091
+    repoURL: https://storage.googleapis.com/gloo-mesh-enterprise/gloo-mesh-enterprise
+    targetRevision: 2.0.5
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+  # ignore the self-signed certs that are being generated automatically    
+  ignoreDifferences:
+  - group: v1
+    kind: Secret
