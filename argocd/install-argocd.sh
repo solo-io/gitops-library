@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SECURITY=$1 # default/insecure/insecure-rootpath
+INSTALL_TYPE=$1 # default/insecure/insecure-rootpath
 CONTEXT=$2
 
 ### If the CONTEXT is not specified, simply use the default context.
@@ -15,10 +15,10 @@ then
   echo "No context specified. Using default context of ${CONTEXT}"
 fi
 
-# argo security overlay
-if [[ ${SECURITY} == "" ]]
+# argo install type
+if [[ ${INSTALL_TYPE} == "" ]]
   then
-    SECURITY="default"
+    INSTALL_TYPE="default"
 fi
   
 echo "Beginning install on context ${CONTEXT}...."
@@ -27,8 +27,7 @@ echo "Beginning install on context ${CONTEXT}...."
 kubectl --context ${CONTEXT} create namespace argocd
 
 # deploy argocd
-#until kubectl --context ${CONTEXT} apply -k https://github.com/solo-io/gitops-library.git/argocd/overlay/${SECURITY}/; do sleep 2; done
-until kubectl --context ${CONTEXT} apply -k overlay/${SECURITY}/; do sleep 2; done
+until kubectl --context ${CONTEXT} apply -k ${INSTALL_TYPE}/; do sleep 2; done
 
 # bcrypt(password)=$2a$10$79yaoOg9dL5MO8pn8hGqtO4xQDejSEVNWAGQR268JHLdrCw6UCYmy
 # password: solo.io

@@ -1,9 +1,0 @@
-apiVersion: gateway.solo.io/v1
-kind: VirtualService
-metadata:
-  name: argo-http-vs
-  namespace: gloo-system
-spec:
-  virtualHost:
-    domains:
-    - 'argocd.kapoozi.com'

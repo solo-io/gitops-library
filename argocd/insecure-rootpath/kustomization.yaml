@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../default
+
+namespace: argocd
+
+images:
+- name: quay.io/argoproj/argocd
+  newName: ghcr.io/argoproj/argocd
+  newTag: 2.4.0-a8e6e40a
+
+patchesJson6902:
+- path: overlays/argocd-server-insecure-rootpath.yaml
+  target:
+    group: apps
+    kind: Deployment
+    name: argocd-server
+    version: v1
