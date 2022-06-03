@@ -7,6 +7,6 @@ spec:
   config:
     mgmtServerCa:
       secretRef:
-        name: istio-intermediate-ca-secret
+        name: dummy-signing-cert
         namespace: gloo-mesh
     autoRestartPods: true
