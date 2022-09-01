@@ -19,4 +19,4 @@ spec:
         image: alpine/bombardier:v1.2.5
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
-        args: ["-c", "for run in $(seq 1 10); do bombardier -c 5 -d 20s -r 10 -p i,p,r ${URL}; done"]
+        args: ["-c", "for run in $(seq 1 10); do bombardier -c 5 -d 20s -r 10 -p i,p,r {{ .Values.url }}; done"]
