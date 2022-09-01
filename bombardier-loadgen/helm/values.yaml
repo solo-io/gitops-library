@@ -1,6 +1,9 @@
 url: 
+name_suffix:
+namespace:
 
-#loops:
-#connections:
-#duration:
-#rate:
+
+loops:
+connections:
+duration_seconds:
+rate:

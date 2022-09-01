@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bombardier
+    app: bombardier-{{ .Values.name_suffix }}
   name: bombardier
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
@@ -15,8 +16,12 @@ spec:
         app: bombardier
     spec:
       containers:
-      - name: bombardier
+      - args:
+        - -c
+        - for run in $(seq 1 {{ .Values.loops }}); do bombardier -c {{ .Values.connections }} -d {{ .Values.duration_seconds }} -r {{ .Values.rate }} -p i,p,r {{ .Values.url }};
+          done
+        command:
+        - /bin/sh
         image: alpine/bombardier:v1.2.5
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh"]
-        args: ["-c", "for run in $(seq 1 10); do bombardier -c 5 -d 20s -r 10 -p i,p,r {{ .Values.url }}; done"]
+        name: bombardier
