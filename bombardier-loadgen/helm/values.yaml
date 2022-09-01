@@ -1,9 +1,9 @@
-url: 
-name_suffix:
-namespace:
+url: https://www.google.com
+name_suffix: loadgenerator
+namespace: default
 
 
-loops:
-connections:
-duration_seconds:
-rate:
+loops: 100
+connections: 1
+duration_seconds: 30s
+rate: 1
