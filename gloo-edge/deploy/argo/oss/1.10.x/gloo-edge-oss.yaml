@@ -16,7 +16,7 @@ spec:
       values: |
         # no values takes the default values.yaml
     repoURL: https://storage.googleapis.com/solo-public-helm
-    targetRevision: 1.10.14
+    targetRevision: 1.10.37
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
