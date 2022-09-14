@@ -1,0 +1,10 @@
+global:
+  cluster: mgmt
+mgmtClusterName: mgmt
+glooMeshMgmtServer:
+  serviceType: LoadBalancer
+  ports:
+    healthcheck: 8091
+glooMeshUi:
+  serviceType: ClusterIP
+  enabled: true

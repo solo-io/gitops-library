@@ -1,0 +1,11 @@
+glooEdge:
+  enabled: true
+istio:
+  enabled: false
+glooMesh:
+  enabled: false
+licenseKey: 
+  secretRef:
+    name: license
+    namespace: gloo-system
+    key: license-key
