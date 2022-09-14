@@ -9,7 +9,6 @@ resources:
 - bank-config.yaml
 - bank-contacts.yaml
 - bank-demo-ns.yaml
-- bank-demo-rt-443.yaml
 - bank-demo-workspace.yaml
 - bank-demo-workspacesettings.yaml
 - bank-frontend.yaml
