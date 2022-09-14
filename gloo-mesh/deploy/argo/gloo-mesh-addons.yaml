@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gloo-mesh-addons
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gloo-mesh-addons
+  project: default
+  source:
+    chart: gloo-mesh-agent
+    helm:
+      skipCrds: true
+      parameters:
+      - name: ext-auth-service.enabled
+        value: 'true'
+      - name: rate-limiter.enabled
+        value: 'true'
+      - name: glooMeshAgent.enabled
+        value: 'false'
+    repoURL: https://storage.googleapis.com/gloo-mesh-enterprise/gloo-mesh-agent
+    targetRevision: 2.1.0-beta22
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,14 @@
+apiVersion: trafficcontrol.policy.gloo.solo.io/v2
+kind: RateLimitClientConfig
+metadata:
+  labels:
+    workspace.solo.io/exported: "true"
+  name: bookinfo
+  namespace: bookinfo-frontends
+spec:
+  raw:
+    rateLimits:
+    - actions:
+      - genericKey:
+          descriptorValue: "per-minute"
+      - remoteAddress: {}

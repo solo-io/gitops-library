@@ -1,8 +1,0 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: gloo-mesh-dataplane-addons
-  namespace: argocd
-spec:
-  source:
-    targetRevision: 1.2.0-rc2

@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bombardier-httpbin
+  namespace: argocd
+spec:
+  destination:
+    namespace: httpbin
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://github.com/solo-io/gitops-library'
+    path: bombardier-loadgen/helm
+    targetRevision: HEAD
+    helm:
+      parameters:
+      - name: url
+        value: 'https://httpbin.kapoozi.com/anything/unprotected'
+      - name: name_suffix
+        value: 'httpbin'
+      - name: namespace
+        value: 'httpbin'
+      - name: loops
+        value: '10000'
+      - name: connections
+        value: '1'
+      - name: duration_seconds
+        value: '60s'
+      - name: rate
+        value: '6'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

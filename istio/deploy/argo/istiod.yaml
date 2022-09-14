@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istiod
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  project: default
+  source:
+    chart: istiod
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    targetRevision: 1.13.4
+    helm:
+      values: |
+        revision: 1-13
+        global:
+          meshID: mesh1
+          multiCluster:
+            clusterName: cluster1
+          network: network1
+          hub: us-docker.pkg.dev/gloo-mesh/istio-workshops
+          tag: 1.13.4-solo
+        meshConfig:
+          trustDomain: cluster1
+          accessLogFile: /dev/stdout
+          enableAutoMtls: true
+          defaultConfig:
+            envoyMetricsService:
+              address: gloo-mesh-agent.gloo-mesh:9977
+            envoyAccessLogService:
+              address: gloo-mesh-agent.gloo-mesh:9977
+            proxyMetadata:
+              ISTIO_META_DNS_CAPTURE: "true"
+              ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+              GLOO_MESH_CLUSTER_NAME: cluster1
+        pilot:
+          env:
+            PILOT_ENABLE_K8S_SELECT_WORKLOAD_ENTRIES: "false"
+            PILOT_SKIP_VALIDATE_TRUST_DOMAIN: "true"
+  syncPolicy:
+    #automated:
+    #  prune: false
+    #  selfHeal: false
+    automated: {}
+  ignoreDifferences:
+  - group: '*'
+    kind: '*'
+    managedFieldsManagers:
+    - argocd-application-controller

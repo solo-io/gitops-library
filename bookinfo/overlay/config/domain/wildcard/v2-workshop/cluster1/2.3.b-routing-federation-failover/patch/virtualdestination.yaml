@@ -1,8 +1,0 @@
-apiVersion: networking.gloo.solo.io/v2
-kind: VirtualDestination
-metadata:
-  name: productpage
-  namespace: bookinfo-frontends
-  labels:
-    expose: "true"
-    failover: "true"

@@ -1,0 +1,37 @@
+apiVersion: security.policy.gloo.solo.io/v2
+kind: JWTPolicy
+metadata:
+  name: httpbin
+  namespace: httpbin
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        oauth: "true"
+  config:
+    phase:
+      postAuthz:
+        priority: 1
+    providers:
+      okta:
+        issuer: https://dev-22653158.okta.com/oauth2/default
+        tokenSource:
+          headers:
+          - name: jwt
+        remote:
+          # url grabbed from https://dev-22653158.okta.com/oauth2/default/.well-known/oauth-authorization-server
+          url: "https://dev-22653158.okta.com/oauth2/default/v1/keys/"
+          destinationRef:
+            ref:
+              name: okta-jwks
+              namespace: httpbin
+              cluster: mgmt
+            kind: EXTERNAL_SERVICE
+            port: 
+              number: 443
+          enableAsyncFetch: true
+        claimsToHeaders:
+        - claim: email
+          header: X-Email
+        - claim: groups
+          header: X-Groups

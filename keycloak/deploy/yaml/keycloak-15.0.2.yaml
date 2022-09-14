@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: keycloak
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - env:
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: KEYCLOAK_PASSWORD
+          value: admin
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        image: quay.io/keycloak/keycloak:15.0.2
+        name: keycloak
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        readinessProbe:
+          httpGet:
+            path: /auth/realms/master
+            port: 8080
+          initialDelaySeconds: 10
+          timeoutSeconds: 10

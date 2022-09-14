@@ -1,0 +1,15 @@
+apiVersion: admin.gloo.solo.io/v2
+kind: RateLimitServerSettings
+metadata:
+  labels:
+    workspace.solo.io/exported: "true"
+  name: rate-limit-server
+  namespace: httpbin
+spec:
+  destinationServer:
+    port:
+      name: grpc
+    ref:
+      cluster: mgmt
+      name: rate-limiter
+      namespace: gloo-mesh-addons

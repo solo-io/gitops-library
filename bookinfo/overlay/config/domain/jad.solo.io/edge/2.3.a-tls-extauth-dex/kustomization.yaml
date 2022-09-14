@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-- ../2.2.a-tls-multiple-upstream
-- bookinfo-authconfig.yaml
-
-patchesStrategicMerge:
-- patch/dex-oidc-extauth.yaml

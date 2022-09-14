@@ -1,0 +1,39 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIProduct
+metadata:
+  labels:
+    app: petstore
+  name: petstore-product
+  namespace: default
+spec:
+  displayInfo:
+    description: Fabulous API product for the Petstore
+    title: Petstore Product
+  versions:
+  - apis:
+    - apiDoc:
+        name: petstore-openapi-v1-pets
+        namespace: default
+    - apiDoc:
+        name: petstore-openapi-v1-users
+        namespace: default
+    gatewayConfig:
+      route:
+        inlineRoute:
+          backends:
+          - upstream:
+              name: default-petstore-v1-8080
+              namespace: gloo-system
+    name: v1
+  - apis:
+    - apiDoc:
+        name: petstore-openapi-v2-full
+        namespace: default
+    gatewayConfig:
+      route:
+        inlineRoute:
+          backends:
+          - upstream:
+              name: default-petstore-v2-8080
+              namespace: gloo-system
+    name: v2

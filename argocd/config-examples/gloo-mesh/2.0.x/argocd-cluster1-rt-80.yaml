@@ -1,0 +1,27 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  labels:
+    expose: "true"
+  name: cluster1-argo-rt-80
+  namespace: argocd
+spec:
+  hosts:
+  - '*'
+  http:
+  - forwardTo:
+      destinations:
+      - port:
+          number: 80
+        ref:
+          cluster: cluster1
+          name: argocd-server
+          namespace: argocd
+    labels:
+      waf: "true"
+    name: argocd
+  virtualGateways:
+  - cluster: cluster1
+    name: cluster1-north-south-gw-80
+    namespace: istio-gateways
+  workloadSelectors: []

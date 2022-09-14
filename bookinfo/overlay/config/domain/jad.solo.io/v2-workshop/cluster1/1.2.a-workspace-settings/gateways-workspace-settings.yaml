@@ -1,9 +1,0 @@
-apiVersion: admin.gloo.solo.io/v2
-kind: WorkspaceSettings
-metadata:
-  name: gateways
-  namespace: istio-gateways
-spec:
-  imports:
-  - selector:
-      allow_ingress: "true"

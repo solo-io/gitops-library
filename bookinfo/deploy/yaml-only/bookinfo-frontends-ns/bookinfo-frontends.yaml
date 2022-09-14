@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: productpage
+  name: bookinfo-productpage
+  namespace: bookinfo-frontends
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: productpage
+    service: productpage
+    version: v1
+  name: productpage
+  namespace: bookinfo-frontends
+spec:
+  ports:
+  - name: http
+    port: 9080
+    targetPort: 9080
+  selector:
+    app: productpage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: productpage
+    version: v1
+  name: productpage-v1
+  namespace: bookinfo-frontends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productpage
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: productpage
+        version: v1
+    spec:
+      containers:
+      - env:
+        - name: DETAILS_HOSTNAME
+          value: details.bookinfo-backends.svc.cluster.local
+        - name: REVIEWS_HOSTNAME
+          value: reviews.bookinfo-backends.svc.cluster.local
+        image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-productpage-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: productpage
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      serviceAccountName: bookinfo-productpage
+      volumes:
+      - emptyDir: {}
+        name: tmp

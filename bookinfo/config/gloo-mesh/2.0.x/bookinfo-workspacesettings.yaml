@@ -1,0 +1,24 @@
+apiVersion: admin.gloo.solo.io/v2
+kind: WorkspaceSettings
+metadata:
+  name: bookinfo
+  namespace: bookinfo-frontends
+spec:
+  exportTo:
+  - resources:
+    - kind: SERVICE
+      labels:
+        app: productpage
+    - kind: SERVICE
+      labels:
+        app: reviews
+    - kind: ALL
+      labels:
+        expose: "true"
+    workspaces:
+    - name: gateways
+  importFrom:
+  - resources:
+    - kind: SERVICE
+    workspaces:
+    - name: gateways

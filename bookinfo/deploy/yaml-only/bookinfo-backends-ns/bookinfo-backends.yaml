@@ -1,0 +1,263 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: details
+  name: bookinfo-details
+  namespace: bookinfo-backends
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: ratings
+  name: bookinfo-ratings
+  namespace: bookinfo-backends
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: reviews
+  name: bookinfo-reviews
+  namespace: bookinfo-backends
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: details
+    service: details
+  name: details
+  namespace: bookinfo-backends
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: details
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ratings
+    service: ratings
+  name: ratings
+  namespace: bookinfo-backends
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: ratings
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: reviews
+    service: reviews
+  name: reviews
+  namespace: bookinfo-backends
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: reviews
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: details
+    version: v1
+  name: details-v1
+  namespace: bookinfo-backends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: details
+        version: v1
+    spec:
+      containers:
+      - image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-details-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: details
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      serviceAccountName: bookinfo-details
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ratings
+    version: v1
+  name: ratings-v1
+  namespace: bookinfo-backends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ratings
+        version: v1
+    spec:
+      containers:
+      - image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-ratings-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: ratings
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      serviceAccountName: bookinfo-ratings
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+    version: v1
+  name: reviews-v1
+  namespace: bookinfo-backends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v1
+    spec:
+      containers:
+      - env:
+        - name: LOG_DIR
+          value: /tmp/logs
+        - name: CLUSTER_NAME
+          value: cluster1
+        image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-reviews-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: reviews
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/ibm/wlp/output
+          name: wlp-output
+      serviceAccountName: bookinfo-reviews
+      volumes:
+      - emptyDir: {}
+        name: wlp-output
+      - emptyDir: {}
+        name: tmp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+    version: v2
+  name: reviews-v2
+  namespace: bookinfo-backends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v2
+    spec:
+      containers:
+      - env:
+        - name: LOG_DIR
+          value: /tmp/logs
+        - name: CLUSTER_NAME
+          value: cluster1
+        image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-reviews-v2:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: reviews
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/ibm/wlp/output
+          name: wlp-output
+      serviceAccountName: bookinfo-reviews
+      volumes:
+      - emptyDir: {}
+        name: wlp-output
+      - emptyDir: {}
+        name: tmp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reviews
+    version: v3
+  name: reviews-v3
+  namespace: bookinfo-backends
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v3
+    spec:
+      containers:
+      - env:
+        - name: LOG_DIR
+          value: /tmp/logs
+        - name: CLUSTER_NAME
+          value: cluster1
+        image: us-central1-docker.pkg.dev/solo-test-236622/jmunozro/examples-bookinfo-reviews-v3:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: reviews
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/ibm/wlp/output
+          name: wlp-output
+      serviceAccountName: bookinfo-reviews
+      volumes:
+      - emptyDir: {}
+        name: wlp-output
+      - emptyDir: {}
+        name: tmp

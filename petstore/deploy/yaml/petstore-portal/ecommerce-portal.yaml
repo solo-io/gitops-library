@@ -1,0 +1,36 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Portal
+metadata:
+  name: ecommerce-portal
+  namespace: default
+spec:
+  allApisPublicViewable: false
+  banner:
+    fetchUrl: https://i.imgur.com/EXbBN1a.jpg
+  customStyling: {}
+  description: The Gloo Portal for the Petstore API and much more!
+  displayName: E-commerce Portal
+  domains:
+  - portal-local.glootest.com
+  favicon:
+    fetchUrl: https://i.imgur.com/QQwlQG3.png
+  primaryLogo:
+    fetchUrl: https://i.imgur.com/hjgPMNP.png
+  publishedEnvironments:
+  - name: dev
+    namespace: default
+  staticPages:
+  - content:
+      configMap:
+        key: faq
+        name: default-petstore-portal-faq
+        namespace: default
+    description: Frequently Asked Questions
+    displayOnHomepage: true
+    name: faq
+    navigationLinkName: FAQ
+    path: /faq
+  tls:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system

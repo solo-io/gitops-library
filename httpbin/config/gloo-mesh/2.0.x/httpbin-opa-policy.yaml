@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: httpbin-opa
+  namespace: httpbin
+data:
+  policy.rego: |-
+    package ehs
+
+    default allow = false
+
+    allow {
+        [header, payload, signature] = io.jwt.decode(input.state.jwt)
+        endswith(payload["email"], "@solo.io")
+        any({input.http_request.path == "/get",
+        startswith(input.http_request.path, "/anything")
+    })
+        any({input.http_request.method == "GET",
+             input.http_request.method == "POST",
+             input.http_request.method == "PUT",
+             input.http_request.method == "DELETE",
+    })
+    }
+    allow {
+        [header, payload, signature] = io.jwt.decode(input.state.jwt)
+        endswith(payload["email"], "@gmail.com")
+        input.http_request.path == "/anything/protected"
+        any({input.http_request.method == "GET",
+             input.http_request.method == "POST",
+             input.http_request.method == "PUT",
+             input.http_request.method == "DELETE",
+    })
+    }

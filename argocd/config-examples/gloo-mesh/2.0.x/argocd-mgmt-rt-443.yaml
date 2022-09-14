@@ -1,0 +1,25 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  labels:
+    expose: "true"
+  name: mgmt-argo-rt-443
+  namespace: argocd
+spec:
+  hosts:
+  - '*'
+  http:
+  - forwardTo:
+      destinations:
+      - port:
+          number: 443
+        ref:
+          cluster: mgmt
+          name: argocd-server
+          namespace: argocd
+    name: argocd
+  virtualGateways:
+  - cluster: mgmt
+    name: mgmt-north-south-gw-443
+    namespace: istio-gateways
+  workloadSelectors: []
