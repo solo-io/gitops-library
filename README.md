@@ -52,4 +52,4 @@ Username: admin
 Password: solo.io
 
 ### Next Steps
-Once ArgoCD is deployed, feel free to navigate around the example deployments and their respective Gloo Edge / Gloo Mesh / Gloo Portal configurations. Where it makes sense, there are Argo Applications as well as direct YAML manifests for the deployment examples
+Once ArgoCD is deployed, feel free to navigate around the example deployments and their respective Gloo Edge / Gloo Mesh / Gloo Portal configurations. You can start by deploying the yaml manifests directly, or try the Helm or Argo Application deploy options!
