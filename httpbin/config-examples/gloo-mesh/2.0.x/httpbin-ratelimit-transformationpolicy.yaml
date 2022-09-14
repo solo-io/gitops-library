@@ -1,0 +1,26 @@
+apiVersion: trafficcontrol.policy.gloo.solo.io/v2
+kind: TransformationPolicy
+metadata:
+  name: ratelimit-transformation
+  namespace: httpbin
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        ratelimited: "true"
+  config:
+    phase:
+      preAuthz:
+        priority: 0
+    response:
+      injaTemplate:
+        #headers:
+        #  ":status":
+        #    text: '{% if header(":status") == "405" %}201{% else if header(":status") == "429" %}529{% else %}{{ header(":status") }}{% endif %}'  
+        #body:
+        #  text: '{% if header(":status") == "429" %}{ "response_code": "529" }{% else if header(":status") == "405" %}{ "response_code": "201" }{% else %}{ "response_code": "201" }{% endif %}'
+        body:
+          text: '{% if header(":status") == "429" %}<html><body style="background-color:powderblue;"><h1>Too
+            many Requests!</h1><p>Try again after a minute</p></body></html>{%
+            else %}{{ body() }}{% endif %}'
+        parseBodyBehavior: DontParse

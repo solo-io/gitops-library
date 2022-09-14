@@ -1,0 +1,19 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# list of resources to be Applied
+resources:
+- bank-accounts-db.yaml
+- bank-balance-reader.yaml
+- bank-config.yaml
+- bank-contacts.yaml
+- bank-demo-ns.yaml
+- bank-demo-workspace.yaml
+- bank-demo-workspacesettings.yaml
+- bank-frontend.yaml
+- bank-ledger-db.yaml
+- bank-ledger-writer.yaml
+- bank-transaction-history.yaml
+- bank-userservice.yaml
+

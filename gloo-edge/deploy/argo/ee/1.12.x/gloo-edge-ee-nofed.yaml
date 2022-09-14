@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gloo-edge-enterprise-helm
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: gloo-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: gloo-ee
+    helm:
+      skipCrds: false
+      values: |
+        create_license_secret: false
+        gloo:
+          license_secret_name: license
+        gloo-fed:
+          enabled: false
+          create_license_secret: false
+          glooFedApiserver:
+            enable: true
+        # set extauth requestTimeout to 2s for okta OIDC workflow
+        global:
+          extensions:
+            extAuth:
+              requestTimeout: 2s
+    repoURL: http://storage.googleapis.com/gloo-ee-helm
+    targetRevision: 1.12.15
+  syncPolicy:
+    automated:
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).

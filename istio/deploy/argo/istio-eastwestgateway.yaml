@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-eastwestgateway
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-gateways
+  project: default
+  source:
+    chart: gateway
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    targetRevision: 1.13.4
+    helm:
+      values: |
+        # Name allows overriding the release name. Generally this should not be set
+        name: "istio-eastwestgateway"
+        # revision declares which revision this gateway is a part of
+        revision: "1-13"
+        
+        replicaCount: 1
+        
+        service:
+          # Type of service. Set to "None" to disable the service entirely
+          type: LoadBalancer
+          ports:
+          - name: tcp-status-port
+            port: 15021
+            targetPort: 15021
+          - name: tls
+            port: 15443
+            targetPort: 15443
+          - name: tcp-istiod
+            port: 15012
+            targetPort: 15012
+          - name: tcp-webhook
+            port: 15017
+            targetPort: 15017
+          annotations: {}
+          loadBalancerIP: ""
+          loadBalancerSourceRanges: []
+          externalTrafficPolicy: ""
+        
+        # Pod environment variables
+        env:
+          ISTIO_META_ROUTER_MODE: "sni-dnat"
+          ISTIO_META_REQUESTED_NETWORK_VIEW: "network1"
+          
+        annotations:
+          proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+        
+        # Labels to apply to all resources
+        labels:
+          istio.io/rev: 1-13
+          istio: eastwestgateway
+          topology.istio.io/network: network1
+  syncPolicy:
+    automated: {}

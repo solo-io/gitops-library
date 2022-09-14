@@ -1,0 +1,47 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  apiProducts:
+  - basePath: '{%version%}'
+    labels:
+    - key: app
+      operator: In
+      values:
+      - petstore
+    namespaces:
+    - '*'
+    usagePlans:
+    - basic
+    versions:
+      names:
+      - v1
+      - v2
+  basePath: /ecommerce
+  displayInfo:
+    description: This environment is meant for developers to deploy and test their
+      APIs.
+    displayName: Development
+  domains:
+  - api-local.glootest.com
+  gatewayConfig:
+    disableRoutes: false
+    tls:
+      config:
+        secretRef:
+          name: upstream-tls
+          namespace: gloo-system
+        sniDomains:
+        - '*'
+      enabled: true
+  parameters:
+    usagePlans:
+      basic:
+        authPolicy:
+          apiKey: {}
+        displayName: Basic plan with API key auth
+        rateLimit:
+          requestsPerUnit: 3
+          unit: MINUTE

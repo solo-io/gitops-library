@@ -1,0 +1,26 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  labels:
+    expose: "true"
+  name: homer-web-portal-rt-443
+  namespace: web-portal
+spec:
+  hosts:
+  - 'homer.glootest.com'
+  - 'homer-local.glootest.com'
+  http:
+  - forwardTo:
+      destinations:
+      - port:
+          number: 8080
+        ref:
+          cluster: mgmt
+          name: homer-portal
+          namespace: web-portal
+    name: homer
+  virtualGateways:
+  - cluster: mgmt
+    name: mgmt-north-south-gw-443
+    namespace: istio-gateways
+  workloadSelectors: []

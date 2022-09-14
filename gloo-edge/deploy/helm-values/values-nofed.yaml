@@ -1,0 +1,10 @@
+gloo-fed:
+  enabled: false
+  create_license_secret: false
+  glooFedApiserver:
+    enable: true
+# set extauth requestTimeout to 2s for okta OIDC workflow
+global:
+  extensions:
+    extAuth:
+      requestTimeout: 2s

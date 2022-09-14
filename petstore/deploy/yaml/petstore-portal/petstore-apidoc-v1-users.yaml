@@ -1,0 +1,9 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: petstore-openapi-v1-users
+  namespace: default
+spec:
+  openApi:
+    content:
+      fetchUrl: https://raw.githubusercontent.com/solo-io/gitops-library/main/petstore/base/openapi-specs/petstore-openapi-v1-users.json

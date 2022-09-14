@@ -13,27 +13,13 @@ export CONTEXT=<new_name>
 
 ## Navigate to the argocd directory
 ```
-cd argocd
+cd argocd/install
 ```
 
 ## install argocd
 If you have done the above, just simply run the script to install argocd and optionally set the context.
 ```
 ./install-argocd.sh
-```
-
-Run this script to watch argocd install progress
-```
-../tools/wait-for-rollout.sh deployment argocd-server argocd 10
-```
-
-Output should look similar to below:
-```
-% ./tools/wait-for-rollout.sh deployment argocd-server argocd 10
-No context specified. Using current context of mgmt
-Waiting 10 seconds for deployment argocd-server to come up.
-Waiting for deployment "argocd-server" rollout to finish: 0 of 1 updated replicas are available...
-deployment "argocd-server" successfully rolled out
 ```
 
 ### input options

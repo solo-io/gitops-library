@@ -1,6 +1,0 @@
-- op: replace
-  path: /metadata/name
-  value: istio-ingressgateway-1-11-4
-- op: replace
-  path: /metadata/namespace
-  value: istio-system

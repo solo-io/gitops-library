@@ -1,0 +1,48 @@
+apiVersion: security.policy.gloo.solo.io/v2
+kind: ExtAuthPolicy
+metadata:
+  name: httpbin
+  namespace: httpbin
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        oauth: "true"
+  config:
+    server:
+      name: mgmt-ext-auth-server
+      namespace: gloo-mesh
+      cluster: mgmt
+    glooAuth:
+      configs:
+      - oauth2:
+          oidcAuthorizationCode:
+            appUrl: https://httpbin-local.glootest.com
+            callbackPath: /callback
+            clientId: 0oa5zoq0xoGKtOSpg5d7
+            clientSecretRef:
+              name: httpbin-oidc-client-secret
+              namespace: httpbin
+            issuerUrl: https://dev-22653158.okta.com/oauth2/default
+            session:
+              failOnFetchFailure: true
+              redis:
+                cookieName: okta-session
+                options:
+                  host: redis.gloo-mesh-addons:6379
+                allowRefreshing: false
+              cookieOptions:
+                maxAge: "1800"
+            scopes:
+            - email
+            logoutPath: /logout
+            afterLogoutUrl: /get
+            headers:
+              idTokenHeader: Jwt
+              #idTokenHeader: x-id-token
+              #accessTokenHeader: x-access-token
+      - opaAuth:
+          modules:
+          - name: httpbin-opa
+            namespace: httpbin
+          query: "data.ehs.allow == true"

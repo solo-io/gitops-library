@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: gloo-mesh-addons
-  labels:
-    istio-injection: enabled

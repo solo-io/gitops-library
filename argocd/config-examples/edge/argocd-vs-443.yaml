@@ -1,0 +1,23 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: argo-http-vs
+  namespace: gloo-system
+spec:
+  sslConfig:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system
+  virtualHost:
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /argo
+      options:
+        prefixRewrite: /argo
+      routeAction:
+        single:
+          upstream:
+            name: argocd-argocd-server-443
+            namespace: gloo-system

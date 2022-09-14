@@ -1,0 +1,398 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: enabled
+  name: default
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: details
+  name: bookinfo-details
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: productpage
+  name: bookinfo-productpage
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: ratings
+  name: bookinfo-ratings
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    account: reviews
+  name: bookinfo-reviews
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: details
+    service: details
+  name: details
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: details-rollout
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productpage-rollout-canary
+spec:
+  ports:
+  - name: http
+    port: 9080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: productpage-rollout
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productpage-rollout-stable
+spec:
+  ports:
+  - name: http
+    port: 9080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: productpage-rollout
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ratings
+    service: ratings
+  name: ratings
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: ratings-rollout
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: reviews
+    service: reviews
+  name: reviews
+spec:
+  ports:
+  - name: http
+    port: 9080
+  selector:
+    app: reviews-rollout
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: productpage-success-rate
+spec:
+  args:
+  - name: service
+  - name: namespace
+  metrics:
+  - initialDelay: 60s
+    interval: 20s
+    name: success-rate
+    provider:
+      prometheus:
+        address: http://prometheus.istio-system:9090
+        query: |-
+          sum(irate(istio_requests_total{
+
+            reporter="source",
+            destination_service=~"{{args.service}}.{{args.namespace}}.svc.cluster.local",
+            response_code!~"5.*"}[40s])
+          ) / sum(irate(istio_requests_total{
+
+            reporter="source",
+            destination_service=~"{{args.service}}.{{args.namespace}}.svc.cluster.local"}[40s])
+          )
+    successCondition: result[0] > 0.90
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: details-rollout
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: details-rollout
+  strategy:
+    canary:
+      steps:
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+  template:
+    metadata:
+      labels:
+        app: details-rollout
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: details
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      serviceAccountName: bookinfo-details
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: productpage-rollout
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: productpage-rollout
+  strategy:
+    canary:
+      analysis:
+        args:
+        - name: service
+          value: productpage-rollout-canary
+        - name: namespace
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        startingStep: 1
+        templates:
+        - templateName: productpage-success-rate
+      canaryService: productpage-rollout-canary
+      stableService: productpage-rollout-stable
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 20s
+      - setWeight: 20
+      - pause:
+          duration: 20s
+      - setWeight: 30
+      - pause:
+          duration: 20s
+      - setWeight: 40
+      - pause:
+          duration: 20s
+      - setWeight: 50
+      - pause:
+          duration: 20s
+      - setWeight: 60
+      - pause:
+          duration: 20s
+      - setWeight: 70
+      - pause:
+          duration: 20s
+      - setWeight: 80
+      - pause:
+          duration: 20s
+      - setWeight: 90
+      - pause:
+          duration: 20s
+      trafficRouting:
+        istio:
+          virtualService:
+            name: productpage-rollout-vsvc
+            routes:
+            - primary
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: productpage-rollout
+    spec:
+      containers:
+      - image: ably77/bookinfo-canary:1
+        name: productpage-rollout
+        ports:
+        - containerPort: 9080
+          name: http
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ratings-rollout
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: ratings-rollout
+  strategy:
+    canary:
+      steps:
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+  template:
+    metadata:
+      labels:
+        app: ratings-rollout
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/istio/examples-bookinfo-ratings-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: ratings
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      serviceAccountName: bookinfo-ratings
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: reviews-rollout
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: reviews-rollout
+  strategy:
+    canary:
+      steps:
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+      - setWeight: 33
+      - pause:
+          duration: 10
+  template:
+    metadata:
+      labels:
+        app: reviews-rollout
+        version: v1
+    spec:
+      containers:
+      - env:
+        - name: LOG_DIR
+          value: /tmp/logs
+        image: docker.io/istio/examples-bookinfo-reviews-v1:1.16.2
+        imagePullPolicy: IfNotPresent
+        name: reviews
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/ibm/wlp/output
+          name: wlp-output
+      serviceAccountName: bookinfo-reviews
+      volumes:
+      - emptyDir: {}
+        name: wlp-output
+      - emptyDir: {}
+        name: tmp
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: rollout-destrule
+spec:
+  host: productpage-rollout
+  subsets:
+  - labels:
+      app: productpage-rollout
+    name: canary
+  - labels:
+      app: productpage-rollout
+    name: stable
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: productpage-rollout-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: productpage-rollout-vsvc
+spec:
+  gateways:
+  - productpage-rollout-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    name: primary
+    route:
+    - destination:
+        host: productpage-rollout-stable
+        port:
+          number: 9080
+      weight: 100
+    - destination:
+        host: productpage-rollout-canary
+        port:
+          number: 9080
+      weight: 0

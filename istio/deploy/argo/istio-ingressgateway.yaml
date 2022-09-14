@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-ingressgateway
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-gateways
+  project: default
+  source:
+    chart: gateway
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    targetRevision: 1.13.4
+    helm:
+      values: |
+        # Name allows overriding the release name. Generally this should not be set
+        name: ""
+        # revision declares which revision this gateway is a part of
+        revision: "1-13"
+        
+        replicaCount: 1
+        
+        service:
+          # Type of service. Set to "None" to disable the service entirely
+          type: LoadBalancer
+          ports:
+          - name: http2
+            port: 80
+            protocol: TCP
+            targetPort: 80
+          - name: https
+            port: 443
+            protocol: TCP
+            targetPort: 443
+          annotations: {}
+          loadBalancerIP: ""
+          loadBalancerSourceRanges: []
+          externalTrafficPolicy: ""
+        
+        # Pod environment variables
+        env: {}
+
+        annotations:
+          proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+        
+        # Labels to apply to all resources
+        labels:
+          istio.io/rev: 1-13
+          istio: ingressgateway
+  syncPolicy:
+    automated: {}

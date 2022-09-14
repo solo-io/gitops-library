@@ -1,0 +1,57 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  name: bank-demo-rt-443
+  namespace: bank-demo
+  labels:
+    expose: "true"
+spec:
+  hosts:
+    - 'bank.glootest.com'
+    - 'bank-local.glootest.com'
+  virtualGateways:
+    - name: mgmt-north-south-gw-443
+      namespace: istio-gateways
+      cluster: mgmt
+  workloadSelectors: []
+  http:
+    - name: bank-demo
+      # set matchers to closely match https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/frontend
+      matchers:
+      - uri:
+          exact: /
+        method: GET 
+      - uri:
+          prefix: /static
+      - uri:
+          exact: /deposit
+        method: POST
+      - uri:
+          exact: /home
+        method: GET
+      - uri:
+          exact: /login
+      - uri:
+          prefix: /logout
+        #method: POST
+      - uri:
+          exact: /payment
+        method: POST
+      - uri:
+          exact: /ready
+        method: GET
+      - uri:
+          exact: /signup
+        #method: GET, POST
+      - uri:
+          exact: /version
+        method: GET
+      forwardTo:
+        destinations:
+        - ref:
+            name: frontend
+            namespace: bank-demo
+          port:
+            number: 443
+      labels:
+        waf: "true"

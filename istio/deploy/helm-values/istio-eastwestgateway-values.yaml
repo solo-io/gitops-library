@@ -1,0 +1,27 @@
+global:
+  hub: us-docker.pkg.dev/gloo-mesh/istio-workshops
+  tag: 1.13.4-solo
+gateways:
+  istio-ingressgateway:
+    name: istio-eastwestgateway
+    namespace: istio-gateways
+    labels:
+      istio: eastwestgateway
+      topology.istio.io/network: network1
+    injectionTemplate: gateway
+    ports:
+    - name: tcp-status-port
+      port: 15021
+      targetPort: 15021
+    - name: tls
+      port: 15443
+      targetPort: 15443
+    - name: tcp-istiod
+      port: 15012
+      targetPort: 15012
+    - name: tcp-webhook
+      port: 15017
+      targetPort: 15017
+    env:
+      ISTIO_META_ROUTER_MODE: "sni-dnat"
+      ISTIO_META_REQUESTED_NETWORK_VIEW: "network1"
