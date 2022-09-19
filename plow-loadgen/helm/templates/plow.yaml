@@ -19,8 +19,8 @@ metadata:
     service: plow-{{ .Values.deployment.nameSuffix }}
 spec:
   ports:
-  - port: containerPort
-    name: http
+  - port: {{ .Values.deployment.containerPort }}
+    name: plow-http
   selector:
     app: plow-{{ .Values.deployment.nameSuffix }}
 ---
@@ -55,7 +55,7 @@ spec:
             memory: "{{ .Values.resources.requests.memory }}"
             cpu: "{{ .Values.resources.requests.cpu }}"
         ports:
-        - containerPort: containerPort
+        - containerPort: {{ .Values.deployment.containerPort }}
           name: http-plow
         args:
         - {{ .Values.plow.url }}
