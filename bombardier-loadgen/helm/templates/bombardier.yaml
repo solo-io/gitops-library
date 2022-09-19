@@ -18,10 +18,14 @@ spec:
       containers:
       - args:
         - -c
-        - for run in $(seq 1 {{ .Values.loops }}); do bombardier -c {{ .Values.connections }} -d {{ .Values.duration_seconds }} -r {{ .Values.rate }} -p i,p,r {{ .Values.url }};
+        - for run in $(seq 1 {{ .Values.loops }}); do bombardier -c {{ .Values.connections }} -d {{ .Values.duration_seconds }} -r {{ .Values.rate }} -p i,p,r {{ .Values.url }} -l;
           done
         command:
         - /bin/sh
         image: alpine/bombardier:v1.2.5
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
         imagePullPolicy: IfNotPresent
         name: bombardier
