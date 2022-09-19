@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plow
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: plow
+  namespace: plow
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plow
+  namespace: plow
+  labels:
+    app: plow
+    service: plow
+spec:
+  ports:
+  - port: 18888
+    name: http
+  selector:
+    app: plow
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: plow
+  name: plow
+  namespace: plow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plow
+  template:
+    metadata:
+      labels:
+        app: plow
+        istio.io/rev: 1-13
+        sidecar.istio.io/inject: "true"
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      containers:
+      - name: plow
+        image: ghcr.io/six-ddc/plow
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "10Mi"
+            cpu: "20m"
+        ports:
+        - containerPort: 18888
+          name: http-plow
+        args:
+        - https://httpbin.kapoozi.com/anything/unprotected
+        env:
+        - name: PLOW_CONCURRENCY
+          value: "1"
+        - name: PLOW_RATE
+          value: "50"
+        - name: PLOW_REQUESTS
+          value: "-1"
+        - name: PLOW_DURATION
+          value: "0"
+        - name: PLOW_INTERVAL
+          value: "60s"
+        - name: PLOW_METHOD
+          value: "GET"
+        - name: PLOW_INSECURE
+          value: "TRUE"

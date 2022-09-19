@@ -1,0 +1,25 @@
+plow:
+  url: https://www.google.com
+  concurrency: 1
+  rate: 50 
+  requests: -1
+  duration: 0
+  interval: 60
+  method: GET
+  insecure: true
+
+deployment:
+  nameSuffix: loadgenerator
+  namespace: plow
+  containerPort: 18888
+  replicas: 1
+
+istio:
+  inject: true
+  revisionLabel: 1-13
+  holdProxy: true
+
+resources:
+  requests: 
+    cpu: 20m
+    memory: 10Mi

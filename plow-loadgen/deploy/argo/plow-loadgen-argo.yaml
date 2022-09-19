@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plow-httpbin
+  namespace: argocd
+spec:
+  destination:
+    namespace: httpbin
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://github.com/solo-io/gitops-library'
+    path: plow-loadgen/helm
+    targetRevision: HEAD
+    helm:
+      parameters:
+      - name: plow.url
+        value: 'https://httpbin.kapoozi.com/anything/unprotected'
+      - name: plow.concurrency
+        value: '1'
+      - name: plow.rate
+        value: '50'
+      - name: plow.requests
+        value: '-1'
+      - name: plow.duration
+        value: '0'
+      - name: plow.interval
+        value: '60'
+      - name: plow.method
+        value: 'GET'
+      - name: plow.insecure
+        value: 'true'
+      - name: deployment.nameSuffix
+        value: 'httpbin'
+      - name: deployment.namespace
+        value: 'plow'
+      - name: deployment.containerPort
+        value: '18888'
+      - name: deployment.replicas
+        value: '1'
+      - name: istio.inject
+        values: 'true'
+      - name: istio.revisionLabel
+        values: '1-13'
+      - name: istio.holdProxy
+        values: 'true'
+      - name: resources.requests.cpu
+        value: '20m'
+      - name: resources.requests.mem
+        value: '10Mi'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
