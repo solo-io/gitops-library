@@ -43,6 +43,8 @@ spec:
         values: '1-13'
       - name: istio.holdProxy
         values: 'true'
+      - name: istio.exportService
+        values: 'true'
       - name: resources.requests.cpu
         value: '20m'
       - name: resources.requests.mem

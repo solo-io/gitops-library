@@ -18,6 +18,7 @@ istio:
   inject: true
   revisionLabel: 1-13
   holdProxy: true
+  exportService: true
 
 resources:
   requests: 

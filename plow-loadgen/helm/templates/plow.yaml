@@ -12,6 +12,7 @@ metadata:
   labels:
     app: plow-{{ .Values.deployment.nameSuffix }}
     service: plow-{{ .Values.deployment.nameSuffix }}
+    expose: "{{ .Values.istio.exportService }}"
 spec:
   ports:
   - port: {{ .Values.deployment.containerPort }}
