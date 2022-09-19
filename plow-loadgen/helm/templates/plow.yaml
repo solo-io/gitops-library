@@ -1,9 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: {{ .Release.Namespace }}
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: plow-{{ .Values.deployment.nameSuffix }}
