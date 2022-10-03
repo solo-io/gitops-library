@@ -1,4 +1,2 @@
-# Load Gen tool based on Bombardier
-https://github.com/codesenberg/bombardier
-
-Bombardier in a container
+# Load Gen tool based on Plow
+https://github.com/six-ddc/plow
