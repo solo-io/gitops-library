@@ -233,8 +233,7 @@
         "/spec.json": {
             "get": {
                 "operationId": "/spec.json",
-                "description": "Get the swagger spec.",
+                "description": "Returns gzip-encoded data.",
                 "responses": {}
-            }
     }
 }
