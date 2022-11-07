@@ -65,7 +65,7 @@
             }
         },
         "/spec.json": {
-            "put": {
+            "get": {
                 "description": "Returns swagger spec.",
                 "operationId": "/spec.json",
                 "responses": {}
