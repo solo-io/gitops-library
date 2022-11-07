@@ -64,6 +64,13 @@
                 "responses": {}
             }
         },
+        "/spec.json": {
+            "put": {
+                "description": "Returns swagger spec.",
+                "operationId": "/spec.json",
+                "responses": {}
+            }
+        },
         "/xml": {
             "get": {
                 "description": "Returns some XML.",
@@ -229,11 +236,6 @@
                 }],
                 "responses": {}
             }
-        },
-        "/spec.json": {
-            "get": {
-                "operationId": "/spec.json",
-                "description": "Returns gzip-encoded data.",
-                "responses": {}
+        }
     }
 }
