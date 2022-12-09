@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flagger
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: gloo-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: flagger
+    helm:
+      skipCrds: false
+      values: |
+        prometheus:
+          install: false
+        metricsServer: "http://glooe-prometheus-server.gloo-system:80"
+        meshProvider: gloo
+    repoURL: https://flagger.app
+    targetRevision: 1.26.0
+  syncPolicy:
+    automated:
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
