@@ -4,8 +4,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 7d28ad088da61c98
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 5a1bbd06c2b39925
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -432,8 +432,10 @@ spec:
                     type: integer
                   secretRotationGracePeriodRatio:
                     description: |-
-                      The ratio of cert lifetime to refresh a cert. For example, at 0.10 and 1 hour TTL,
-                      we would refresh 6 minutes before expiration
+                      The ratio of the certificate lifetime to when Gloo starts the certificate rotation process.
+                      The ratio must be between 0 and 1 (exclusive). For example, if a certificate is valid for
+                      1 day (or 24 hours), and you specify a ratio of 0.1, Gloo starts the certificate rotation
+                      process 2.4 hours before it expires (24x0.1).
                     format: float
                     type: number
                   ttlDays:
@@ -531,7 +533,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 6ed1f78c05e8509c
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -624,7 +626,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 2957c9243711d6b9
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -771,7 +773,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 42da09bcbb424701
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -870,7 +872,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: a13fffa37c2937f1
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1062,7 +1064,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 10594140efd1b9f3
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1179,7 +1181,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 50667678335eae15
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis

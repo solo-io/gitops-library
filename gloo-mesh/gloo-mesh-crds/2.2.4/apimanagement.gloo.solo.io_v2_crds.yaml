@@ -5,7 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: be20296701671623
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -215,7 +215,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 85be20bf5c234a3c
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1284,7 +1284,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 8a1c2ff09a1bab43
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1750,7 +1750,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 5147e34ae81fc062
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis

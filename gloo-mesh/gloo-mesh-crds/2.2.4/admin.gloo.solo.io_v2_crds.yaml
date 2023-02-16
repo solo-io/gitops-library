@@ -5,7 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 70424b0e23051c75
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -322,8 +322,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 1d37477eccb775f7
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 12cf8f1c3f4db8a4
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -489,7 +489,7 @@ spec:
                             description: |-
                               The type of the resource to import or export.
                               The type must be a valid importable/exportable Kubernetes or Gloo Mesh resource type.
-                              Supported types: `RouteTable`, `Service`, `VirtualDestination`, `ExternalService`, `APIDoc`, `GraphQLResolverMap`, `CloudProvider`, `GraphQLSchema`, `GraphQLStitchedSchema`, `All` (all types).
+                              Supported types: `RouteTable`, `Service`, `VirtualDestination`, `ExternalService`, `ApiDoc`, `GraphQLResolverMap`, `CloudProvider`, `GraphQLSchema`, `GraphQLStitchedSchema`, `All` (all types).
                             enum:
                             - ALL
                             - ROUTE_TABLE
@@ -566,7 +566,7 @@ spec:
                             description: |-
                               The type of the resource to import or export.
                               The type must be a valid importable/exportable Kubernetes or Gloo Mesh resource type.
-                              Supported types: `RouteTable`, `Service`, `VirtualDestination`, `ExternalService`, `APIDoc`, `GraphQLResolverMap`, `CloudProvider`, `GraphQLSchema`, `GraphQLStitchedSchema`, `All` (all types).
+                              Supported types: `RouteTable`, `Service`, `VirtualDestination`, `ExternalService`, `ApiDoc`, `GraphQLResolverMap`, `CloudProvider`, `GraphQLSchema`, `GraphQLStitchedSchema`, `All` (all types).
                             enum:
                             - ALL
                             - ROUTE_TABLE
@@ -953,7 +953,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 2decc1014d458448
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1059,8 +1059,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 35baccbd1408e9d0
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 2580e681b7ae033
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1529,8 +1529,10 @@ spec:
                         type: integer
                       secretRotationGracePeriodRatio:
                         description: |-
-                          The ratio of cert lifetime to refresh a cert. For example, at 0.10 and 1 hour TTL,
-                          we would refresh 6 minutes before expiration
+                          The ratio of the certificate lifetime to when Gloo starts the certificate rotation process.
+                          The ratio must be between 0 and 1 (exclusive). For example, if a certificate is valid for
+                          1 day (or 24 hours), and you specify a ratio of 0.1, Gloo starts the certificate rotation
+                          process 2.4 hours before it expires (24x0.1).
                         format: float
                         type: number
                       ttlDays:
@@ -1561,8 +1563,10 @@ spec:
                             type: integer
                           secretRotationGracePeriodRatio:
                             description: |-
-                              The ratio of cert lifetime to refresh a cert. For example, at 0.10 and 1 hour TTL,
-                              we would refresh 6 minutes before expiration
+                              The ratio of the certificate lifetime to when Gloo starts the certificate rotation process.
+                              The ratio must be between 0 and 1 (exclusive). For example, if a certificate is valid for
+                              1 day (or 24 hours), and you specify a ratio of 0.1, Gloo starts the certificate rotation
+                              process 2.4 hours before it expires (24x0.1).
                             format: float
                             type: number
                           ttlDays:
@@ -1620,8 +1624,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 59edd0144787a25d
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 7c3705dcf13284c
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -1664,15 +1668,15 @@ spec:
                 type: boolean
               destinationServer:
                 description: |-
-                  Select the destination of the external auth destination for Gloo to use to authenticate traffic, such as the Gloo external auth service or your own external auth service.
-                  Make sure to select the correct cluster and namespace of the external auth destination.
-                  For example, although you create this ExtAuthServer resource in the management cluster in most cases, remember that the Gloo external auth service runs in each workload cluster.
-                  If omitted, Gloo looks for a service with the name 'extauth' in the agent namespace in each cluster where the external auth service is deployed.
-
-                  You can also use a VirtualDestination which routes to up to one external auth service on each cluster.
-                  For this use case, the external auth services name and namespace must match on all clusters,
-                  and the namespace must have istio-injection enabled (the external auth services must have sidecars).
-                  Using an ExternalService as your external auth destination is not supported at this time.
+                  Select the destination that Gloo uses to externally authenticate traffic.
+                  The destination can be a Kubernetes service, such as the Gloo external auth service or your own external auth service, or a VirtualDestination.
+                  The destination cannot be an ExternalService.
+                  <ul><li>Kubernetes service: Make sure to select the correct cluster and namespace of the external auth destination.
+                  For example, although you create this ExtAuthServer resource in the management cluster in most cases, remember that the Gloo external auth service runs in each workload cluster.</li>
+                  <li>Virtual destination: Group up to one external auth service for each registered cluster.
+                  The external auth service names and namespaces must match on all clusters. Also, the namespaces must be enabled for Istio-injection
+                  so that the external auth pods have sidecars.</li></ul>
+                  If omitted, Gloo looks for a service with the name `extauth` in the agent namespace in each cluster where the external auth service is deployed.
                 oneOf:
                 - not:
                     anyOf:
@@ -1948,7 +1952,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: cfeb5980c894d881
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -2157,7 +2161,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: ef3bd749b790fc3e
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -2381,7 +2385,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 4adf0de19f786c83
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -2758,7 +2762,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 558fa75a4521c82
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -5200,7 +5204,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 67ec595eb600f617
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis

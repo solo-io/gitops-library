@@ -4,8 +4,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 308ca4556c5ed48b
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: fd413356a433141
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -48,9 +48,6 @@ spec:
                   lambda:
                     description: Lambda configuration
                     properties:
-                      discovery:
-                        description: Discovery of lambda functions
-                        type: object
                       invokeRoleName:
                         description: |-
                           Name of the IAM Role to assume when calling the specified Cloud Function, associated with the account ID
@@ -174,8 +171,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: a433fb4efaf28bfb
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 372b9ed55cece794
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -229,75 +226,10 @@ spec:
                   CloudResources.
                 type: string
             type: object
-          status:
-            properties:
-              global:
-                properties:
-                  message:
-                    description: |-
-                      Additional information about the current state of the resource across all
-                      workspace clusters.
-                    type: string
-                  state:
-                    description: |-
-                      Whether the resource has been accepted as valid and processed in workspace
-                      clusters that it exists in.
-                    enum:
-                    - PENDING
-                    - ACCEPTED
-                    - INVALID
-                    - WARNING
-                    - FAILED
-                    - UNLICENSED
-                    type: string
-                type: object
-              workspaces:
-                additionalProperties:
-                  properties:
-                    clusters:
-                      additionalProperties:
-                        properties:
-                          generic:
-                            properties:
-                              message:
-                                description: Additional information about the current
-                                  state of the resource.
-                                type: string
-                              observedGeneration:
-                                description: |-
-                                  The most recent generation observed in the the object's metadata.
-                                  If the `observedGeneration` does not match `metadata.generation`, Gloo Mesh
-                                  has not processed the most recent version of this object.
-                                format: int64
-                                type: integer
-                              state:
-                                description: |-
-                                  Whether the resource has been accepted as valid and processed in the Gloo
-                                  Mesh config translation.
-                                enum:
-                                - PENDING
-                                - ACCEPTED
-                                - INVALID
-                                - WARNING
-                                - FAILED
-                                - UNLICENSED
-                                type: string
-                            type: object
-                        type: object
-                      description: |-
-                        The status of the resource in each cluster within the
-                        workspace.
-                      type: object
-                  type: object
-                description: The status of the resource in each workspace that it
-                  exists in.
-                type: object
-            type: object
         type: object
     served: true
     storage: true
-    subresources:
-      status: {}
+    subresources: {}
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -305,7 +237,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 21f1da155ffb40a3
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -610,7 +542,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 42a6a63e953d3cc1
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -777,8 +709,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: f33ba5954caa172f
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: f6afd07a432dea81
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -916,6 +848,53 @@ spec:
                             logicalName: aws-dest
                             awsLambda:
                               invocationStyle: SYNC
+              ```
+
+              The following example defines route configuration for the 'uk.bookinfo.com' and 'eu.bookinfo.com' hosts,
+              when traffic arriving at the `my-gateway` virtual gateway which is declared in the `my-gateway-ws` workspace.
+              When the path matches prefix `/lambda`, traffic is forwarded to the delegated routetable for handling lambdas.
+              `allowedRoutes` is included to restrict usage of CloudProvider functionality which routes to cloud functions
+              `backend-function-*` in region us-east-2 and which assume the `dev-team-B-*` IAM role.
+
+              ```yaml
+              apiVersion: networking.gloo.solo.io/v2
+              kind: RouteTable
+              metadata:
+                name: bookinfo-root-routes
+                namespace: bookinfo
+              spec:
+                hosts:
+                  - 'uk.bookinfo.com'
+                  - 'eu.bookinfo.com'
+                virtualGateways:
+                  - name: my-gateway
+                    namespace: my-gateway-ws
+                defaultDestination:
+                  ref:
+                    name: reviews
+                    namespace: prod
+                  port:
+                    number: 9080
+                http:
+                  - name: lambda
+                    matchers:
+                      - uri:
+                          prefix: /lambda
+                    labels:
+                      route: lambda
+                    delegate:
+                      allowedRoutes:
+                        - cloudProvider:
+                            aws:
+                              lambda_function:
+                                - backend-function-.*
+                              iam_roles:
+                                - dev-team-B-.*
+                              regions:
+                                - us-east-2
+                      routeTables:
+                        - labels:
+                            table: lambda
               ```
             properties:
               defaultDestination:
@@ -1138,55 +1117,59 @@ spec:
                         in an imported workspace, or to separate routing concerns between objects.
                       properties:
                         allowedRoutes:
-                          description: 'Optional: Restrict delegation to the RouteTables
-                            that match the CloudProvider criteria specified.'
-                          properties:
-                            cloudProvider:
-                              description: 'Optional: filter out route tables that
-                                use specify CloudProvider functionality, if provided.'
-                              oneOf:
-                              - not:
-                                  anyOf:
-                                  - required:
-                                    - aws
-                              - required:
-                                - aws
-                              properties:
-                                aws:
-                                  description: 'Optional: filter out route tables
-                                    that use AWS functionality, if provided'
-                                  properties:
-                                    accountIds:
-                                      description: 'Optional: filter out route tables
-                                        that use an AWS account ID which does not
-                                        match the selector, if provided.'
-                                      items:
-                                        type: string
-                                      type: array
-                                    iamRoles:
-                                      description: |-
-                                        Optional: filter out route tables that use IAM roles which do not match the selector, if provided.
-                                        Regex supported.
-                                      items:
-                                        type: string
-                                      type: array
-                                    lambdaFunctions:
-                                      description: |-
-                                        Optional: filter out route tables that use backend Lambda functions that do no match the selector,
-                                        if provided. Regex supported.
-                                      items:
-                                        type: string
-                                      type: array
-                                    regions:
-                                      description: 'Optional: filter out route tables
-                                        that use regions which do not match the selector,
-                                        if provided.'
-                                      items:
-                                        type: string
-                                      type: array
-                                  type: object
-                              type: object
-                          type: object
+                          description: |-
+                            Optional: Restrict delegation to the RouteTables that match the set of route filter criteria specified.
+                            If not specified, any route will be allowed to be referenced by this RouteTable.
+                          items:
+                            properties:
+                              cloudProvider:
+                                description: 'Optional: filter out route tables that
+                                  use specify CloudProvider functionality, if provided.'
+                                oneOf:
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - aws
+                                - required:
+                                  - aws
+                                properties:
+                                  aws:
+                                    description: |-
+                                      Optional: filter out route tables that use AWS functionality, if provided. Each evaluated route must match at
+                                      at least one of every repeated field provided, if not empty.
+                                    properties:
+                                      accountIds:
+                                        description: 'Optional: filter out route tables
+                                          that use an AWS account ID which does not
+                                          match the selector, if provided.'
+                                        items:
+                                          type: string
+                                        type: array
+                                      iamRoles:
+                                        description: |-
+                                          Optional: filter out route tables that use IAM invoke roles which do not match the selector, if provided.
+                                          Regex supported.
+                                        items:
+                                          type: string
+                                        type: array
+                                      lambdaFunctions:
+                                        description: |-
+                                          Optional: filter out route tables that use backend Lambda functions that do no match the selector,
+                                          if provided. Regex supported.
+                                        items:
+                                          type: string
+                                        type: array
+                                      regions:
+                                        description: 'Optional: filter out route tables
+                                          that use regions which do not match the
+                                          selector, if provided.'
+                                        items:
+                                          type: string
+                                        type: array
+                                    type: object
+                                type: object
+                            type: object
+                          type: array
                         routeTables:
                           description: |-
                             Delegate to the RouteTables that match the given selectors.
@@ -1886,7 +1869,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     crd.solo.io/specHash: 32dac097284d9274
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -2345,8 +2328,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    crd.solo.io/specHash: 8061c43e1ef92664
-    crd.solo.io/version: 2.2.0
+    crd.solo.io/specHash: 19cddce8af9e008e
+    crd.solo.io/version: 2.2.4
   labels:
     app: gloo-mesh-apis
     app.kubernetes.io/name: gloo-mesh-apis
@@ -2514,7 +2497,8 @@ spec:
                       - host: '*.foo.com'
                         selector:
                           workspace: foo-ws
-                        cloudProvider:
+                    allowedRoutes:
+                      - cloudProvider:
                           aws:
                             lambda_function:
                               - name: backend-function-*
@@ -2622,57 +2606,6 @@ spec:
                             type: object
                         type: object
                       type: array
-                    allowedRoutes:
-                      description: |-
-                        Optional: restrict the routes that can be applied to this VirtualGateway.
-                        If not specified, any route will be allowed to bind to this VirtualGateway.
-                      properties:
-                        cloudProvider:
-                          description: 'Optional: filter out route tables that use
-                            specify CloudProvider functionality, if provided.'
-                          oneOf:
-                          - not:
-                              anyOf:
-                              - required:
-                                - aws
-                          - required:
-                            - aws
-                          properties:
-                            aws:
-                              description: 'Optional: filter out route tables that
-                                use AWS functionality, if provided'
-                              properties:
-                                accountIds:
-                                  description: 'Optional: filter out route tables
-                                    that use an AWS account ID which does not match
-                                    the selector, if provided.'
-                                  items:
-                                    type: string
-                                  type: array
-                                iamRoles:
-                                  description: |-
-                                    Optional: filter out route tables that use IAM roles which do not match the selector, if provided.
-                                    Regex supported.
-                                  items:
-                                    type: string
-                                  type: array
-                                lambdaFunctions:
-                                  description: |-
-                                    Optional: filter out route tables that use backend Lambda functions that do no match the selector,
-                                    if provided. Regex supported.
-                                  items:
-                                    type: string
-                                  type: array
-                                regions:
-                                  description: 'Optional: filter out route tables
-                                    that use regions which do not match the selector,
-                                    if provided.'
-                                  items:
-                                    type: string
-                                  type: array
-                              type: object
-                          type: object
-                      type: object
                     appProtocol:
                       description: |-
                         Optional: Apply an application protocol to use when deciding what additional capabilities to
