@@ -7,6 +7,8 @@ plow:
   interval: 60
   method: GET
   insecure: true
+  host: "google.com"
+  additionalHeader: "user: solo"
 
 deployment:
   nameSuffix: loadgenerator

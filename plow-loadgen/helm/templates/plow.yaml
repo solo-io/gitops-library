@@ -70,3 +70,7 @@ spec:
           value: "{{ .Values.plow.method }}"
         - name: PLOW_INSECURE
           value: "{{ .Values.plow.insecure }}"
+        - name: PLOW_HEADER
+          value: "{{ .Values.plow.additionalHeader }}"
+        - name: PLOW_HOST
+          value: "{{ .Values.plow.host }}"

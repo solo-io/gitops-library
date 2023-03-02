@@ -73,3 +73,7 @@ spec:
           value: "GET"
         - name: PLOW_INSECURE
           value: "TRUE"
+        #- name: PLOW_HEADER
+        #  value: "user: solo"
+        #- name: PLOW_HOST
+        #  value: "httpbin.kapoozi.com"
