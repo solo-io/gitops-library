@@ -15,6 +15,10 @@ spec:
       parameters:
       - name: plow.url
         value: 'https://httpbin.kapoozi.com/anything/unprotected'
+      - name: plow.host
+        value: 'httpbin.kapoozi.com'
+      #- name: plow.additionalHeader
+      #  value: 'user: solo'
       - name: plow.concurrency
         value: '1'
       - name: plow.rate
