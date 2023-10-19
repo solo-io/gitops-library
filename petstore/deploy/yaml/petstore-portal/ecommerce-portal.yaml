@@ -6,16 +6,16 @@ metadata:
 spec:
   allApisPublicViewable: false
   banner:
-    fetchUrl: https://i.imgur.com/FThdBv8.png
+    fetchUrl: https://raw.githubusercontent.com/solo-io/gloo/main/docs/content/img/portal/banner.png
   customStyling: {}
   description: The Gloo Portal for the Petstore API and much more!
   displayName: E-commerce Portal
   domains:
   - portal-local.glootest.com
   favicon:
-    fetchUrl: https://i.imgur.com/RepvURn.png
+    fetchUrl: https://raw.githubusercontent.com/solo-io/gloo/main/docs/content/img/portal/favicon.png
   primaryLogo:
-    fetchUrl: https://i.imgur.com/rTKtJhO.png
+    fetchUrl: https://raw.githubusercontent.com/solo-io/gloo/main/docs/content/img/portal/primaryLogo.png
   publishedEnvironments:
   - name: dev
     namespace: default
