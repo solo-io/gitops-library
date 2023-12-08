@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cmd-params-cm
+data:
+  # Number of application status processors (default 20)
+  controller.status.processors: "60"
+  # Number of application operation processors (default 10)
+  controller.operation.processors: "60"
+  # Repo server RPC call timeout seconds.
+  controller.repo.server.timeout.seconds: "360"
+  # Run server without TLS
+  server.insecure: "true"
+  # Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from / (default "/")
+  server.basehref: "/argo"
+  # Used if Argo CD is running behind reverse proxy under subpath different from /
+  server.rootpath: "/argo"

@@ -1,0 +1,5 @@
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: --insecure}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: --basehref}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: /argo}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: --rootpath}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: /argo}

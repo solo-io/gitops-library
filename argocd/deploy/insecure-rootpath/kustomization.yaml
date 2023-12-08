@@ -6,10 +6,13 @@ resources:
 
 namespace: argocd
 
-patchesJson6902:
-- path: overlays/argocd-server-insecure-rootpath.yaml
-  target:
-    group: apps
-    kind: Deployment
-    name: argocd-server
-    version: v1
+patchesStrategicMerge:
+- overlays/argocd-cmd-params-cm.yaml
+
+#patchesJson6902:
+#- path: overlays/argocd-server-insecure-rootpath.yaml
+#  target:
+#    group: apps
+#    kind: Deployment
+#    name: argocd-server
+#    version: v1

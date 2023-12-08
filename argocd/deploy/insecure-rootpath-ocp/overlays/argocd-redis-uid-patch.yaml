@@ -1,0 +1,5 @@
+# removes default runAsUser: 999
+- {op: remove,  path: /spec/template/spec/securityContext/runAsUser}
+
+# replace default runAsUser: 999 with UID within OpenShift restricted SCC range
+#- {op: replace,  path: /spec/template/spec/securityContext/runAsUser, value: 1000670000}

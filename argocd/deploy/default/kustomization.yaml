@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/release-2.8/manifests/install.yaml
 - base/rollouts-extension.yaml
 
 components:
@@ -12,16 +12,17 @@ namespace: argocd
   
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.4.17
-  digest: sha256:24b95fcda18121c2e283054dcb84f16351a019d75d13447f3334f9fa233bebb3
+  newTag: v2.8.0
+  digest: sha256:a7bfe2a512a33c42d85786b52a8c1b0b2d721630505706b201b8963ec57ac6b3
 
-patchesJson6902:
-- path: overlays/application-controller-status-processors.yaml
-  target:
-    group: apps
-    kind: StatefulSet
-    name: argocd-application-controller
-    version: v1
+#patchesJson6902:
+#- path: overlays/application-controller-status-processors.yaml
+#  target:
+#    group: apps
+#    kind: StatefulSet
+#    name: argocd-application-controller
+#    version: v1
 
 patchesStrategicMerge:
 - overlays/argocd-cm.yaml
+- overlays/argocd-cmd-params-cm.yaml

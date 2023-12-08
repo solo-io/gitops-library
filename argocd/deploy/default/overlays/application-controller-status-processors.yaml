@@ -1,6 +1,8 @@
 - {op: add,  path: /spec/template/spec/containers/0/command/-, value: --status-processors}
-- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "20"}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "60"}
 - {op: add,  path: /spec/template/spec/containers/0/command/-, value: --operation-processors}
-- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "10"}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "60"}
 - {op: add,  path: /spec/template/spec/containers/0/command/-, value: --repo-server-timeout-seconds}
-- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "180"}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "360"}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: --app-resync}
+- {op: add,  path: /spec/template/spec/containers/0/command/-, value: "30"}
